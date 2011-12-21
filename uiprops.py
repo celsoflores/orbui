@@ -4,5 +4,6 @@
 """
 """
 STYLESHEETS.append(data('stylesheets/foundation.css'))
+STYLESHEETS.append(data('stylesheets/orbui.css'))
 # FIXME this javascript conflicts with cw forms
 #JAVASCRIPTS.append(data('javascripts/foundation.js'))
