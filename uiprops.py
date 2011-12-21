@@ -4,4 +4,5 @@
 """
 """
 STYLESHEETS.append(data('stylesheets/foundation.css'))
-JAVASCRIPTS.append(data('javascripts/foundation.js'))
+# FIXME this javascript conflicts with cw forms
+#JAVASCRIPTS.append(data('javascripts/foundation.js'))
