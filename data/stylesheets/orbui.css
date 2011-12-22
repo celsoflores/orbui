@@ -146,3 +146,28 @@ table#tsearch input{
     width: 146px;
     margin-left:10px;
 }
+/*
+--- Messages ---
+              */
+#appMsg{/*nine columns*/
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    width: 200px;
+}
+#applmessagesComponent, div.msg /*Alert succes*/{
+    display: block;
+    padding: 6px 7px;
+    font-weight: bold;
+    font-size: 13px;
+    text-align:center;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 12px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    position: relative;
+	background-color: #7fae00;
+    color: #fff;
+    text-shadow: 0 -1px rgba(0,0,0,0.3);
+}
