@@ -136,3 +136,13 @@ form fieldset table{
 form label{
     font-weight:bold;
 }
+/*
+---  INPUT  ---
+              */
+table#tsearch input{
+    max-width:146px;
+}
+#loginForm input {
+    width: 146px;
+    margin-left:10px;
+}
