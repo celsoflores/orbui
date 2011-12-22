@@ -48,3 +48,55 @@ button.disabled, button[disabled] {
     opacity: 0.6;
     cursor: default;
 }
+/*
+----- Boxes -----
+                   */
+.boxTitle /*Cw H2*/{
+   margin-bottom:10px;
+}
+.boxTitle span /*Cw H2*/{
+	font-size: 18px; font-size: 1.8rem; font-weight: normal; margin-bottom: 3px;
+}
+div.contextFreeBox, div.contextualBox /*Panel Style*/ {
+	padding: 20px 20px 2px 20px;
+	background: #efefef;
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F4F4F4));
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F4F4F4',GradientType=0 );
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+	margin: 0 0 20px 0;
+}
+div.contextFreeBox li, div.contextualBox li {
+    margin-bottom: 6px;
+}
+/* Sub Menu in Boxes ---------- */
+li a.boxMenu {
+    padding-left:26px;
+    background:transparent url('../images/orbui/arrow_bottom.png') no-repeat 0 0;
+}
+li a.boxMenu:hover {
+    cursor:pointer;
+    opacity:.8;
+}
+ul.boxListing li ul{
+    margin-top:12px;
+    margin-left:20px;
+    background:#efefef;
+    padding:2px 0 0px 0;
+}
+ul.boxListing li ul li {
+    padding:0;
+    padding-left:8px;
+    padding-bottom:6px;
+    margin:0;
+    line-height: 1;
+    margin-top:6px;
+    border-bottom:dotted 1px #fff;
+    width:100%;
+}
+ul.boxListing li ul li a{
+    font-size:90%;
+    opacity:.9;
+}
