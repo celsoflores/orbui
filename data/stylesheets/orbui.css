@@ -52,7 +52,7 @@ button.disabled, button[disabled] {
 ----- Boxes -----
                    */
 .boxTitle /*Cw H2*/{
-   margin-bottom:10px;
+    margin-bottom:10px;
 }
 .boxTitle span /*Cw H2*/{
 	font-size: 18px; font-size: 1.8rem; font-weight: normal; margin-bottom: 3px;
@@ -99,4 +99,40 @@ ul.boxListing li ul li {
 ul.boxListing li ul li a{
     font-size:90%;
     opacity:.9;
+}
+/*
+--- TABLES ---
+             */
+table{
+    border:none;
+}
+/*
+---  FORMS ---
+              */
+form fieldset{
+    border:none;
+}
+div.formTitle span /*h1 in Form title*/{
+	font-size: 32px;
+    font-size: 3.2em;
+    line-height: 1.3;
+    margin-bottom:32px;
+}
+div.formBody >form >fieldset/*Panel Style*/ {
+	padding: 20px 20px 2px 20px;
+	background: #efefef;
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F4F4F4));
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F4F4F4',GradientType=0 );
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+	margin: 20px 0 20px 0;
+}
+form fieldset table{
+    background:none;
+}
+/* Labels ---------- */
+form label{
+    font-weight:bold;
 }
