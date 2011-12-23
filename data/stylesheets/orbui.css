@@ -139,8 +139,11 @@ form label{
 /*
 ---  INPUT  ---
               */
+table#tsearch{
+    background:none;
+}
 table#tsearch input{
-    max-width:146px;
+    max-width:120px;
 }
 #loginForm input {
     width: 146px;
