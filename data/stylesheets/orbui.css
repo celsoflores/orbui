@@ -1,4 +1,78 @@
 /*
+---- Header -----
+*/
+#header{
+    padding-top:36px;
+    margin-bottom:36px;
+}
+#header_center{
+    margin-top:36px;
+}
+#header #logo{
+    margin-right:48px;
+}
+#header_right a.popupMenu {
+background: #00a6fc;
+display: inline-block;
+text-align: center;
+padding: 9px 34px 11px;
+color: #fff;
+text-decoration: none;
+font-weight: bold;
+line-height: 1;
+font-family: "Helvetica Neue", "Helvetica", Arial, Verdana, sans-serif;
+position: relative;
+cursor: pointer;
+border: none;
+background: #00a6fc url(../images/misc/button-gloss.png) repeat-x 0 -34px;
+-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+text-shadow: 0 -1px 1px rgba(0,0,0,0.28);
+background: #00a6fc url(../images/misc/button-gloss.png) repeat-x 0 -34px, -moz-linear-gradient(top, rgba(255,255,255,.4) 0%, transparent 100%);
+background: #00a6fc url(../images/misc/button-gloss.png) repeat-x 0 -34px, -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,.4)), color-stop(100%,transparent));
+border: 1px solid #0593dc;
+-webkit-transition: background-color .15s ease-in-out;
+-moz-transition: background-color .15s ease-in-out;
+-o-transition: background-color .15s ease-in-out;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+border-radius: 3px;
+width: 120px;
+padding-left: 0 !important;
+padding-right: 0 !important;
+text-align: center;
+margin-top: 12px;
+}
+#header_right #boxmenu_admin {
+padding-left: 12px;
+padding-right: 12px;
+-moz-border-radius-topleft: 0px;
+-moz-border-radius-topright: 0px;
+-moz-border-radius-bottomright: 6px;
+-moz-border-radius-bottomleft: 6px;
+-webkit-border-radius: 0px 0px 6px 6px;
+border-radius: 0px 0px 6px 6px;
+padding-top: 12px;
+}
+/*
+----- Main -----
+*/
+th {
+    font-weight:bold;
+    font-size:120%;
+}
+/* Input Text facet fix */
+.facet input{
+    width:100%;
+}
+input.input-text, textarea{
+    width:75%;
+    min-width:150px;
+}
+input.input-text, textarea, select{
+    margin:12px;
+}
+/*
 ----- Button -----
                    */
 button{
