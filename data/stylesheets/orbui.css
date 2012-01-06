@@ -11,7 +11,7 @@
 #header #logo{
     margin-right:48px;
 }
-#header_right a.popupMenu {
+#header_right a.popupMenu, #header_right a.login_button {
 background: #00a6fc;
 display: inline-block;
 text-align: center;
