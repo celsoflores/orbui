@@ -62,9 +62,62 @@ padding-top: 12px;
 /*
 ----- Main -----
 */
+.mainCol div.section{
+    margin-bottom:6px;
+}
 th {
     font-weight:bold;
     font-size:120%;
+}
+.primary_entities .entityfield th{
+    padding:12px 12px 12px 0;
+}
+table.attributeForm tr th{
+    padding:12px 12px 12px 0;
+    vertical-align:top;
+}
+.editableField{
+    position:absolute;
+    width:100%;
+    opacity:.6;
+}
+.editableField:hover{
+    opacity:1;
+}
+.primary_entities .entityfield .releditField{
+    width:100%;
+}
+
+.primary_entities .entityfield form.releditForm,
+.primary_entities .entityfield .releditField fieldset,
+.primary_entities .entityfield .releditField fieldset *{
+    margin:0;
+    padding:0;
+}
+.primary_entities .entityfield .releditField fieldset{
+    height:24px;
+}
+.primary_entities .entityfield .releditField .buttonbar td{
+    padding:2px 12px 12px 12px;
+}
+.primary_entities .entityfield .releditField .buttonbar td button{
+    padding: 2px 12px;
+}
+table#relatedEntities, table.attributeForm{
+    margin:0;
+    padding:0;
+}
+form#entityForm div.helper{
+    padding-top:4px;
+    font-style:italic;
+    font-size:10px;
+    color:#aaa;
+    line-height:12px;
+}
+form#entityForm legend{
+    font-weight:bold;
+    border-bottom:1px solid #ddd;
+    color:#aaa;
 }
 /* Input Text facet fix */
 .facet input{
@@ -74,8 +127,61 @@ input.input-text, textarea{
     width:75%;
     min-width:150px;
 }
-input.input-text, textarea, select{
+table.attributeForm table#relatedEntities tr:first-child{
+    display:none;
+}
+table.attributeForm table#relatedEntities th{
+    margin:0;
+    padding:0;
+}
+table.attributeForm td{
+    vertical-align:middle;
+}
+
+.cwinoutadd, .cwinoutremove{
+    margin:3px 12px;
+}
+input.input-text, textarea{
     margin:12px;
+    margin-left:0;
+    margin-bottom:0;
+}
+select{
+    margin:0;
+    padding:0;
+    padding:0 6px;
+}
+/*
+----- START UP VIEW -----
+                   */
+table.startup td{
+    padding:6px 0;
+    padding-left:6px;
+	background: #efefef;
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F4F4F4));
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F4F4F4',GradientType=0 );
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+	margin: 0 0 20px 0;
+    color:#aaa;
+}
+table.startup td.addcol{
+    padding-left:36px;
+	background: none;
+    box-shadow:none;
+    color:#fff;
+    font-size:24px;
+    font-weight:bold;
+}
+table.startup td.addcol a{
+	background: none;
+	box-shadow: none;
+    color:#AEC653;
+}
+#cwinoutadd{
+    vertical-align:middle;
 }
 /*
 ----- Button -----
@@ -137,7 +243,7 @@ button.disabled, button[disabled] {
 	font-size: 18px; font-size: 1.8rem; font-weight: normal; margin-bottom: 3px;
 }
 div.contextFreeBox, div.contextualBox /*Panel Style*/ {
-	padding: 20px 20px 2px 20px;
+	padding: 12px;
 	background: #efefef;
 	background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F4F4F4));
@@ -150,6 +256,21 @@ div.contextFreeBox, div.contextualBox /*Panel Style*/ {
 div.contextFreeBox li, div.contextualBox li {
     margin-bottom: 6px;
 }
+div.boxTitle span /*Cw H2*/{
+	font-size: 14px; font-weight: normal; margin-bottom: 3px;
+}
+.navboxes .search_box .boxBody *{
+    padding:0;
+    margin:0;
+}
+.navboxes .search_box .boxBody td{
+    padding-right:6px;
+}
+.navboxes .search_box input#rqlboxsubmit{
+    padding-left:12px;
+    min-width:30px;
+}
+
 /* Sub Menu in Boxes ---------- */
 li a.boxMenu {
     padding-left:26px;
@@ -222,7 +343,7 @@ table#tsearch{
     background:none;
 }
 table#tsearch input{
-    max-width:120px;
+    max-width:146px;
 }
 #loginForm input {
     width: 146px;
@@ -236,6 +357,19 @@ table#tsearch input{
     right: 10px;
     top: 10px;
     width: 200px;
+    display: block;
+    padding: 6px 7px;
+    font-weight: bold;
+    font-size: 13px;
+    text-align:center;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 12px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+	background-color: #7fae00;
+    color: #fff;
+    text-shadow: 0 -1px rgba(0,0,0,0.3);
 }
 #applmessagesComponent, div.msg /*Alert succes*/{
     display: block;
