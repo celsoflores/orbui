@@ -127,8 +127,12 @@ input.input-text, textarea{
     width:75%;
     min-width:150px;
 }
-table.attributeForm table#relatedEntities tr:first-child{
-    display:none;
+table.attributeForm table#relatedEntities tr li{
+    margin:0;
+    padding-right:6px;
+}
+table.attributeForm table#relatedEntities tr li div a{
+    padding-left:6px;
 }
 table.attributeForm table#relatedEntities th{
     margin:0;
@@ -137,7 +141,6 @@ table.attributeForm table#relatedEntities th{
 table.attributeForm td{
     vertical-align:middle;
 }
-
 .cwinoutadd, .cwinoutremove{
     margin:3px 12px;
 }
