@@ -378,9 +378,9 @@ table#tsearch input{
 	background-color: #7fae00;
     color: #fff;
     text-shadow: 0 -1px rgba(0,0,0,0.3);
-}
-#applmessagesComponent, div.msg /*Alert succes*/{
-    display: block;
+}/*
+#applmessagesComponent, div.msg *//*Alert succes*/{
+/*    display: block;
     padding: 6px 7px;
     font-weight: bold;
     font-size: 13px;
@@ -393,4 +393,4 @@ table#tsearch input{
 	background-color: #7fae00;
     color: #fff;
     text-shadow: 0 -1px rgba(0,0,0,0.3);
-}
+}*/
