@@ -62,6 +62,10 @@ padding-top: 12px;
 /*
 ----- Main -----
 */
+div#main {
+    min-height:400px;
+}
+
 .mainCol div.section{
     margin-bottom:6px;
 }
