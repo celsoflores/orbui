@@ -390,9 +390,9 @@ table#tsearch input{
 	background-color: #7fae00;
     color: #fff;
     text-shadow: 0 -1px rgba(0,0,0,0.3);
-}/*
-#applmessagesComponent, div.msg *//*Alert succes*/{
-/*    display: block;
+}
+#applmessagesComponent, div.msg {
+    display: block;
     padding: 6px 7px;
     font-weight: bold;
     font-size: 13px;
@@ -405,4 +405,83 @@ table#tsearch input{
 	background-color: #7fae00;
     color: #fff;
     text-shadow: 0 -1px rgba(0,0,0,0.3);
-}*/
+}
+/*
+---  SiteConfig  ---
+                    */
+div.propertiesform {
+    border-bottom: solid 1px #eee;
+    height: auto;
+    margin-bottom: 30px;
+}
+div.propertiesform a /*Panel Style*/ {
+    padding: 11px 20px 13px 20px;
+    border: none;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-top: 1px solid #eee;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background: #00a6fc;
+    color: #fff;
+    height: auto;
+}
+#fieldset_ui, #fieldset_navigation,#fieldset_components,#fieldset_ctxcomponents,#fieldset_facets {
+    background: #efefef;
+    margin-top:-30px;
+    padding:20px 10px 10px 20px;
+    margin-bottom:20px;
+}
+#fieldset_ui label, #fieldset_navigation label,#fieldset_components label, #fieldset_ctxcomponents label, #fieldset_facets label {
+    text-align:left;
+    border-bottom:1px dotted #ddd;
+    font-size:14px;
+    padding-bottom:6px;
+    margin-bottom:6px;
+}
+#fieldset_components #fieldset, #fieldset_components form{
+    margin:0;
+}
+.componentLink {
+    color:#aaa;
+    font-size:16px;
+    margin-top:20px;
+    margin-bottom:10px;
+}
+.componentLink *{
+    display:inline;
+}
+div.openlink a{
+    color:#aaa;
+    font-size:10px;
+}
+div.preffield div.helper{
+    margin-bottom:10px;
+    font-style:italic;
+    font-size:10px;
+    color:#aaa;
+    line-height:12px;
+    min-height:24px;
+}
+#fieldset_ui div.helper, #fieldset_navigation div.helper{
+    min-height:12px;
+}
+#fieldset_navigation fieldset{
+    margin:0;
+}
+div.preffield {
+    margin-bottom:10px;
+}
+#fieldset_ctxcomponents > fieldset, #fieldset_facets > fieldset{
+    margin:0;
+    border-bottom:2px dotted #ddd;
+}
+#fieldset_ctxcomponents div.preffield, #fieldset_facets div.preffield{
+    display:block;
+    float:left;
+    width:32%;
+}
+#fieldset_ctxcomponents div button,#fieldset_facets div button{
+    margin-left:33%;
+}
