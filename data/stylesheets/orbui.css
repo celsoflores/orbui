@@ -67,10 +67,19 @@ padding-top: 12px;
 }
 th {
     font-weight:bold;
-    font-size:120%;
+    font-size:100%;
+    line-height:18px;
+    padding:12px;
 }
 .primary_entities .entityfield th{
-    padding:12px 12px 12px 0;
+    text-align:right;
+}
+.entityfield th, .entityfield th label{
+    padding:12px;
+    text-align:right;
+}
+form label{
+    text-align:right;
 }
 table.attributeForm tr th{
     padding:12px 12px 12px 0;
@@ -87,7 +96,6 @@ table.attributeForm tr th{
 .primary_entities .entityfield .releditField{
     width:100%;
 }
-
 .primary_entities .entityfield form.releditForm,
 .primary_entities .entityfield .releditField fieldset,
 .primary_entities .entityfield .releditField fieldset *{
