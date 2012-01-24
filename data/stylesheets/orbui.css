@@ -85,6 +85,10 @@ th {
 form label{
     text-align:right;
 }
+table.attributeForm label.required {
+  background: url("required.png") 100% 50% no-repeat;
+  padding-right:8px;
+}
 table.attributeForm tr th{
     padding:12px 12px 12px 0;
     vertical-align:top;
