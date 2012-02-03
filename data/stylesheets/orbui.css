@@ -88,9 +88,6 @@ th {
     line-height:18px;
     padding:12px;
 }
-.primary_entities .entityfield th{
-    text-align:right;
-}
 .entityfield th, .entityfield th label{
     padding:12px;
     text-align:right;
@@ -114,22 +111,22 @@ table.attributeForm tr th{
 .editableField:hover{
     opacity:1;
 }
-.primary_entities .entityfield .releditField{
+.entityfield .releditField{
     width:100%;
 }
-.primary_entities .entityfield form.releditForm,
-.primary_entities .entityfield .releditField fieldset,
-.primary_entities .entityfield .releditField fieldset *{
+.entityfield form.releditForm,
+.entityfield .releditField fieldset,
+.entityfield .releditField fieldset *{
     margin:0;
     padding:0;
 }
-.primary_entities .entityfield .releditField fieldset{
+.entityfield .releditField fieldset{
     height:24px;
 }
-.primary_entities .entityfield .releditField .buttonbar td{
+.entityfield .releditField .buttonbar td{
     padding:2px 12px 12px 12px;
 }
-.primary_entities .entityfield .releditField .buttonbar td button{
+.entityfield .releditField .buttonbar td button{
     padding: 2px 12px;
 }
 table#relatedEntities, table.attributeForm{
