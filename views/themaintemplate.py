@@ -46,10 +46,12 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<div class="mainCol nine columns">')
         # components
         components = self._cw.vreg['components']
-        rqlcomp = components.select_or_none('rqlinput', self._cw, rset=self.cw_rset)
+        rqlcomp = components.select_or_none('rqlinput', self._cw,
+                                            rset=self.cw_rset)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
-        msgcomp = components.select_or_none('applmessages', self._cw, rset=self.cw_rset)
+        msgcomp = components.select_or_none('applmessages', self._cw,
+                                            rset=self.cw_rset)
         if msgcomp:
             msgcomp.render(w=self.w)
         # contentheader
@@ -83,12 +85,14 @@ class TheMainTemplateOrbui(TheMainTemplate):
         # close body
         self.w(u'</body>\n')
 
-    def template_header(self, content_type, view=None, page_title='', additional_headers=()):
+    def template_header(self, content_type, view=None, page_title='',
+                        additional_headers=()):
         page_title = page_title or view.page_title()
         additional_headers = additional_headers or view.html_headers()
         self.template_html_header(content_type, page_title, additional_headers)
 
-    def template_html_header(self, content_type, page_title, additional_headers=()):
+    def template_html_header(self, content_type, page_title,
+                             additional_headers=()):
         w = self.whead
         lang = self._cw.lang
         self.write_doctype()
@@ -106,7 +110,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
 
     def nav_column(self, view, context):
         boxes = list(self._cw.vreg['ctxcomponents'].poss_visible_objects(
-            self._cw, rset=self.cw_rset, view=view, context=context))
+                self._cw, rset=self.cw_rset, view=view, context=context))
         if boxes:
             getlayout = self._cw.vreg['components'].select
             self.w(u'<div class="navboxes">\n')
