@@ -119,5 +119,4 @@ class TheMainTemplateOrbui(TheMainTemplate):
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
-    vreg.register_all(globals().values(), __name__, (TheMainTemplateOrbui,))
     vreg.register_and_replace(TheMainTemplateOrbui, TheMainTemplate)
