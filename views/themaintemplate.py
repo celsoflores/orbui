@@ -79,7 +79,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<section id="bottom" class="row">')
         self.w(u'</section>\n')
         # footer row
-        self.w(u'<footer id="footer" class="row">')
+        self.w(u'<footer class="row">')
         self.template_footer(view)
         self.w(u'</footer>\n')
         # close body
