@@ -32,17 +32,17 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.wview('htmlheader', rset=self.cw_rset)
         # body
         self.w(u'<body>\n')
-        self.w(u'<div id="header" class="row">')
+        self.w(u'<header id="header" class="row">')
         self.wview('header', rset=self.cw_rset, view=view)
-        self.w(u'</div>\n')
+        self.w(u'</header>\n')
         # top row
-        self.w(u'<div id="top" class="row">')
-        self.w(u'</div>\n')
-        self.w(u'<div id="main" class="row">')
+        self.w(u'<nav id="top" class="row">')
+        self.w(u'</nav>\n')
+        self.w(u'<section id="main" class="row">')
         # boxes
-        self.w(u'<div class="leftCol three columns">')
+        self.w(u'<aside class="leftCol three columns">')
         self.nav_column(view, 'left')
-        self.w(u'</div>\n')
+        self.w(u'</aside>\n')
         self.w(u'<div class="mainCol nine columns">')
         # components
         components = self._cw.vreg['components']
@@ -74,14 +74,14 @@ class TheMainTemplateOrbui(TheMainTemplate):
         # close mainCol
         self.w(u'</div>\n')
         # close main
-        self.w(u'</div>\n')
+        self.w(u'</section>\n')
         # bottom row
-        self.w(u'<div id="bottom" class="row">')
-        self.w(u'</div>\n')
+        self.w(u'<section id="bottom" class="row">')
+        self.w(u'</section>\n')
         # footer row
-        self.w(u'<div id="footer" class="row">')
+        self.w(u'<footer id="footer" class="row">')
         self.template_footer(view)
-        self.w(u'</div>\n')
+        self.w(u'</footer>\n')
         # close body
         self.w(u'</body>\n')
 
