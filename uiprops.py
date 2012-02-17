@@ -3,7 +3,7 @@
 
 """
 """
-STYLESHEETS.append(data('stylesheets/foundation.css'))
-STYLESHEETS.append(data('stylesheets/orbui.css'))
-# FIXME this javascript conflicts with cw forms
-#JAVASCRIPTS.append(data('javascripts/foundation.js'))
+STYLESHEETS.append(data('css/bootstrap.css'))
+STYLESHEETS.append(data('css/custom.css'))
+STYLESHEETS.append(data('orbui.css'))
+JAVASCRIPTS.append(data('js/bootstrap.js'))

@@ -31,8 +31,8 @@ class PrimaryViewOrbui(PrimaryView):
             boxes = self._prepare_side_boxes(entity)
         else:
             boxes = None
-        self.w(u'<div class="row">'
-               u'<div class="nine columns">')
+        self.w(u'<div class="well row-fluid">'
+               u'<div class="span9">')
         if hasattr(self, 'render_entity_summary'):
             warn('[3.10] render_entity_summary method is deprecated (%s)' % self,
                  DeprecationWarning)
@@ -50,7 +50,7 @@ class PrimaryViewOrbui(PrimaryView):
         self.w(u'</div>')
         self.content_navigation_components('navcontentbottom')
         self.w(u'</div>'
-               u'<div class="three columns">')
+               u'<div class="span3">')
         # side boxes
         if boxes or hasattr(self, 'render_side_related'):
             self.render_side_boxes(boxes)
@@ -63,5 +63,3 @@ def registration_callback(vreg):
     """
     vreg.register_all(globals().values(), __name__, (PrimaryViewOrbui,))
     vreg.register_and_replace(PrimaryViewOrbui, PrimaryView)
-
-

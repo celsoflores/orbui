@@ -21,45 +21,159 @@ from cubicweb.web.views.basetemplates import TheMainTemplate, templatable_view
 
 class TheMainTemplateOrbui(TheMainTemplate):
     """the main template for orbui
+
+    This class creates the main structure of the cubicweb front page.
+
+    The sections are:
+
+    * header
+    * toolbar
+    * main
+    * footer
+
+    Each section has more inner sections according to its related components.
     """
 
     def call(self, view):
-        """
+        """call all methods to build the main template
         """
         # html head info
         self.set_request_content_type()
         self.template_header(self.content_type, view)
+        # writes all css & js needed for Cubicweb
         self.wview('htmlheader', rset=self.cw_rset)
-        # body
-        self.w(u'<body>\n')
-        self.w(u'<header id="header" class="row">')
-        self.wview('header', rset=self.cw_rset, view=view)
-        self.w(u'</header>\n')
-        # top row
-        self.w(u'<nav id="top" class="row">')
-        self.w(u'</nav>\n')
-        self.w(u'<section id="main" class="row">')
-        # boxes
-        self.w(u'<aside class="leftCol three columns">')
-        self.nav_column(view, 'left')
-        self.w(u'</aside>\n')
-        self.w(u'<div class="mainCol nine columns">')
-        # components
+        self.w(u'<body>')
+        self.page_header(view)
+        self.page_toolbar(view)
+        self.page_main(view)
+        self.page_footer(view)
+        self.w(u'</body>')
+
+    def page_header(self, view):
+        """display the header of the main template
+        """
+        ctxcomponents =  self._cw.vreg['ctxcomponents']
+        self.w(u'<header id="pageheader">'
+               u'<div class="navbar navbar-top">'
+               u'<div class="navbar-inner">'
+               u'<div class="container">'
+               u' <a class="btn btn-navbar" data-toggle="collapse"'
+               u'    data-target=".nav-collapse">'
+               u'<span class="icon-bar"></span>'
+               u'<span class="icon-bar"></span>'
+               u'<span class="icon-bar"></span>'
+               u'</a>')
+        components_right = ctxcomponents.poss_visible_objects(self._cw,
+                           rset=self.cw_rset, view=view, context='header-right')
+        # Anything placed here will be hidden on mobile devices and
+        # small screens in general. It can be show by clicking the button
+        # above this comment.
+        self.w(u'<div class="nav-collapse">'
+               u'<ul class="nav">'
+               u'<li class="active"><a href="/">Home</a></li>'
+               u'</ul>'
+               u'<ul class="nav pull-right">')
+        for component in components_right:
+            component.render(w=self.w)
+        self.w(u'</ul>'
+               u'</div>')
+        # get logo component
+        logo = ctxcomponents.select('logo', self._cw)
+        # get application name and breadcrumbs
+        components_left = ctxcomponents.poss_visible_objects(self._cw,
+                          rset=self.cw_rset, view=view, context='header-left')
+        # get seach box component
+        search_box = ctxcomponents.select('search_box', self._cw)
+        self.w(u'</div>'
+               u'</div>'
+               u'</div>'
+               u'<div class="container">'
+               u'<div class="row">'
+               u'<h1 class="span2">')
+        logo.render(w=self.w)
+        self.w(u'</h1>'
+               u'<div class="span6">')
+        for component in components_left:
+            component.render(w=self.w)
+        self.w(u'</div>'
+               u'<div class="span2">')
+        # Don't display search box title, just display the search box body
+        #FIXME in iceweasel display 2 more input boxes... weird.
+        search_box.render_body(w=self.w)
+        self.w(u'</div>'
+               u'<div class="span2">'
+               # the idea is to have a bookmark button here
+               u'</div>'
+               u'</div>'
+               u'</div>'
+               u'</header>')
+        # close header
+        # get login form to display it as modal window
+        login = self._cw.vreg['forms'].select('logform', self._cw)
+        self.w(u'<div id="loginModal" class="modal hide fade in">'
+               u'<div class="modal-header">'
+               u'<a class="close" data-dismiss="modal">x</a>'
+               u'<h3>%s</h3>'
+               u'</div>'
+               u'<div class="modal-body">' % self._cw._('log in'))
+        login.render(w=self.w)
+        self.w(u'</div>'
+               u' <div class="modal-footer"></div>'
+               u'</div>')
+
+    def page_toolbar(self, view):
+        """display contextual toolbar
+        """
+        self.w(u'<nav id="toolbar" class="container">'
+               u'<div class="row">'
+               u'<div class="span12">')
+        #FIXME be sure that later we use the correct selectors
+        try:
+            editbox = self._cw.vreg['ctxcomponents'].select('edit_box',
+                      self._cw, rset=self.cw_rset, view=view,
+                      context='no-where-for-now')
+            self.w(u'<ul class="nav nav-pills pull-right">')
+            editbox.render(w=self.w, cw_rset=self.cw_rset)
+            self.w(u'</ul>')
+        except:
+            # do nothing
+            pass
+
+        #FIXME right now we are not displaying this section
+        # writes ctxcomponents for this element
+        #self.wview('contentheader', rset=self.cw_rset, view=view)
+        self.w(u'</div>'
+               u'</div>'
+               u'</nav>')
+
+    def page_main(self, view):
+        """display main section of the main template
+        """
         components = self._cw.vreg['components']
         rqlcomp = components.select_or_none('rqlinput', self._cw,
                                             rset=self.cw_rset)
+        #FIXME this is a trick to find out if boxes exists for this element
+        context = 'left'
+        boxes = list(self._cw.vreg['ctxcomponents'].poss_visible_objects(
+                self._cw, rset=self.cw_rset, view=view, context=context))
+        if boxes:
+            columns = 9
+        else:
+            columns = 12
+        self.w(u'<section id="main">'
+               u'<div class="container">'
+               u'<div class="row">'
+               u'<div class="span%i pull-right">' % columns)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
                                             rset=self.cw_rset)
         if msgcomp:
             msgcomp.render(w=self.w)
-        # contentheader
-        self.wview('contentheader', rset=self.cw_rset, view=view)
         # vtitle
         vtitle = self._cw.form.get('vtitle')
         if vtitle:
-            self.w(u'<div class="vtitle">%s</div>\n' % xml_escape(vtitle))
+            self.w(u'<div class="vtitle">%s</div>' % xml_escape(vtitle))
         # display entity type restriction component
         etypefilter = self._cw.vreg['components'].select_or_none(
             'etypenavigation', self._cw, rset=self.cw_rset)
@@ -71,19 +185,26 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(nav_html.getvalue())
         view.render(w=self.w)
         self.w(nav_html.getvalue())
-        # close mainCol
-        self.w(u'</div>\n')
-        # close main
-        self.w(u'</section>\n')
-        # bottom row
-        self.w(u'<section id="bottom" class="row">')
-        self.w(u'</section>\n')
-        # footer row
-        self.w(u'<footer class="row">')
+        self.w(u'</div>')
+        # aside section - write boxes for this element
+        self.nav_column(view, 'left')
+        self.w(u'</div>'
+               u'</div>'
+               u'</section>')
+
+    def page_footer(self, view):
+        """display page footer
+        """
+        self.w(u'<footer id="pagefooter">'
+               u'<div class="container">'
+               u'<div class="row">'
+               u'<div class="span12">'
+               u'<hr />')
         self.template_footer(view)
-        self.w(u'</footer>\n')
-        # close body
-        self.w(u'</body>\n')
+        self.w(u'</div>'
+               u'</div>'
+               u'</div>'
+               u'</footer>')
 
     def template_header(self, content_type, view=None, page_title='',
                         additional_headers=()):
@@ -101,6 +222,13 @@ class TheMainTemplateOrbui(TheMainTemplate):
         w(u'<meta http-equiv="content-type" content="%s; charset=%s"/>\n'
           % (content_type, self._cw.encoding))
         w(u'\n'.join(additional_headers) + u'\n')
+        # FIXME this is a quick option to make cw work in IE9
+        # you'll lose all IE9 functionality, the browser will act as IE8.
+        #w(u'<meta http-equiv="X-UA-Compatible" content="IE=8" />\n')
+        w(u'<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->\n'
+          u'  <!--[if lt IE 9]>\n'
+          u'        <script src="%s"></script>\n'
+          u'  <![endif]-->\n' % self._cw.data_url('js/html5.js'))
         if page_title:
             w(u'<title>%s</title>\n' % xml_escape(page_title))
 
@@ -112,11 +240,14 @@ class TheMainTemplateOrbui(TheMainTemplate):
         boxes = list(self._cw.vreg['ctxcomponents'].poss_visible_objects(
                 self._cw, rset=self.cw_rset, view=view, context=context))
         if boxes:
-            getlayout = self._cw.vreg['components'].select
-            self.w(u'<div class="navboxes">\n')
+            self.w(u'<aside class="span3">'
+                   u'<div class="well">'
+                   u'<div class="navboxes">')
             for box in boxes:
                 box.render(w=self.w, view=view)
-            self.w(u'</div>\n')
+            self.w(u'</div>'
+                   u'</div>'
+                   u'</aside>')
 
 
 # replace TheMainTemplate

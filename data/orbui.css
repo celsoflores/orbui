@@ -1,6 +1,11 @@
 /*
 ---- Header -----
 */
+.sidebar-nav input{
+    width:auto;
+}
+
+
 #header{
     padding-top:36px;
     margin-bottom:36px;
@@ -10,7 +15,7 @@
 }
 #header #logo{
     margin-right:48px;
-}
+}/*
 #header_right a.popupMenu, #header_right a.login_button {
 background: #00a6fc;
 display: inline-block;
@@ -58,10 +63,10 @@ padding-top: 12px;
     position:absolute;
     background:#efefef;
     z-index:100;
-}
+}*/
 /*
 ----- H Titles -----
-*/
+*//*
 h1 { font-size: 35px; font-size: 3.5rem; margin-bottom: 12px; }
 h2 {
     font-size: 28px;
@@ -72,7 +77,7 @@ h2 {
 }
 h3 { font-size: 21px; font-size: 2.1rem; margin-bottom: 3px; }
 h4 { font-size: 18px; font-size: 1.8rem; font-weight: normal; margin-bottom: 3px;  }
-h5 { font-size: 15px; font-size: 1.5rem; font-weight: normal; }
+h5 { font-size: 15px; font-size: 1.5rem; font-weight: normal; }*/
 /*
 ----- Main -----
 */
@@ -184,7 +189,7 @@ select{
 /*
 ----- START UP VIEW -----
                    */
-table.startup td{
+/*table.startup td{
     padding:6px 0;
     padding-left:6px;
 	background: #efefef;
@@ -212,10 +217,10 @@ table.startup td.addcol a{
 }
 #cwinoutadd{
     vertical-align:middle;
-}
+}*/
 /*
 ----- Button -----
-                   */
+                   *//*
 button{
     display: inline-block;
     position: relative;
@@ -253,26 +258,26 @@ button img{
     top:3px;
     left:-4px;
 }
-/* Hover ---------- */
+*//* Hover ---------- *//*
 button:hover, button:focus {
     background-color: #dadada;
     color: #333;
 }
-/* Disabled ---------- */
+*//* Disabled ---------- *//*
 button.disabled, button[disabled] {
     opacity: 0.6;
     cursor: default;
 }
-/*
+*//*
 ----- Boxes -----
-                   */
-.boxTitle /*Cw H2*/{
+                   *//*
+.boxTitle /*Cw H2*//*{
     margin-bottom:10px;
-}
-.boxTitle span /*Cw H2*/{
+}*//*
+.boxTitle span *//*Cw H2*//*{
 	font-size: 18px; font-size: 1.8rem; font-weight: normal; margin-bottom: 3px;
 }
-div.contextFreeBox, div.contextualBox /*Panel Style*/ {
+div.contextFreeBox, div.contextualBox *//*Panel Style*/ /*{
 	padding: 12px;
 	background: #efefef;
 	background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
@@ -286,7 +291,7 @@ div.contextFreeBox, div.contextualBox /*Panel Style*/ {
 div.contextFreeBox li, div.contextualBox li {
     margin-bottom: 6px;
 }
-div.boxTitle span /*Cw H2*/{
+div.boxTitle span /*Cw H2*//*{
 	font-size: 14px; font-weight: normal; margin-bottom: 3px;
 }
 .navboxes .search_box .boxBody *{
@@ -301,7 +306,7 @@ div.boxTitle span /*Cw H2*/{
     min-width:24px;
 }
 
-/* Sub Menu in Boxes ---------- */
+/* Sub Menu in Boxes ---------- *//*
 li a.boxMenu {
     padding-left:26px;
     background:transparent url('../images/orbui/arrow_bottom.png') no-repeat 0 0;
@@ -332,27 +337,27 @@ ul.boxListing li ul li a{
 }
 /*
 --- TABLES ---
-             */
+             *//*
 table{
     border:none;
 }
 /*
 -- ZEBRA TABLE --
-             */
+             *//*
 table tbody tr:nth-child(even) { background: transparent; }
 /*
 ---  FORMS ---
-              */
+              *//*
 form fieldset{
     border:none;
 }
-div.formTitle span /*h1 in Form title*/{
+div.formTitle span /*h1 in Form title*//*{
 	font-size: 32px;
     font-size: 3.2em;
     line-height: 1.3;
     margin-bottom:32px;
 }
-div.formBody >form >fieldset/*Panel Style*/ {
+div.formBody >form >fieldset/*Panel Style*//* {
 	padding: 20px 20px 2px 20px;
 	background: #efefef;
 	background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
@@ -366,13 +371,13 @@ div.formBody >form >fieldset/*Panel Style*/ {
 form fieldset table{
     background:none;
 }
-/* Labels ---------- */
+/* Labels ---------- *//*
 form label{
     font-weight:bold;
 }
 /*
 ---  INPUT  ---
-              */
+              *//*
 table#tsearch{
     background:none;
 }
@@ -385,7 +390,7 @@ table#tsearch input{
 }
 /*
 --- Messages inside #appMsg ---
-                             */
+                             *//*
 #applmessagesComponent, div.msg {
     display: block;
     padding: 6px 7px;
@@ -408,13 +413,13 @@ table#tsearch input{
 }
 /*
 ---  SiteConfig  ---
-                    */
+                    *//*
 div.propertiesform {
     border-bottom: solid 1px #eee;
     height: auto;
     margin-bottom: 30px;
 }
-div.propertiesform a /*Panel Style*/ {
+div.propertiesform a /*Panel Style*//* {
     padding: 11px 20px 13px 20px;
     border: none;
     border-left: 1px solid #eee;
@@ -484,4 +489,4 @@ div.preffield {
 }
 #fieldset_ctxcomponents div button,#fieldset_facets div button{
     margin-left:33%;
-}
+}*/
