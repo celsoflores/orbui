@@ -17,11 +17,13 @@
 from cubicweb.web.views.boxes import SearchBox, EditBox
 from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
                                                AnonUserStatusLink,
-                                               AuthenticatedUserStatus)
+                                               AuthenticatedUserStatus,
+                                               ApplicationMessage)
 from cubicweb.web.views.bookmark import BookmarksBox
 from cubicweb.web.views.basetemplates import LogForm
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
 from cubicweb.selectors import non_final_entity
+from cubicweb.uilib import toggle_action
 
 
 class ApplLogoOrbui(ApplLogo):
@@ -115,13 +117,13 @@ class LogFormOrbui(LogForm):
                     fw.SubmitButton(label=_('log in'),
                                     attrs={'class': 'btn btn-primary'})]
 
+
 class BookmarksBoxOrbui(BookmarksBox):
     """overwrites the original BookmarksBox class for orbui template
     """
     context = _('no-where-for-now')
 
 
-#class EditBoxOrbui(EditBox):
 class EditBoxOrbui(component.CtxComponent):
     """overwrites the original EditBox class for orbui template
     """
@@ -186,6 +188,29 @@ class EditBoxOrbui(component.CtxComponent):
                   u'</li>')
 
 
+class ApplicationMessageOrbui(ApplicationMessage):
+    """overwrites application message class for orbui
+    """
+    def call(self, msg=None):
+        if msg is None:
+            msgs = []
+            if self._cw.cnx:
+                srcmsg = self._cw.get_shared_data('sources_error', pop=True)
+                if srcmsg:
+                    msgs.append(srcmsg)
+            reqmsg = self._cw.message # XXX don't call self._cw.message twice
+            if reqmsg:
+                msgs.append(reqmsg)
+        else:
+            msgs = [msg]
+        self.w(u'<div id="appMsg" onclick="%s" class="%s">' %
+               (toggle_action('appMsg'), (msgs and ' ' or 'hidden')))
+        for msg in msgs:
+            self.w(u'<div class="message alert alert-info"'
+                   u' id="%s">%s</div>' % (self.domid, msg))
+        self.w(u'</div>')
+
+
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
@@ -198,3 +223,4 @@ def registration_callback(vreg):
     vreg.register_and_replace(LogFormOrbui, LogForm)
     vreg.register_and_replace(BookmarksBoxOrbui, BookmarksBox)
     vreg.register_and_replace(EditBoxOrbui, EditBox)
+    vreg.register_and_replace(ApplicationMessageOrbui, ApplicationMessage)
