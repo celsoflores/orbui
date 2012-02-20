@@ -163,7 +163,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<section id="main">'
                u'<div class="container">'
                u'<div class="row">'
-               u'<div class="span%i pull-right">' % columns)
+               u'<div class="span%i pull-right" id="pageContent">' % columns)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
