@@ -221,6 +221,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self._cw.html_headers.define_var('BASE_URL', self._cw.base_url())
         w(u'<meta http-equiv="content-type" content="%s; charset=%s"/>\n'
           % (content_type, self._cw.encoding))
+        w(u'<meta name="viewport" content="initial-scale=1.0; '
+          u'maximum-scale=1.0; width=device-width; "/>')
         w(u'\n'.join(additional_headers) + u'\n')
         # FIXME this is a quick option to make cw work in IE9
         # you'll lose all IE9 functionality, the browser will act as IE8.
