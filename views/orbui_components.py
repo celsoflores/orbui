@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from logilab.mtconverter import xml_escape
 from cubicweb.web.views.boxes import SearchBox, EditBox
 from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
                                                AnonUserStatusLink,
@@ -180,7 +181,8 @@ class EditBoxOrbui(component.CtxComponent):
                         w(u'<li><strong>%s</strong></li>' % menu.label)
                         for subaction in action.actual_actions():
                             w(u'<li><a href="%s">%s</a></li>' %
-                              (subaction.url(), self._cw._(subaction.title)))
+                              (xml_escape(subaction.url()),
+                               self._cw._(subaction.title)))
                         w(u'<li class="divider"></li>')
                     else:
                         menu = defaultmenu
