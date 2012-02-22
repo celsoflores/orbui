@@ -23,6 +23,7 @@ from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
 from cubicweb.web.views.bookmark import BookmarksBox
 from cubicweb.web.views.basetemplates import LogForm
 from cubicweb.web.views.basecontrollers import JSonController
+from cubicweb.web.views.tableview import TableLayout
 from cubicweb.utils import UStringIO
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
 from cubicweb.selectors import non_final_entity
@@ -253,6 +254,11 @@ class JSonControllerOrbui(JSonController):
         return stream.getvalue()
 
 
+class TableLayoutOrbui(TableLayout):
+    """overwrites Table class for orbui template
+    """
+    cssclass = "table table-striped table-bordered table-condensed"
+
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
@@ -267,3 +273,4 @@ def registration_callback(vreg):
     vreg.register_and_replace(EditBoxOrbui, EditBox)
     vreg.register_and_replace(ApplicationMessageOrbui, ApplicationMessage)
     vreg.register_and_replace(JSonControllerOrbui, JSonController)
+    vreg.register_and_replace(TableLayoutOrbui, TableLayout)
