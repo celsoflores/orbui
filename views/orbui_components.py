@@ -24,10 +24,14 @@ from cubicweb.web.views.bookmark import BookmarksBox
 from cubicweb.web.views.basetemplates import LogForm
 from cubicweb.web.views.basecontrollers import JSonController
 from cubicweb.web.views.tableview import TableLayout
+from cubicweb.web.views.formrenderers import (FormRenderer,
+                                              EntityCompositeFormRenderer)
+from cubicweb.web.views.formrenderers import field_label, checkbox
 from cubicweb.utils import UStringIO
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
 from cubicweb.selectors import non_final_entity
 from cubicweb.uilib import toggle_action
+from cubicweb import tags, uilib
 
 
 class ApplLogoOrbui(ApplLogo):
@@ -259,6 +263,42 @@ class TableLayoutOrbui(TableLayout):
     """
     cssclass = "table table-striped table-bordered table-condensed"
 
+
+class EntityCompositeFormRendererOrbui(EntityCompositeFormRenderer):
+    """Multiple Edition Table for orbui template 'muledit' HTML5
+    """
+    def render_fields(self, w, form, values):
+        if form.parent_form is None:
+            # We should probably take those CSS classes to uiprops.py
+            w(u'<table class="table table-striped table-bordered table-condensed">')
+            # get fields from the first subform with something to display (we
+            # may have subforms with nothing editable that will simply be
+            # skipped later)
+            for subform in form.forms:
+                subfields = [field for field in subform.fields
+                             if field.is_visible()]
+                if subfields:
+                    break
+            if subfields:
+                # main form, display table headers HTML5
+                w(u'<thead>')
+                w(u'<tr>')
+                w(u'<th>%s</th>' %
+                  tags.input(type='checkbox',
+                             title=self._cw._('toggle check boxes'),
+                             onclick="setCheckboxesState('eid', null, this.checked)"))
+                for field in subfields:
+                    w(u'<th>%s</th>' % field_label(form, field))
+                w(u'</tr>')
+                w(u'</thead>')
+        super(EntityCompositeFormRenderer, self).render_fields(w, form, values)
+        if form.parent_form is None:
+            w(u'</table>')
+            if self._main_display_fields:
+                super(EntityCompositeFormRenderer, self)._render_fields(
+                    self._main_display_fields, w, form)
+
+
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
@@ -274,3 +314,5 @@ def registration_callback(vreg):
     vreg.register_and_replace(ApplicationMessageOrbui, ApplicationMessage)
     vreg.register_and_replace(JSonControllerOrbui, JSonController)
     vreg.register_and_replace(TableLayoutOrbui, TableLayout)
+    vreg.register_and_replace(EntityCompositeFormRendererOrbui,
+                              EntityCompositeFormRenderer)
