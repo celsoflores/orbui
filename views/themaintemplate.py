@@ -96,14 +96,11 @@ class TheMainTemplateOrbui(TheMainTemplate):
         for component in components_left:
             component.render(w=self.w)
         self.w(u'</div>'
-               u'<div class="span2">')
+               u'<div class="span4">')
         # Don't display search box title, just display the search box body
         #FIXME in iceweasel display 2 more input boxes... weird.
         search_box.render_body(w=self.w)
         self.w(u'</div>'
-               u'<div class="span2">'
-               # the idea is to have a bookmark button here
-               u'</div>'
                u'</div>'
                u'</div>'
                u'</header>')
