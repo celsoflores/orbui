@@ -58,8 +58,12 @@ class AnonUserStatusLinkOrbui(AnonUserStatusLink):
     """overwrites the original AnonUserStatusLink of cubicweb to change
     the display format
     """
+    #FIXME the selections of possible visible objects does not filter by context
+    #for AnonUserStatusLinkOrbui object
+    context = _('header-top-right')
+
     def render(self, w):
-        # do nothing for now
+        # do nothing for now, what is the real use of it?
         pass
 
 
@@ -67,6 +71,7 @@ class CookieLoginComponentOrbui(CookieLoginComponent):
     """overwrites original CookieLoginComponent of cubicweb to change
     the display format
     """
+    context = _('header-top-right')
     _html = (u'<li class="divider-vertical"></li><!--%s-->'
              u'<li><a title="%s" data-toggle="modal"'
              u' href="#loginModal">%s</a></li>')
@@ -83,6 +88,7 @@ class AuthenticatedUserStatusOrbui(AuthenticatedUserStatus):
     """overwrites the original AuthenticatedUserStatus to change the
     display format
     """
+    context = _('header-top-right')
 
     def render(self, w):
         name = None

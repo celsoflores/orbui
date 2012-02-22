@@ -63,17 +63,22 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<span class="icon-bar"></span>'
                u'<span class="icon-bar"></span>'
                u'</a>')
-        components_right = ctxcomponents.poss_visible_objects(self._cw,
-                           rset=self.cw_rset, view=view, context='header-right')
+        components_top_left = ctxcomponents.poss_visible_objects(self._cw,
+                              rset=self.cw_rset, view=view,
+                              context='header-top-left')
+        components_top_right = ctxcomponents.poss_visible_objects(self._cw,
+                               rset=self.cw_rset, view=view,
+                               context='header-top-right')
         # Anything placed here will be hidden on mobile devices and
         # small screens in general. It can be show by clicking the button
         # above this comment.
         self.w(u'<div class="nav-collapse">'
-               u'<ul class="nav">'
-               u'<li class="active"><a href="/">Home</a></li>'
-               u'</ul>'
+               u'<ul class="nav">')
+        for component in components_top_left:
+            component.render(w=self.w)
+        self.w(u'</ul>'
                u'<ul class="nav pull-right">')
-        for component in components_right:
+        for component in components_top_right:
             component.render(w=self.w)
         self.w(u'</ul>'
                u'</div>')
