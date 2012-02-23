@@ -282,7 +282,7 @@ class EditBoxOrbui(component.CtxComponent):
                     else:
                         menu = defaultmenu
                         w(u'<li><a href="%s">%s</a></li>' %
-                          (action.url(), self._cw._(action.title)))
+                          (xml_escape(action.url()), self._cw._(action.title)))
                 w(u'</ul>'
                   u'</li>')
 
