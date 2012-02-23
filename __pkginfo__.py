@@ -8,8 +8,8 @@ numversion = (0, 1, 0)
 version = '.'.join(str(num) for num in numversion)
 
 license = 'LGPL'
-author = 'LOGILAB S.A. (Paris, FRANCE)'
-author_email = 'contact@logilab.fr'
+author = 'CreaLibre (Monterrey, MEXICO)'
+author_email = 'info@crealibre.com'
 description = 'orbui framework for cubicweb'
 web = 'http://www.cubicweb.org/project/%s' % distname
 

@@ -1,5 +1,5 @@
-# copyright 2011 LOGILAB S.A. (Paris, FRANCE), all rights reserved.
-# contact http://www.logilab.fr -- mailto:contact@logilab.fr
+# copyright 2012 CreaLibre (Monterrey, MEXICO), all rights reserved.
+# contact http://www.crealibre.com/ -- mailto:info@crealibre.com
 
 """
 """
