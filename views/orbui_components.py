@@ -19,7 +19,8 @@ from cubicweb.web.views.boxes import SearchBox, EditBox
 from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
                                                AnonUserStatusLink,
                                                AuthenticatedUserStatus,
-                                               ApplicationMessage)
+                                               ApplicationMessage,
+                                               ApplicationName)
 from cubicweb.web.views.bookmark import BookmarksBox
 from cubicweb.web.views.basetemplates import LogForm
 from cubicweb.web.views.basecontrollers import JSonController
@@ -27,6 +28,9 @@ from cubicweb.web.views.tableview import TableLayout
 from cubicweb.web.views.formrenderers import (FormRenderer,
                                               EntityCompositeFormRenderer)
 from cubicweb.web.views.formrenderers import field_label, checkbox
+from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
+                                             ibreadcrumb_adapter)
+from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
 from cubicweb.selectors import non_final_entity
@@ -37,12 +41,18 @@ from cubicweb import tags, uilib
 class ApplLogoOrbui(ApplLogo):
     """build the instance logo, usually displayed in the header
     """
-    context = _('no-where-for-now')
+    context = _('header-left')
+
+    def render(self, w):
+        w(u'<h1>')
+        super(ApplLogoOrbui, self).render(w)
+        w(u'</h1>')
 
 
 class SearchBoxOrbui(SearchBox):
-    """display a box with a simple search form"""
-    context = _('no-where-for-now')
+    """display a box with a simple search form
+    """
+    context = _('header-right')
     formdef = u"""<form action="%s" class="form-search">
                   <input id="norql" type="text" accesskey="q" tabindex="%s"
                          title="search text" value="%s" name="rql"
@@ -52,6 +62,13 @@ class SearchBoxOrbui(SearchBox):
                  <!--input tabindex="%s" type="submit" id="rqlboxsubmit"
                  class="rqlsubmit" value="" /-->
                  </form>"""
+
+    def render(self, w):
+        """overwrites SearchBox component for orbui template
+        """
+        #FIXME in iceweasel display 2 more input boxes... weird.
+        # Don't display search box title, just display the search box body
+        super(SearchBoxOrbui, self).render_body(w)
 
 
 class AnonUserStatusLinkOrbui(AnonUserStatusLink):
@@ -132,24 +149,91 @@ class LogFormOrbui(LogForm):
                                     attrs={'class': 'btn btn-primary'})]
 
 
-class BookmarksBoxOrbui(BookmarksBox):
+class BookmarksBoxOrbui(component.CtxComponent):
     """overwrites the original BookmarksBox class for orbui template
     """
-    context = _('no-where-for-now')
+    __regid__ = 'bookmarks_box'
+    context = _('main-toolbar')
+    title = _('bookmarks')
+    rql = ('Any B,T,P ORDERBY lower(T) '
+           'WHERE B is Bookmark,B title T, B path P, B bookmarked_by U, '
+           'U eid %(x)s')
+
+    def render(self, w, cw_rset):
+        """render bookmarks
+        """
+        self.init_rendering(w)
+
+    def init_rendering(self, w):
+        ueid = self._cw.user.eid
+        self.bookmarks_rset = self._cw.execute(self.rql, {'x': ueid})
+        rschema = self._cw.vreg.schema.rschema('bookmarked_by')
+        eschema = self._cw.vreg.schema.eschema('Bookmark')
+        self.can_delete = rschema.has_perm(self._cw, 'delete', toeid=ueid)
+        self.can_edit = (eschema.has_perm(self._cw, 'add') and
+                         rschema.has_perm(self._cw, 'add', toeid=ueid))
+        if self.bookmarks_rset or self.can_edit:
+            self.render_menu(w)
+
+    def render_menu(self, w):
+        ueid = self._cw.user.eid
+        req = self._cw
+        if self.can_delete:
+            req.add_js('cubicweb.ajax.js')
+        w(u'<li class="dropdown">'
+          u'<a class="dropdown-toggle" data-toggle="dropdown" href="#">'
+          u'%s'
+          u'<b class="caret"></b>'
+          u'</a>'
+          u'<ul class="dropdown-menu">' % self._cw._('bookmarks'))
+        for bookmark in self.bookmarks_rset.entities():
+            label = self.link(bookmark.title, bookmark.action_url())
+            if self.can_delete:
+                #FIXME dropdown menu won't work having 2 links on the same menu
+                dlink = (u'<a class="action" '
+                         u'href="javascript:removeBookmark(%s)" '
+                         u'title="%s">[-]</a>' % (bookmark.eid,
+                                                 req._('delete this bookmark')))
+                dlink = u''
+                w(u'<li>%s %s</li>' % (dlink, label))
+        if self.can_edit:
+            w(u'<li>%s</li>' % req._('manage bookmarks'))
+            linkto = 'bookmarked_by:%s:subject' % ueid
+            # use a relative path so that we can move the instance without
+            # loosing bookmarks
+            path = req.relative_path()
+            # XXX if vtitle specified in params, extract it and use it as
+            # default value for bookmark's title
+            url = req.vreg['etypes'].etype_class('Bookmark').cw_create_url(
+                req, __linkto=linkto, path=path)
+            w(u'<li>%s</li>' % self.link(req._('bookmark this page'), url))
+            if self.bookmarks_rset:
+                if req.user.is_in_group('managers'):
+                    bookmarksrql = (u'Bookmark B WHERE B bookmarked_by U,'
+                                    u'U eid %s' % ueid)
+                    erset = self.bookmarks_rset
+                else:
+                    # we can't edit shared bookmarks we don't own
+                    bookmarksrql = (u'Bookmark B WHERE B bookmarked_by U,'
+                                    u'B owned_by U, U eid %(x)s')
+                    erset = req.execute(bookmarksrql, {'x': ueid},
+                                        build_descr=False)
+                    bookmarksrql %= {'x': ueid}
+                if erset:
+                    url = req.build_url(vid='muledit', rql=bookmarksrql)
+                    w(u'<li>%s</li>' % self.link(req._('edit bookmarks'), url))
+            url = req.user.absolute_url(vid='xaddrelation', rtype='bookmarked_by',
+                                        target='subject')
+            w(u'<li>%s</li>' % self.link(req._('pick existing bookmarks'), url))
+        w(u'</ul>'
+          u'</li>')
 
 
 class EditBoxOrbui(component.CtxComponent):
     """overwrites the original EditBox class for orbui template
     """
     __regid__ = 'edit_box'
-    #FIXME we should use the correct selectors
-    __select__ = component.CtxComponent.__select__ & non_final_entity()
-
-    title = _('actions')
-    order = 2
-    #contextual = True
-    context = _('no-where-for-now')
-    items = []
+    context = _('main-toolbar')
 
     def _get_menu(self, id, title=None, label_prefix=None):
         try:
@@ -305,6 +389,47 @@ class EntityCompositeFormRendererOrbui(EntityCompositeFormRenderer):
                     self._main_display_fields, w, form)
 
 
+class ApplicationNameOrbui(ApplicationName):
+    """overwrites ApplicationName component for orbui template
+    """
+    context = _('header-main')
+
+
+class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
+    """overwrites ApplicationName component for orbui template
+    """
+    context = _('header-main')
+
+    # XXX support kwargs for compat with other components which gets the view as
+    # argument
+    def render(self, w, **kwargs):
+        try:
+            entity = self.cw_extra_kwargs['entity']
+        except KeyError:
+            entity = self.cw_rset.get_entity(0, 0)
+        adapter = ibreadcrumb_adapter(entity)
+        view = self.cw_extra_kwargs.get('view')
+        path = adapter.breadcrumbs(view)
+        if path:
+            w(u'<ul class="breadcrumb">')
+            if self.first_separator:
+                w(u'<li><span class="divider">%s</span></li>' % self.separator)
+            self.render_breadcrumbs(w, entity, path)
+            w(u'</ul>')
+
+    def render_breadcrumbs(self, w, contextentity, path):
+        root = path.pop(0)
+        if isinstance(root, Entity):
+            w(u'<li>%s<span class="divider">%s</span></li>' %
+              (self.link_template % (self._cw.build_url(root.__regid__),
+                                     root.dc_type('plural')), self.separator))
+        self.wpath_part(w, root, contextentity, not path)
+        for i, parent in enumerate(path):
+            w(u'<li><span class="divider">%s</span></li>' % self.separator)
+            self.wpath_part(w, parent, contextentity, i == len(path) - 1)
+
+
+
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
@@ -322,3 +447,6 @@ def registration_callback(vreg):
     vreg.register_and_replace(TableLayoutOrbui, TableLayout)
     vreg.register_and_replace(EntityCompositeFormRendererOrbui,
                               EntityCompositeFormRenderer)
+    vreg.register_and_replace(ApplicationNameOrbui, ApplicationName)
+    vreg.register_and_replace(BreadCrumbEntityVComponentOrbui,
+                              BreadCrumbEntityVComponent)

@@ -82,29 +82,33 @@ class TheMainTemplateOrbui(TheMainTemplate):
             component.render(w=self.w)
         self.w(u'</ul>'
                u'</div>')
-        # get logo component
-        logo = ctxcomponents.select('logo', self._cw)
-        # get application name and breadcrumbs
-        components_left = ctxcomponents.poss_visible_objects(self._cw,
-                          rset=self.cw_rset, view=view, context='header-left')
+        components_header_left = ctxcomponents.poss_visible_objects(self._cw,
+                                 rset=self.cw_rset, view=view,
+                                 context='header-left')
+        components_header_main = ctxcomponents.poss_visible_objects(self._cw,
+                                 rset=self.cw_rset,
+                                 view=view, context='header-main')
+        components_header_right = ctxcomponents.poss_visible_objects(self._cw,
+                                  rset=self.cw_rset,
+                                  view=view, context='header-right')
         # get seach box component
-        search_box = ctxcomponents.select('search_box', self._cw)
+        #search_box = ctxcomponents.select('search_box', self._cw)
         self.w(u'</div>'
                u'</div>'
                u'</div>'
                u'<div class="container">'
                u'<div class="row">'
-               u'<h1 class="span2">')
-        logo.render(w=self.w)
-        self.w(u'</h1>'
-               u'<div class="span6">')
-        for component in components_left:
+               u'<div class="span2">')
+        for component in components_header_left:
             component.render(w=self.w)
         self.w(u'</div>'
-               u'<div class="span4">')
-        # Don't display search box title, just display the search box body
-        #FIXME in iceweasel display 2 more input boxes... weird.
-        search_box.render_body(w=self.w)
+               u'<div class="span8">')
+        for component in components_header_main:
+            component.render(w=self.w)
+        self.w(u'</div>'
+               u'<div class="span2">')
+        for component in components_header_right:
+            component.render(w=self.w)
         self.w(u'</div>'
                u'</div>'
                u'</div>'
@@ -126,21 +130,17 @@ class TheMainTemplateOrbui(TheMainTemplate):
     def page_toolbar(self, view):
         """display contextual toolbar
         """
+        ctxcomponents = self._cw.vreg['ctxcomponents']
         self.w(u'<nav id="toolbar" class="container">'
                u'<div class="row">'
                u'<div class="span12">')
-        #FIXME be sure that later we use the correct selectors
-        try:
-            editbox = self._cw.vreg['ctxcomponents'].select('edit_box',
-                      self._cw, rset=self.cw_rset, view=view,
-                      context='no-where-for-now')
-            self.w(u'<ul class="nav nav-pills pull-right">')
-            editbox.render(w=self.w, cw_rset=self.cw_rset)
-            self.w(u'</ul>')
-        except:
-            # do nothing
-            pass
-
+        components_toolbar = ctxcomponents.poss_visible_objects(self._cw,
+                             rset=self.cw_rset,
+                             view=view, context='main-toolbar')
+        self.w(u'<ul class="nav nav-pills pull-right">')
+        for component in components_toolbar:
+            component.render(w=self.w, cw_rset=self.cw_rset)
+        self.w(u'</ul>')
         #FIXME right now we are not displaying this section
         # writes ctxcomponents for this element
         #self.wview('contentheader', rset=self.cw_rset, view=view)
