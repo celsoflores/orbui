@@ -30,6 +30,7 @@ from cubicweb.web.views.formrenderers import (FormRenderer,
 from cubicweb.web.views.formrenderers import field_label, checkbox
 from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              ibreadcrumb_adapter)
+from cubicweb.web.views.navigation import NextPrevNavigationComponent
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
@@ -428,6 +429,27 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
             w(u'<li><span class="divider">%s</span></li>' % self.separator)
             self.wpath_part(w, parent, contextentity, i == len(path) - 1)
 
+class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
+    """overwrites navigation Next and Previous on single entities
+    """
+
+    # Should be better done, but this works
+    def render_body(self, w):
+        w(u'<div class="prevnext row">')
+        self.prevnext(w)
+        w(u'</div>')
+        w(u'<div class="clear"></div>')
+
+    def prevnext_div(self, w, type, cssclass, url, title, content):
+        cssclass = u'span6'
+
+        w(u'<div class="%s">' % cssclass)
+        w(u'<a href="%s" title="%s">%s</a>' % (xml_escape(url),
+                                               xml_escape(title),
+                                               content))
+        w(u'</div>')
+        self._cw.html_headers.add_raw('<link rel="%s" href="%s" />' % (
+              type, xml_escape(url)))
 
 
 def registration_callback(vreg):
@@ -450,3 +472,5 @@ def registration_callback(vreg):
     vreg.register_and_replace(ApplicationNameOrbui, ApplicationName)
     vreg.register_and_replace(BreadCrumbEntityVComponentOrbui,
                               BreadCrumbEntityVComponent)
+    vreg.register_and_replace(NextPrevNavigationComponentOrbui,
+                              NextPrevNavigationComponent)

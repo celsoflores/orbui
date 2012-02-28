@@ -187,6 +187,18 @@ select{
     padding:0 6px;
 }
 /*
+----- PAGINATION -----
+                   */
+.pagination img{
+    vertical-align:middle;
+}
+.prevnext *{
+    vertical-align:middle;
+}
+.prevnext a:hover{
+    text-decoration:none;
+}
+/*
 ----- START UP VIEW -----
                    */
 /*table.startup td{
