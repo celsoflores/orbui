@@ -49,70 +49,87 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.page_footer(view)
         self.w(u'</body>')
 
-    def page_header(self, view):
-        """display the header of the main template
+    def header_top_left(self, view, ctxcomponents):
+        """render components assigned to the top left place of the header
         """
-        ctxcomponents =  self._cw.vreg['ctxcomponents']
-        self.w(u'<header id="pageheader">'
-               u'<div class="navbar navbar-top">'
-               u'<div class="navbar-inner">'
-               u'<div class="container">'
-               u' <a class="btn btn-navbar" data-toggle="collapse"'
-               u'    data-target=".nav-collapse">'
-               u'<span class="icon-bar"></span>'
-               u'<span class="icon-bar"></span>'
-               u'<span class="icon-bar"></span>'
-               u'</a>')
         components_top_left = ctxcomponents.poss_visible_objects(self._cw,
                               rset=self.cw_rset, view=view,
                               context='header-top-left')
+        if components_top_left:
+            self.w(u'<ul class="nav">')
+            for component in components_top_left:
+                component.render(w=self.w)
+            self.w(u'</ul>')
+
+    def header_top_right(self, view, ctxcomponents):
+        """render components assigned to the top right place of the header
+        """
         components_top_right = ctxcomponents.poss_visible_objects(self._cw,
                                rset=self.cw_rset, view=view,
                                context='header-top-right')
-        # Anything placed here will be hidden on mobile devices and
-        # small screens in general. It can be show by clicking the button
-        # above this comment.
-        self.w(u'<div class="nav-collapse">'
-               u'<ul class="nav">')
-        for component in components_top_left:
-            component.render(w=self.w)
-        self.w(u'</ul>'
-               u'<ul class="nav pull-right">')
-        for component in components_top_right:
-            component.render(w=self.w)
-        self.w(u'</ul>'
-               u'</div>')
+        if components_top_right:
+            self.w(u'<ul class="nav pull-right">')
+            for component in components_top_right:
+                component.render(w=self.w)
+            self.w(u'</ul>')
+
+    def header_bottom(self, view, ctxcomponents):
+        """render components assigned to the bottom place of the header
+        """
         components_header_left = ctxcomponents.poss_visible_objects(self._cw,
                                  rset=self.cw_rset, view=view,
                                  context='header-left')
         components_header_main = ctxcomponents.poss_visible_objects(self._cw,
                                  rset=self.cw_rset,
                                  view=view, context='header-main')
+        #XXX use header right or don't use it ???
         components_header_right = ctxcomponents.poss_visible_objects(self._cw,
                                   rset=self.cw_rset,
                                   view=view, context='header-right')
-        # get seach box component
-        #search_box = ctxcomponents.select('search_box', self._cw)
-        self.w(u'</div>'
-               u'</div>'
-               u'</div>'
-               u'<div class="container">'
+        self.w(u'<div class="container">'
                u'<div class="row">'
                u'<div class="span2">')
         for component in components_header_left:
             component.render(w=self.w)
         self.w(u'</div>'
-               u'<div class="span8">')
+               u'<div class="span10">')
         for component in components_header_main:
             component.render(w=self.w)
         self.w(u'</div>'
-               u'<div class="span2">')
-        for component in components_header_right:
+               u'</div>'
+               u'</div>')
+
+    def page_header(self, view):
+        """display the components assigned to the header of the application
+        """
+        ctxcomponents =  self._cw.vreg['ctxcomponents']
+        components_top_dont_hide = ctxcomponents.poss_visible_objects(self._cw,
+                                   rset=self.cw_rset, view=view,
+                                   context='header-top-left-dont-hide')
+        self.w(u'<header id="pageheader">'
+               u'<div class="navbar">'
+               u'<div class="navbar-inner">'
+               u'<div class="container" style="width: auto;">'
+               u'<a class="btn btn-navbar" data-toggle="collapse"'
+               u'   data-target=".nav-collapse">'
+               u'<span class="icon-bar"></span>'
+               u'<span class="icon-bar"></span>'
+               u'<span class="icon-bar"></span>'
+               u'</a>')
+        # components here don't hide/collapse in smaller screens,
+        # like tablets or smartphones
+        for component in components_top_dont_hide:
             component.render(w=self.w)
-        self.w(u'</div>'
-               u'</div>'
-               u'</div>'
-               u'</header>')
+        self.w(u'<div class="nav-collapse">')
+        self.header_top_left(view, ctxcomponents)
+        self.header_top_right(view, ctxcomponents)
+        self.w(u'</div>'# nav-collapse
+               u'</div>'# container
+               u'</div>'# navbar-inner
+               u'</div>')# navbar
+        # display bottom header
+        self.header_bottom(view, ctxcomponents)
+        self.w(u'</header>')
         # close header
         # get login form to display it as modal window
         login = self._cw.vreg['forms'].select('logform', self._cw)

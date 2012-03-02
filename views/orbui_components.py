@@ -55,21 +55,28 @@ class ApplLogoOrbui(ApplLogo):
 class SearchBoxOrbui(SearchBox):
     """display a box with a simple search form
     """
-    context = _('header-right')
-    formdef = u"""<form action="%s" class="form-search">
-                  <input id="norql" type="text" accesskey="q" tabindex="%s"
-                         title="search text" value="%s" name="rql"
-                         class="input-medium search-query"/>
-                 <input type="hidden" name="__fromsearchbox" value="1" />
-                 <input type="hidden" name="subvid" value="tsearch" />
-                 <!--input tabindex="%s" type="submit" id="rqlboxsubmit"
-                 class="rqlsubmit" value="" /-->
-                 </form>"""
+    context = _('header-top-right')
+    # make search box appear as first element (left to right) in navbar
+    order = -100
+    formdef = (u'<li>'
+               u'<form action="%s" class="navbar-search pull-left">'
+               u'<input id="norql" type="text" accesskey="q" tabindex="%s"'
+               u'       title="search text" value="%s" name="rql"'
+               u'       class="search-query span2" placeholder="Search"/>'
+               u'       <input type="hidden" name="__fromsearchbox" '
+               u'              value="1" />'
+               u'       <input type="hidden" name="subvid" '
+               u'value="tsearch" />'
+               #FIXME this commented html code is left because the string
+               #replacement would fail unless the render method is modified
+               #also
+               u'<!--input tabindex="%s" type="submit" id="rqlboxsubmit"'
+               u'    class="rqlsubmit" value="" /-->'
+               u'</form></li>')
 
     def render(self, w):
         """overwrites SearchBox component for orbui template
         """
-        #FIXME in iceweasel display 2 more input boxes... weird.
         # Don't display search box title, just display the search box body
         super(SearchBoxOrbui, self).render_body(w)
 
@@ -395,7 +402,15 @@ class EntityCompositeFormRendererOrbui(EntityCompositeFormRenderer):
 class ApplicationNameOrbui(ApplicationName):
     """overwrites ApplicationName component for orbui template
     """
-    context = _('header-main')
+    context = _('header-top-left-dont-hide')
+
+    # XXX support kwargs for compat with other components
+    # which gets the view as argument
+    def render(self, w, **kwargs):
+        title = self._cw.property_value('ui.site-title')
+        if title:
+            w(u'<a class="brand" href="%s">%s</a>' % (self._cw.base_url(),
+                                                      xml_escape(title)))
 
 
 class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
@@ -403,8 +418,8 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
     """
     context = _('header-main')
 
-    # XXX support kwargs for compat with other components which gets the view as
-    # argument
+    # XXX support kwargs for compat with other components which gets
+    # the view as argument
     def render(self, w, **kwargs):
         try:
             entity = self.cw_extra_kwargs['entity']
