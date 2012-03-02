@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# enable with statement for python < 2.6
+from __future__ import with_statement
+
 from logilab.mtconverter import xml_escape
 from cubicweb.web.views.boxes import (SearchBox, EditBox, ContextualBoxLayout,
                                       ContextFreeBoxLayout)
@@ -39,8 +42,6 @@ from cubicweb.web import formwidgets as fw, component, htmlwidgets
 from cubicweb.selectors import non_final_entity
 from cubicweb.uilib import toggle_action
 from cubicweb import tags, uilib
-# enable with statement for python < 2.6
-from __future__ import with_statement
 
 class ApplLogoOrbui(ApplLogo):
     """build the instance logo, usually displayed in the header
