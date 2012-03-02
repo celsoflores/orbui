@@ -150,7 +150,10 @@ form#entityForm legend{
 }
 /* Input Text facet fix */
 .facet input{
-    width:100%;
+    width: 90%;
+}
+.facet select {
+    width: 40%;
 }
 input.input-text, textarea{
     width:75%;
@@ -187,7 +190,6 @@ select{
 /*
 ----- BOXES -----
                    */
-
 h3.boxTitle{
     border-bottom:#E5E5E5 solid 1px;
     margin:18px 0;
