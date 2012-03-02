@@ -32,6 +32,7 @@ from cubicweb.web.views.formrenderers import field_label, checkbox
 from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              ibreadcrumb_adapter)
 from cubicweb.web.views.navigation import NextPrevNavigationComponent
+from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
@@ -467,6 +468,9 @@ class ContextFreeBoxLayoutOrbui(ContextFreeBoxLayout):
             # or effect will be made with CSS
             w(u'</div></div>\n')
 
+class FilterBoxOrbui(FilterBox):
+    bk_linkbox_template = u'<p class="btn btn-small">%s</p>'
+
 class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
     """overwrites navigation Next and Previous on single entities
     """
@@ -514,5 +518,6 @@ def registration_callback(vreg):
                               ContextualBoxLayout)
     vreg.register_and_replace(ContextFreeBoxLayoutOrbui,
                               ContextFreeBoxLayout)
+    vreg.register_and_replace(FilterBoxOrbui, FilterBox)
     vreg.register_and_replace(NextPrevNavigationComponentOrbui,
                               NextPrevNavigationComponent)
