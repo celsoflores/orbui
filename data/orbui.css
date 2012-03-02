@@ -149,14 +149,34 @@ form#entityForm legend{
     color:#aaa;
 }
 /* Input Text facet fix */
+.facet_filterbox h3.boxTitle{
+    margin:0 0 9px 0;
+}
 .facet input{
     width: 90%;
 }
 .facet select {
     width: 40%;
+    height: 20px;
+    padding-left:12px;
+    margin-bottom:9px;
 }
 a#facetBkLink{
     text-decoration:none;
+}
+.facetTitle{
+    font-weight:bold;
+}
+.facetCheckBox{
+    background: url("img/facet_unselected.png") 0% 50% no-repeat;
+    padding-left:20px;
+}
+.facetValueSelected{
+    background: url("img/facet_selected.png") 0% 50% no-repeat;
+    font-weight:bold;
+}
+.facetValueDisabled{
+    font-style:italic;
 }
 input.input-text, textarea{
     width:75%;
