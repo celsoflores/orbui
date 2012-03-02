@@ -497,6 +497,15 @@ class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
+    orbui_components = (ApplLogoOrbui, SearchBoxOrbui, AnonUserStatusLinkOrbui,
+                        CookieLoginComponentOrbui, AuthenticatedUserStatusOrbui,
+                        LogFormOrbui, BookmarksBoxOrbui, EditBoxOrbui,
+                        ApplicationMessageOrbui, JSonControllerOrbui,
+                        TableLayoutOrbui, EntityCompositeFormRendererOrbui,
+                        ApplicationNameOrbui, BreadCrumbEntityVComponentOrbui,
+                        ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
+                        FilterBoxOrbui, NextPrevNavigationComponentOrbui)
+    vreg.register_all(globals().values(), __name__, orbui_components)
     vreg.register_and_replace(ApplLogoOrbui, ApplLogo)
     vreg.register_and_replace(SearchBoxOrbui, SearchBox)
     vreg.register_and_replace(AnonUserStatusLinkOrbui, AnonUserStatusLink)
