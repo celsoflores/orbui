@@ -15,7 +15,8 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from logilab.mtconverter import xml_escape
-from cubicweb.web.views.boxes import SearchBox, EditBox
+from cubicweb.web.views.boxes import (SearchBox, EditBox, ContextualBoxLayout,
+                                      ContextFreeBoxLayout)
 from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
                                                AnonUserStatusLink,
                                                AuthenticatedUserStatus,
@@ -32,7 +33,7 @@ from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              ibreadcrumb_adapter)
 from cubicweb.web.views.navigation import NextPrevNavigationComponent
 from cubicweb.entity import Entity
-from cubicweb.utils import UStringIO
+from cubicweb.utils import UStringIO, wrap_on_write
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
 from cubicweb.selectors import non_final_entity
 from cubicweb.uilib import toggle_action
@@ -429,6 +430,43 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
             w(u'<li><span class="divider">%s</span></li>' % self.separator)
             self.wpath_part(w, parent, contextentity, i == len(path) - 1)
 
+
+class ContextualBoxLayoutOrbui(ContextualBoxLayout):
+    #__select__ = match_context('incontext', 'left', 'right') & contextual()
+    # predefined class in cubicweb.css: contextualBox | contextFreeBox
+    cssclass = 'contextualBox'
+
+    def render(self, w):
+        if self.init_rendering():
+            view = self.cw_extra_kwargs['view']
+            w(u'<div class="%s %s" id="%s">' % (self.cssclass, view.cssclass,
+                                                view.domid))
+            with wrap_on_write(w, u'<h3 class="boxTitle">',
+                               u'</h3>') as wow:
+                view.render_title(wow)
+            w(u'<div class="boxBody">')
+            view.render_body(w)
+            # We dissapear the boxFooter CSS place holder, as shadows
+            # or effect will be made with CSS
+            w(u'</div></div>\n')
+
+
+class ContextFreeBoxLayoutOrbui(ContextFreeBoxLayout):
+    cssclass = 'contextFreeBox'
+    def render(self, w):
+        if self.init_rendering():
+            view = self.cw_extra_kwargs['view']
+            w(u'<div class="%s %s" id="%s">' % (self.cssclass, view.cssclass,
+                                                view.domid))
+            with wrap_on_write(w, u'<h3 class="boxTitle">',
+                               u'</h3>') as wow:
+                view.render_title(wow)
+            w(u'<div class="boxBody">')
+            view.render_body(w)
+            # We dissapear the boxFooter CSS place holder, as shadows
+            # or effect will be made with CSS
+            w(u'</div></div>\n')
+
 class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
     """overwrites navigation Next and Previous on single entities
     """
@@ -472,5 +510,9 @@ def registration_callback(vreg):
     vreg.register_and_replace(ApplicationNameOrbui, ApplicationName)
     vreg.register_and_replace(BreadCrumbEntityVComponentOrbui,
                               BreadCrumbEntityVComponent)
+    vreg.register_and_replace(ContextualBoxLayoutOrbui,
+                              ContextualBoxLayout)
+    vreg.register_and_replace(ContextFreeBoxLayoutOrbui,
+                              ContextFreeBoxLayout)
     vreg.register_and_replace(NextPrevNavigationComponentOrbui,
                               NextPrevNavigationComponent)

@@ -4,8 +4,6 @@
 .sidebar-nav input{
     width:auto;
 }
-
-
 #header{
     padding-top:36px;
     margin-bottom:36px;
@@ -185,6 +183,15 @@ select{
     margin:0;
     padding:0;
     padding:0 6px;
+}
+/*
+----- BOXES -----
+                   */
+
+h3.boxTitle{
+    border-bottom:#E5E5E5 solid 1px;
+    margin:18px 0;
+    padding-bottom:9px;
 }
 /*
 ----- PAGINATION -----
