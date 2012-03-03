@@ -33,6 +33,7 @@ from cubicweb.web.views.formrenderers import (FormRenderer,
                                               EntityCompositeFormRenderer)
 from cubicweb.web.views.formrenderers import field_label, checkbox
 from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
+                                             BreadCrumbAnyRSetVComponent,
                                              ibreadcrumb_adapter)
 from cubicweb.web.views.navigation import NextPrevNavigationComponent
 from cubicweb.web.views.facets import FilterBox
@@ -449,6 +450,20 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
             self.wpath_part(w, parent, contextentity, i == len(path) - 1)
 
 
+class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent):
+    """overwrites BreadCrumbAnyRSetVComponentOrbui component for orbui template
+    """
+    context = _('header-main')
+    # XXX support kwargs for compat with other components which gets the view as
+    # argument
+    def render(self, w, **kwargs):
+        w(u'<ul class="breadcrumb">')
+        if self.first_separator:
+            w(u'<li><span class="divider">%s</span></li>' % self.separator)
+        w(u'<li>%s</li>' % self._cw._('search'))
+        w(u'</ul>')
+
+
 class ContextualBoxLayoutOrbui(ContextualBoxLayout):
     #__select__ = match_context('incontext', 'left', 'right') & contextual()
     # predefined class in cubicweb.css: contextualBox | contextFreeBox
@@ -520,6 +535,7 @@ def registration_callback(vreg):
                         ApplicationMessageOrbui, JSonControllerOrbui,
                         TableLayoutOrbui, EntityCompositeFormRendererOrbui,
                         ApplicationNameOrbui, BreadCrumbEntityVComponentOrbui,
+                        BreadCrumbAnyRSetVComponentOrbui,
                         ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
                         FilterBoxOrbui, NextPrevNavigationComponentOrbui)
     vreg.register_all(globals().values(), __name__, orbui_components)
@@ -540,6 +556,8 @@ def registration_callback(vreg):
     vreg.register_and_replace(ApplicationNameOrbui, ApplicationName)
     vreg.register_and_replace(BreadCrumbEntityVComponentOrbui,
                               BreadCrumbEntityVComponent)
+    vreg.register_and_replace(BreadCrumbAnyRSetVComponentOrbui,
+                              BreadCrumbAnyRSetVComponent)
     vreg.register_and_replace(ContextualBoxLayoutOrbui,
                               ContextualBoxLayout)
     vreg.register_and_replace(ContextFreeBoxLayoutOrbui,
