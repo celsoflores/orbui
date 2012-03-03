@@ -44,7 +44,6 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.wview('htmlheader', rset=self.cw_rset)
         self.w(u'<body>')
         self.page_header(view)
-        self.page_toolbar(view)
         self.page_main(view)
         self.page_footer(view)
         self.w(u'</body>')
@@ -148,9 +147,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         """display contextual toolbar
         """
         ctxcomponents = self._cw.vreg['ctxcomponents']
-        self.w(u'<nav id="toolbar" class="container">'
-               u'<div class="row">'
-               u'<div class="span12">')
+        self.w(u'<nav id="toolbar">'
+               u'<div class="row">')
         components_toolbar = ctxcomponents.poss_visible_objects(self._cw,
                              rset=self.cw_rset,
                              view=view, context='main-toolbar')
@@ -162,7 +160,6 @@ class TheMainTemplateOrbui(TheMainTemplate):
         # writes ctxcomponents for this element
         #self.wview('contentheader', rset=self.cw_rset, view=view)
         self.w(u'</div>'
-               u'</div>'
                u'</nav>')
 
     def page_main(self, view):
@@ -183,6 +180,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<div class="container">'
                u'<div class="row">'
                u'<div class="span%i pull-right" id="pageContent">' % columns)
+        # display toolbar components
+        self.page_toolbar(view)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
@@ -261,7 +260,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         boxes = list(self._cw.vreg['ctxcomponents'].poss_visible_objects(
                 self._cw, rset=self.cw_rset, view=view, context=context))
         if boxes:
-            self.w(u'<aside class="span3">'
+            self.w(u'<aside id="aside-main" class="span3">'
                    u'<div class="well">'
                    u'<div class="navboxes">')
             for box in boxes:

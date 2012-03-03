@@ -45,44 +45,25 @@ nav#toolbar .row {
 	-moz-border-radius-bottomleft: 6px;
 	-webkit-border-radius: 0px 0px 6px 6px;
 	border-radius: 0px 0px 6px 6px;
-	padding-top: 6px;
-	padding-bottom: 6px;
 	margin-top: -1px;
 	border: 1px solid #CCC;
 	border-top: 0px;
 }
-
-	nav#toolbar ul.nav {
-		margin-bottom: 0px;
-	}
-
-
-
-
-
+nav#toolbar ul.nav {
+    margin-bottom: 0px;
+}
 /* MAIN SECTION STYLES */
 /*-----------------------------------*/
-
-
-section#main {
-	padding-top: 24px;
-}
-
 @media screen and (min-width: 768px) {
 	section#main .pull-right {
 		float: right;
 	}
 }
-
-
-
-
-
-
-
-
-
-
+/* ASIDE STYLES */
+/*-----------------------------------*/
+#aside-main{
+    padding-top: 50px;
+}
 /* FOOTER STYLES */
 /*-----------------------------------*/
 
