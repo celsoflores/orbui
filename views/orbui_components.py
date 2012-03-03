@@ -34,6 +34,7 @@ from cubicweb.web.views.formrenderers import (FormRenderer,
 from cubicweb.web.views.formrenderers import field_label, checkbox
 from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              BreadCrumbAnyRSetVComponent,
+                                             BreadCrumbETypeVComponent,
                                              ibreadcrumb_adapter)
 from cubicweb.web.views.navigation import NextPrevNavigationComponent
 from cubicweb.web.views.facets import FilterBox
@@ -450,10 +451,10 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
             self.wpath_part(w, parent, contextentity, i == len(path) - 1)
 
 
-class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent):
-    """overwrites BreadCrumbAnyRSetVComponentOrbui component for orbui template
+class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent,
+                                       BreadCrumbEntityVComponentOrbui):
+    """overwrites BreadCrumbAnyRSetVComponent component for orbui template
     """
-    context = _('header-main')
     # XXX support kwargs for compat with other components which gets the view as
     # argument
     def render(self, w, **kwargs):
@@ -462,6 +463,12 @@ class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent):
             w(u'<li><span class="divider">%s</span></li>' % self.separator)
         w(u'<li>%s</li>' % self._cw._('search'))
         w(u'</ul>')
+
+
+class BreadCrumbETypeVComponentOrbui(BreadCrumbETypeVComponent,
+                                     BreadCrumbEntityVComponentOrbui):
+    """overwrites BreadCrumbETypeVComponent component for orbui template
+    """
 
 
 class ContextualBoxLayoutOrbui(ContextualBoxLayout):
@@ -536,6 +543,7 @@ def registration_callback(vreg):
                         TableLayoutOrbui, EntityCompositeFormRendererOrbui,
                         ApplicationNameOrbui, BreadCrumbEntityVComponentOrbui,
                         BreadCrumbAnyRSetVComponentOrbui,
+                        BreadCrumbETypeVComponentOrbui,
                         ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
                         FilterBoxOrbui, NextPrevNavigationComponentOrbui)
     vreg.register_all(globals().values(), __name__, orbui_components)
@@ -558,6 +566,8 @@ def registration_callback(vreg):
                               BreadCrumbEntityVComponent)
     vreg.register_and_replace(BreadCrumbAnyRSetVComponentOrbui,
                               BreadCrumbAnyRSetVComponent)
+    vreg.register_and_replace(BreadCrumbETypeVComponentOrbui,
+                              BreadCrumbETypeVComponent)
     vreg.register_and_replace(ContextualBoxLayoutOrbui,
                               ContextualBoxLayout)
     vreg.register_and_replace(ContextFreeBoxLayoutOrbui,
