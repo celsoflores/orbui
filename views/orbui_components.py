@@ -37,12 +37,13 @@ from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              BreadCrumbETypeVComponent,
                                              ibreadcrumb_adapter)
 from cubicweb.web.views.navigation import (NextPrevNavigationComponent,
-                                          SortedNavigation)
+                                          SortedNavigation,
+                                          PageNavigationSelect)
 from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
-from cubicweb.selectors import non_final_entity
+from cubicweb.selectors import non_final_entity, paginated_rset
 from cubicweb.uilib import toggle_action
 from cubicweb import tags, uilib
 
@@ -575,6 +576,59 @@ class SortedNavigationOrbui(SortedNavigation):
         self.w(u'</ul>')
         self.w(u'</div>')
 
+
+class PageNavigationSelectOrbui(PageNavigationSelect):
+    """This pagination component displays a result-set by page as
+    :class:`PageNavigation` but in a <select>, which is better when there are a
+    lot of results.
+
+    By default it will be selected when there are more than 4 pages to be
+    displayed.
+    """
+    __select__ = paginated_rset(4)
+
+    page_link_templ = u'<option value="%s" title="%s">%s</option>'
+    selected_page_link_templ = u'<option value="%s" selected="selected" title="%s">%s</option>'
+
+    @property
+    def no_previous_page_link(self):
+        return (u'<li><a><img src="%s" alt="%s"/></a></li>' %
+                (self.prev_icon_url, self._cw._('there is no previous page')))
+
+    @property
+    def no_next_page_link(self):
+        return (u'<a><img src="%s" alt="%s" class="prevnext_nogo"/></a>' %
+                (self.next_icon_url, self._cw._('there is no next page')))
+
+    @property
+    def no_content_prev_link(self):
+        return (u'<img src="%s" alt="%s" class="prevnext"/>' % (
+                (self.prev_icon_url, self._cw._('no content prev link'))))
+
+    @property
+    def no_content_next_link(self):
+        return (u'<img src="%s" alt="%s" class="prevnext"/>' %
+                (self.next_icon_url, self._cw._('no content next link')))
+
+    def call(self):
+        params = dict(self._cw.form)
+        self.clean_params(params)
+        basepath = self._cw.relative_path(includeparams=False)
+        w = self.w
+        w(u'<div class="pagination">')
+        w(u'<ul>')
+        self.w(u'<li>%s</li>' % self.previous_link(basepath, params))
+        w(u'<li><a>')
+        w(u'<select onchange="javascript: document.location=this.options[this.selectedIndex].value">')
+        for option in self.iter_page_links(basepath, params):
+            w(option)
+        w(u'</select>')
+        w(u'</a></li>')
+        w(u'%s' % self.next_link(basepath, params))
+        w(u'</ul>')
+        w(u'</div>')
+
+
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
@@ -588,7 +642,7 @@ def registration_callback(vreg):
                         BreadCrumbETypeVComponentOrbui,
                         ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
                         FilterBoxOrbui, NextPrevNavigationComponentOrbui,
-                        SortedNavigationOrbui)
+                        SortedNavigationOrbui, PageNavigationSelectOrbui)
     vreg.register_all(globals().values(), __name__, orbui_components)
     vreg.register_and_replace(ApplLogoOrbui, ApplLogo)
     vreg.register_and_replace(SearchBoxOrbui, SearchBox)
@@ -619,3 +673,4 @@ def registration_callback(vreg):
     vreg.register_and_replace(NextPrevNavigationComponentOrbui,
                               NextPrevNavigationComponent)
     vreg.register_and_replace(SortedNavigationOrbui, SortedNavigation)
+    vreg.register_and_replace(PageNavigationSelectOrbui, PageNavigationSelect)
