@@ -36,7 +36,8 @@ from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              BreadCrumbAnyRSetVComponent,
                                              BreadCrumbETypeVComponent,
                                              ibreadcrumb_adapter)
-from cubicweb.web.views.navigation import NextPrevNavigationComponent
+from cubicweb.web.views.navigation import (NextPrevNavigationComponent,
+                                          SortedNavigation)
 from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
@@ -533,6 +534,47 @@ class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
               type, xml_escape(url)))
 
 
+class SortedNavigationOrbui(SortedNavigation):
+    """The default pagination component: display link to pages where each pages
+    is identified by the item number of its first and last elements.
+    """
+    page_link_templ = u'<a href="%s" title="%s">%s</a>'
+    selected_page_link_templ = u'<li class="active"><a href="%s" title="%s">%s</a></li>'
+    previous_page_link_templ = next_page_link_templ = page_link_templ
+
+    @property
+    def no_previous_page_link(self):
+        return (u'<li><a><img src="%s" alt="%s"/></a></li>' %
+                (self.prev_icon_url, self._cw._('there is no previous page')))
+
+    @property
+    def no_next_page_link(self):
+        return (u'<a><img src="%s" alt="%s" class="prevnext_nogo"/></a>' %
+                (self.next_icon_url, self._cw._('there is no next page')))
+
+    @property
+    def no_content_prev_link(self):
+        return (u'<img src="%s" alt="%s" class="prevnext"/>' % (
+                (self.prev_icon_url, self._cw._('no content prev link'))))
+
+    @property
+    def no_content_next_link(self):
+        return (u'<img src="%s" alt="%s" class="prevnext"/>' %
+                (self.next_icon_url, self._cw._('no content next link')))
+
+    def write_links(self, basepath, params, blocklist):
+        """Return HTML for the whole navigation: `blocklist` is a list of HTML
+        snippets for each page, `basepath` and `params` will be necessary to
+        build previous/next links.
+        """
+        self.w(u'<div class="pagination">')
+        self.w(u'<ul>')
+        self.w(u'<li>%s</li>' % self.previous_link(basepath, params))
+        self.w(u'%s' % u''.join(blocklist))
+        self.w(u'<li>%s</li>' % self.next_link(basepath, params))
+        self.w(u'</ul>')
+        self.w(u'</div>')
+
 def registration_callback(vreg):
     """register new elements for cw_minimum_css
     """
@@ -545,7 +587,8 @@ def registration_callback(vreg):
                         BreadCrumbAnyRSetVComponentOrbui,
                         BreadCrumbETypeVComponentOrbui,
                         ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
-                        FilterBoxOrbui, NextPrevNavigationComponentOrbui)
+                        FilterBoxOrbui, NextPrevNavigationComponentOrbui,
+                        SortedNavigationOrbui)
     vreg.register_all(globals().values(), __name__, orbui_components)
     vreg.register_and_replace(ApplLogoOrbui, ApplLogo)
     vreg.register_and_replace(SearchBoxOrbui, SearchBox)
@@ -575,3 +618,4 @@ def registration_callback(vreg):
     vreg.register_and_replace(FilterBoxOrbui, FilterBox)
     vreg.register_and_replace(NextPrevNavigationComponentOrbui,
                               NextPrevNavigationComponent)
+    vreg.register_and_replace(SortedNavigationOrbui, SortedNavigation)
