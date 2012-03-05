@@ -519,18 +519,20 @@ class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
     # Should be better done, but this works
     def render_body(self, w):
         w(u'<div class="prevnext row">')
+        w(u'<ul class="pager">')
         self.prevnext(w)
+        w(u'</ul>')
         w(u'</div>')
-        w(u'<div class="clear"></div>')
+        #w(u'<div class="clear"></div>')
 
     def prevnext_div(self, w, type, cssclass, url, title, content):
         cssclass = u'span6'
 
-        w(u'<div class="%s">' % cssclass)
+        w(u'<li class="%s">' % cssclass)
         w(u'<a href="%s" title="%s">%s</a>' % (xml_escape(url),
                                                xml_escape(title),
                                                content))
-        w(u'</div>')
+        w(u'</li>')
         self._cw.html_headers.add_raw('<link rel="%s" href="%s" />' % (
               type, xml_escape(url)))
 
