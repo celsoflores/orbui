@@ -274,33 +274,49 @@ class EditBoxOrbui(component.CtxComponent):
         actions = self._cw.vreg['actions'].possible_actions(self._cw, cw_rset,
                   **self.cw_extra_kwargs)
         other_menu = self._get_menu('moreactions', _('more actions'))
-
-        for category, defaultmenu in (('mainactions', self),
-                                      ('moreactions', other_menu),
-                                      ('addrelated', None)):
+        for category in ('mainactions', 'moreactions','addrelated'):
+            menu_options = self.menu_options(actions, category)
             if actions.get(category, ()):
-                w(u'<li class="dropdown">'
-                  u'<a class="dropdown-toggle" data-toggle="dropdown" href="#">'
-                  u'%s'
-                  u'<b class="caret"></b>'
-                  u'</a>'
-                  u'<ul class="dropdown-menu">' % self._cw._(category))
-                for action in actions.get(category, ()):
-                    if action.submenu:
-                        menu = self._get_menu(action.submenu)
-                        w(u'<li class="divider"></li>')
-                        w(u'<li><strong>%s</strong></li>' % menu.label)
-                        for subaction in action.actual_actions():
-                            w(u'<li><a href="%s">%s</a></li>' %
-                              (xml_escape(subaction.url()),
-                               self._cw._(subaction.title)))
-                        w(u'<li class="divider"></li>')
-                    else:
-                        menu = defaultmenu
-                        w(u'<li><a href="%s">%s</a></li>' %
-                          (xml_escape(action.url()), self._cw._(action.title)))
-                w(u'</ul>'
-                  u'</li>')
+                menu_actions = actions.get(category, ())
+                # if the menu has just one option display it as a simple link
+                if len(menu_actions) == 1:
+                    w(u'<li><a href="%(url)s">%(action)s</a></li>' %
+                      {'url': menu_actions[0].url(),
+                       'action': menu_actions[0].title})
+                elif len(menu_actions) > 1:
+                    w(u'<li class="dropdown">'
+                      u'<a class="dropdown-toggle" data-toggle="dropdown" '
+                      u'href="#">%s'
+                      u'<b class="caret"></b>'
+                      u'</a>'
+                      u'<ul class="dropdown-menu">' % self._cw._(category))
+                    w(menu_options)
+                    w(u'</ul>'
+                      u'</li>')
+
+    def menu_options(self, actions, category):
+        """return html code or an empty string to display
+        the toolbar menus of certain category given.
+        """
+        menu_label = u''
+        menu_list = []
+        for action in actions.get(category, ()):
+            if action.submenu:
+                menu = self._get_menu(action.submenu)
+                if menu_label != menu.label:
+                    menu_label = menu.label
+                    menu_list.append(u'<li class="divider"></li>')
+                    menu_list.append(u'<li><strong>%s</strong></li>' %
+                                     menu.label)
+                for subaction in action.actual_actions():
+                    menu_list.append(u'<li><a href="%s">%s</a></li>' %
+                                        (xml_escape(subaction.url()),
+                                         self._cw._(subaction.title)))
+            else:
+                menu_list.append(u'<li><a href="%s">%s</a></li>' %
+                                    (xml_escape(action.url()),
+                                     self._cw._(action.title)))
+        return u''.join(menu_list)
 
 
 class ApplicationMessageOrbui(ApplicationMessage):
