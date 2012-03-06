@@ -108,7 +108,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<header id="pageheader">'
                u'<div class="navbar">'
                u'<div class="navbar-inner">'
-               u'<div class="container" style="width: auto;">'
+               u'<div class="container">'
                u'<a class="btn btn-navbar" data-toggle="collapse"'
                u'   data-target=".nav-collapse">'
                u'<span class="icon-bar"></span>'
