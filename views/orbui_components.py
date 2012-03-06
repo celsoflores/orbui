@@ -453,7 +453,8 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
         if path:
             w(u'<ul class="breadcrumb">')
             if self.first_separator:
-                w(u'<li><span class="divider">%s</span></li>' % self.separator)
+                #w(u'<li><span class="divider">%s</span></li>' % self.separator)
+                w(u'')
             self.render_breadcrumbs(w, entity, path)
             w(u'</ul>')
 
@@ -478,7 +479,8 @@ class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent,
     def render(self, w, **kwargs):
         w(u'<ul class="breadcrumb">')
         if self.first_separator:
-            w(u'<li><span class="divider">%s</span></li>' % self.separator)
+            #w(u'<li><span class="divider">%s</span></li>' % self.separator)
+            w(u'')
         w(u'<li>%s</li>' % self._cw._('search'))
         w(u'</ul>')
 
