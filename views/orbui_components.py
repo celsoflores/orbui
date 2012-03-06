@@ -281,7 +281,7 @@ class EditBoxOrbui(component.CtxComponent):
                 # if the menu has just one option display it as a simple link
                 if len(menu_actions) == 1:
                     w(u'<li><a href="%(url)s">%(action)s</a></li>' %
-                      {'url': menu_actions[0].url(),
+                      {'url': xml_escape(menu_actions[0].url()),
                        'action': menu_actions[0].title})
                 elif len(menu_actions) > 1:
                     w(u'<li class="dropdown">'
