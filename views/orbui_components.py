@@ -443,6 +443,8 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
     # XXX support kwargs for compat with other components which gets
     # the view as argument
     def render(self, w, **kwargs):
+        #XXX we do not need first sepator for this breadcrumb style
+        self.first_separator = False
         try:
             entity = self.cw_extra_kwargs['entity']
         except KeyError:
@@ -453,8 +455,7 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
         if path:
             w(u'<ul class="breadcrumb">')
             if self.first_separator:
-                #w(u'<li><span class="divider">%s</span></li>' % self.separator)
-                w(u'')
+                w(u'<li><span class="divider">%s</span></li>' % self.separator)
             self.render_breadcrumbs(w, entity, path)
             w(u'</ul>')
 
