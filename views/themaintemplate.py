@@ -44,6 +44,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.wview('htmlheader', rset=self.cw_rset)
         self.w(u'<body>')
         self.page_header(view)
+        self.page_toolbar(view)
         self.page_main(view)
         self.page_footer(view)
         self.w(u'</body>')
@@ -147,7 +148,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         """display contextual toolbar
         """
         ctxcomponents = self._cw.vreg['ctxcomponents']
-        self.w(u'<nav id="toolbar">'
+        self.w(u'<nav id="toolbar" class="container">'
                u'<div class="row">')
         components_toolbar = ctxcomponents.poss_visible_objects(self._cw,
                              rset=self.cw_rset,
@@ -180,8 +181,6 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<div class="container">'
                u'<div class="row">'
                u'<div class="span%i pull-right" id="pageContent">' % columns)
-        # display toolbar components
-        self.page_toolbar(view)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
