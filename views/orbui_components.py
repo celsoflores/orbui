@@ -478,10 +478,11 @@ class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent,
     # XXX support kwargs for compat with other components which gets the view as
     # argument
     def render(self, w, **kwargs):
+        #XXX we do not need first sepator for this breadcrumb style
+        self.first_separator = False
         w(u'<ul class="breadcrumb">')
         if self.first_separator:
-            #w(u'<li><span class="divider">%s</span></li>' % self.separator)
-            w(u'')
+            w(u'<li><span class="divider">%s</span></li>' % self.separator)
         w(u'<li>%s</li>' % self._cw._('search'))
         w(u'</ul>')
 
