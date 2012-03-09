@@ -598,6 +598,63 @@ class SortedNavigationOrbui(SortedNavigation):
         self.w(u'</ul>')
         self.w(u'</div>')
 
+def do_paginate(view, rset=None, w=None, show_all_option=True, page_size=None):
+    """write pages index in w stream (default to view.w) and then limit the
+    result set (default to view.rset) to the currently displayed page if we're
+    not explicitly told to display everything (by setting __force_display in
+    req.form)
+    """
+    req = view._cw
+    if rset is None:
+        rset = view.cw_rset
+    if w is None:
+        w = view.w
+    nav = req.vreg['components'].select_or_none(
+        'navigation', req, rset=rset, page_size=page_size, view=view)
+    if nav:
+        if w is None:
+            w = view.w
+        if req.form.get('__force_display'):
+            # allow to come back to the paginated view
+            params = dict(req.form)
+            basepath = req.relative_path(includeparams=False)
+            del params['__force_display']
+            url = nav.page_url(basepath, params)
+            w(u'<div class="displayAllLink btn btn-small">'
+              u'<a href="%s">%s</a></div>\n'
+              % (xml_escape(url), req._('back to pagination (%s results)')
+                                  % nav.page_size))
+        else:
+            # get boundaries before component rendering
+            start, stop = nav.page_boundaries()
+            nav.render(w=w)
+            params = dict(req.form)
+            nav.clean_params(params)
+            # make a link to see them all
+            if show_all_option:
+                basepath = req.relative_path(includeparams=False)
+                params['__force_display'] = 1
+                params['__fromnavigation'] = 1
+                url = nav.page_url(basepath, params)
+                w(u'<div class="displayAllLink btn btn-small">'
+                  u'<a href="%s">%s</a></div>\n'
+                  % (xml_escape(url), req._('show %s results') % len(rset)))
+            rset.limit(offset=start, limit=stop-start, inplace=True)
+
+
+def paginate(view, show_all_option=True, w=None, page_size=None, rset=None):
+    """paginate results if the view is paginable
+    """
+    if view.paginable:
+        do_paginate(view, rset, w, show_all_option, page_size)
+
+# monkey patch base View class to add a .paginate([...])
+# method to be called to write pages index in the view and then limit the result
+# set to the current page
+from cubicweb.view import View
+View.do_paginate = do_paginate
+View.paginate = paginate
+View.handle_pagination = False
 
 class PageNavigationSelectOrbui(PageNavigationSelect):
     """This pagination component displays a result-set by page as

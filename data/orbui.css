@@ -251,6 +251,9 @@ h3.boxTitle{
 /*
 ----- PAGINATION -----
                    */
+.pagination{
+    margin:6px 0;
+}
 .pagination img{
     vertical-align:middle;
 }
@@ -260,8 +263,8 @@ h3.boxTitle{
 .prevnext a:hover{
     text-decoration:none;
 }
-.displayAllLink{ /*This class could be a button*/
-    margin:18px 0;
+.displayAllLink{ /*This class is a button btn*/
+    margin:0;
 }
 .pagination select{
     border:0px;
