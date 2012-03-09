@@ -277,3 +277,11 @@ h3.boxTitle{
     outline-offset:0;
     outline:none;
 }
+/*
+----- Buttons -----
+                   */
+.btn-micro {
+    font-size: 10px;
+    line-height: 12px;
+    padding: 0 4px;
+}
