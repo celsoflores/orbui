@@ -52,6 +52,28 @@ nav#toolbar .row {
 nav#toolbar ul.nav {
     margin-bottom: 0px;
 }
+nav#toolbar .dropdown-menu li{
+    padding:3px 0 0 6px;
+    font-weight:bold;
+}
+nav#toolbar .pull-right .dropdown-menu {/*Fixing the Aling left Dropdown-Menu*/
+    left:auto;
+    right: 0;
+}
+nav#toolbar .pull-right .dropdown-menu:after {
+    left: auto;
+    right: 13px;
+}
+nav#toolbar .dropdown-menu:after {
+    border-bottom: 6px solid #FFFFFF;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    content: "";
+    display: inline-block;
+    left: 10px;
+    position: absolute;
+    top: -6px;
+}
 /* MAIN SECTION STYLES */
 /*-----------------------------------*/
 @media screen and (min-width: 768px) {
