@@ -709,7 +709,7 @@ class PageNavigationSelectOrbui(PageNavigationSelect):
 
 
 def registration_callback(vreg):
-    """register new elements for cw_minimum_css
+    """register new components for orbui
     """
     orbui_components = (ApplLogoOrbui, SearchBoxOrbui, AnonUserStatusLinkOrbui,
                         CookieLoginComponentOrbui, AuthenticatedUserStatusOrbui,
