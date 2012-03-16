@@ -3339,9 +3339,6 @@ a.thumbnail:hover {
 .show {
   display: block;
 }
-.invisible {
-  visibility: hidden;
-}
 .fade {
   -webkit-transition: opacity 0.15s linear;
   -moz-transition: opacity 0.15s linear;
