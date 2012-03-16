@@ -17,11 +17,13 @@
 from cubicweb.web.views.primary import PrimaryView
 
 class PrimaryViewOrbui(PrimaryView):
-    """overwrites the original PrimaryView de cubicweb to remove unnecessary tables
+    """overwrites the original PrimaryView de cubicweb to remove
+     unnecessary tables
     """
 
     def render_entity(self, entity):
-        """overwrites the original method of the primary view to display entity in orbui format
+        """overwrites the original method of the primary view to display
+         entity in orbui format
         """
         self.render_entity_toolbox(entity)
         self.render_entity_title(entity)
@@ -34,8 +36,8 @@ class PrimaryViewOrbui(PrimaryView):
         self.w(u'<div class="well row-fluid">'
                u'<div class="span9">')
         if hasattr(self, 'render_entity_summary'):
-            warn('[3.10] render_entity_summary method is deprecated (%s)' % self,
-                 DeprecationWarning)
+            warn('[3.10] render_entity_summary method is deprecated (%s)' %
+                 self, DeprecationWarning)
             self.render_entity_summary(entity) # pylint: disable=E1101
         summary = self.summary(entity)
         if summary:
