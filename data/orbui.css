@@ -125,9 +125,6 @@ th {
     padding:12px;
     text-align:right;
 }
-form label{
-    text-align:right;
-}
 table.attributeForm label.required {
   background: url("required.png") 100% 50% no-repeat;
   padding-right:8px;
