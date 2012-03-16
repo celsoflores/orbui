@@ -30,7 +30,7 @@ header#pageheader {
 }
 /* CONTEXTUAL TOOLBAR STYLES */
 /*-----------------------------------*/
-nav#toolbar .row {
+nav#toolbar .row .span12{
     background: #f1f1f1; /* Old browsers */
     background: -moz-linear-gradient(top, #f1f1f1 0%, #e0e0e0 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1f1f1), color-stop(100%,#e0e0e0)); /* Chrome,Safari4+ */

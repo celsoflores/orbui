@@ -149,7 +149,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         """
         ctxcomponents = self._cw.vreg['ctxcomponents']
         self.w(u'<nav id="toolbar" class="container">'
-               u'<div class="row">')
+               u'<div class="row">'
+               u'<div class="span12">')
         components_toolbar = ctxcomponents.poss_visible_objects(self._cw,
                              rset=self.cw_rset,
                              view=view, context='main-toolbar')
@@ -161,6 +162,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         # writes ctxcomponents for this element
         #self.wview('contentheader', rset=self.cw_rset, view=view)
         self.w(u'</div>'
+               u'</div>'
                u'</nav>')
 
     def page_main(self, view):
