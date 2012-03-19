@@ -334,12 +334,10 @@ class ApplicationMessageOrbui(ApplicationMessage):
                 msgs.append(reqmsg)
         else:
             msgs = [msg]
-        self.w(u'<div id="appMsg" onclick="%s" class="%s">' %
-               (toggle_action('appMsg'), (msgs and ' ' or 'hidden')))
         for msg in msgs:
-            self.w(u'<div class="message alert alert-info"'
-                   u' id="%s">%s</div>' % (self.domid, msg))
-        self.w(u'</div>')
+            self.w(u'<div class="message alert alert-info" id="%s">'
+                   u'<a class="close" data-dismiss="alert">x</a>'
+                   u' %s</div>' % (self.domid, msg))
 
 
 class JSonControllerOrbui(JSonController):
