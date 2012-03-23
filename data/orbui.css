@@ -175,6 +175,36 @@ form#entityForm legend{
     border-bottom:1px solid #ddd;
     color:#aaa;
 }
+/* Primary View */
+.primary_entities div.row-fluid{
+    border-bottom:1px dotted #cecece;
+    margin-bottom: 9px;
+}
+.primary_entities div.row-fluid:last-child{
+    border:0;
+    margin:0;
+}
+.editableFieldValue:hover{
+    opacity:.8;
+}
+.primary_entities li span p{
+    font-size: 15px;
+}
+.primary_entities li span .editableFieldValue *{
+    margin:0;
+    padding:0;
+}
+.primary_entities li span form{
+    margin:0;
+    padding:0;
+}
+.primary_entities li span input.input-text,
+.primary_entities li span textarea{
+    margin:9px 0;
+}
+table.buttonbar{
+    margin:0;
+}
 /* Input Text facet fix */
 .facet_filterbox h3.boxTitle{
     margin:0 0 9px 0;

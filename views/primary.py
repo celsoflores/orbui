@@ -33,7 +33,11 @@ class PrimaryViewOrbui(PrimaryView):
             boxes = self._prepare_side_boxes(entity)
         else:
             boxes = None
-        self.w(u'<div class="well row-fluid">'
+        self.w(u'<div class="container">'
+               u'<div class="row">'
+               u'<div class="span12">'
+               u'<div class="well">'
+               u'<div class="row-fluid">'
                u'<div class="span9">')
         if hasattr(self, 'render_entity_summary'):
             warn('[3.10] render_entity_summary method is deprecated (%s)' %
@@ -57,7 +61,53 @@ class PrimaryViewOrbui(PrimaryView):
         if boxes or hasattr(self, 'render_side_related'):
             self.render_side_boxes(boxes)
         self.w(u'</div>'
+               u'</div>'
+               u'</div>'
+               u'</div>'
+               u'</div>'
                u'</div>')
+
+    def render_entity_attributes(self, entity):
+        """overwrites the original method to use list instead of table
+        to display attributes.
+        """
+        display_attributes = []
+        for rschema, _, role, dispctrl in self._section_def(entity,
+                                                            'attributes'):
+            vid = dispctrl.get('vid', 'reledit')
+            if rschema.final or vid == 'reledit' or dispctrl.get('rtypevid'):
+                value = entity.view(vid, rtype=rschema.type, role=role,
+                                    initargs={'dispctrl': dispctrl})
+            else:
+                rset = self._relation_rset(entity, rschema, role, dispctrl)
+                if rset:
+                    value = self._cw.view(vid, rset)
+                else:
+                    value = None
+            if value is not None and value != '':
+                display_attributes.append( (rschema, role, dispctrl, value) )
+        if display_attributes:
+            self.w(u'<div>')
+            for rschema, role, dispctrl, value in display_attributes:
+                # pylint: disable=E1101
+                if not hasattr(self, '_render_attribute'):
+                    label = self._rel_label(entity, rschema, role, dispctrl)
+                    self.render_attribute(label, value, table=True)
+                else:
+                    warn('[3.9] _render_attribute prototype has changed and '
+                         'renamed to render_attribute, please update %s'
+                         % self.__class__, DeprecationWarning)
+                    self._render_attribute(dispctrl, rschema, value, role=role,
+                                           table=True)
+            self.w(u'</div>')
+
+    def render_attribute(self, label, value, table=False):
+        """overwrites the original method to use list instead of table
+        to display attributes.
+        """
+        self.w(u'<div class="row-fluid"> '
+            u'<h6 class="span4">%s</h6>'
+            u'<div class="span8"><p>%s</p></div></div>' % (label, value))
 
 # replace PrimaryView
 def registration_callback(vreg):
