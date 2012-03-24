@@ -144,6 +144,9 @@ table.attributeForm tr th{
 .entityfield .releditField{
     width:100%;
 }
+.entityfield .releditField p{
+    margin:0;
+}
 .entityfield form.releditForm,
 .entityfield .releditField fieldset,
 .entityfield .releditField fieldset *{
