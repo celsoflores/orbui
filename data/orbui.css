@@ -121,6 +121,18 @@ th {
     line-height:18px;
     padding:12px;
 }
+/* Primary View */
+form .errorMsg{
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 18px;
+    padding: 8px 35px 8px 14px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    position:absolute;
+    left:40%;
+}
 .entityfield th, .entityfield th label{
     padding:12px;
     text-align:right;
