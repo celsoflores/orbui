@@ -111,6 +111,10 @@ section#main {
 .mainCol div.section{
     margin-bottom:6px;
 }
+#pageContent h1{
+    margin-bottom:18px;
+    margin-left:9px;
+}
 ul {
     list-style:none;
     margin:0 0 9px 0;
