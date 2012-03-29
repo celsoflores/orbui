@@ -137,6 +137,12 @@ form .errorMsg{
     position:absolute;
     left:40%;
 }
+.navcontentbottom{
+    margin-top: 36px;
+}
+.navcontentbottom h4{
+    margin: 18px 0 9px 18px;
+}
 .entityfield th, .entityfield th label{
     padding:12px;
     text-align:right;
