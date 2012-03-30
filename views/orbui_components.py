@@ -26,7 +26,7 @@ from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
                                                ApplicationMessage,
                                                ApplicationName)
 from cubicweb.web.views.bookmark import BookmarksBox
-from cubicweb.web.views.basetemplates import LogForm
+from cubicweb.web.views.basetemplates import LogForm, LogFormView
 from cubicweb.web.views.basecontrollers import JSonController
 from cubicweb.web.views.tableview import TableLayout
 from cubicweb.web.views.formrenderers import (FormRenderer,
@@ -706,6 +706,36 @@ class PageNavigationSelectOrbui(PageNavigationSelect):
         w(u'</div>')
 
 
+class LogFormViewOrbui(LogFormView):
+    #   Login view for Orbui
+
+    def call(self, id, klass, title=True, showmessage=True):
+        w = self.w
+        w(u'<div class="modal %s" id="myModal %s">' % (id, klass))
+        if title:
+            stitle = self._cw.property_value('ui.site-title')
+            if stitle:
+                stitle = xml_escape(stitle)
+            else:
+                stitle = u'&#160;'
+            w(u'<div class="modal-header">'
+              u'<h2>%s</h2>'
+              u'</div>' % stitle)
+        w(u'<div class="modal-body">')
+        if showmessage and self._cw.message:
+            w(u'<div class="alert">%s'
+              u'<a class="close" data-dismiss="alert">x</a></div>' % self._cw.message)
+        config = self._cw.vreg.config
+        if config['auth-mode'] != 'http':
+            self.login_form(id) # Cookie authentication
+        w(u'</div>')
+        if self._cw.https and config.anonymous_user()[0]:
+            path = xml_escape(config['base-url'] + self._cw.relative_path())
+            w(u'<div class="loginMessage alert"><a href="%s">%s</a></div>\n'
+              % (path, self._cw._('No account? Try public access at %s') % path))
+        w(u'</div>')
+
+
 def registration_callback(vreg):
     """register new components for orbui
     """
@@ -719,7 +749,8 @@ def registration_callback(vreg):
                         BreadCrumbETypeVComponentOrbui,
                         ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
                         FilterBoxOrbui, NextPrevNavigationComponentOrbui,
-                        SortedNavigationOrbui, PageNavigationSelectOrbui)
+                        SortedNavigationOrbui, PageNavigationSelectOrbui,
+                        LogFormViewOrbui)
     vreg.register_all(globals().values(), __name__, orbui_components)
     vreg.register_and_replace(ApplLogoOrbui, ApplLogo)
     vreg.register_and_replace(SearchBoxOrbui, SearchBox)
@@ -751,3 +782,4 @@ def registration_callback(vreg):
                               NextPrevNavigationComponent)
     vreg.register_and_replace(SortedNavigationOrbui, SortedNavigation)
     vreg.register_and_replace(PageNavigationSelectOrbui, PageNavigationSelect)
+    vreg.register_and_replace(LogFormViewOrbui, LogFormView)

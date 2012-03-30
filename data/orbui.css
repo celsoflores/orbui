@@ -200,6 +200,28 @@ form#entityForm legend{
     border-bottom:1px solid #ddd;
     color:#aaa;
 }
+/* LOGIN */
+/*-----------------------------------*/
+.loginBox .modal-body{
+	padding: 0;
+	margin-top: 32px;
+}
+.loginBox .alert{
+	margin: 0;
+	margin-bottom: 12px;
+}
+#loginForm {
+	margin: 0;
+}
+#loginForm .formButtonBar{
+	margin-bottom: 0;
+}
+#loginForm .formButtonBar button{
+	margin-left: 32px;
+}
+#loginForm fieldset.default{
+    margin-left: 15px;
+}
 /* Primary View */
 .primary_entities div.row-fluid{
     border-bottom:1px dotted #cecece;
