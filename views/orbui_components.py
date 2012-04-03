@@ -707,11 +707,12 @@ class PageNavigationSelectOrbui(PageNavigationSelect):
 
 
 class LogFormViewOrbui(LogFormView):
-    #   Login view for Orbui
+    """overwrites LogFormView for orbui project
+    """
 
     def call(self, id, klass, title=True, showmessage=True):
         w = self.w
-        w(u'<div class="modal %s" id="myModal %s">' % (id, klass))
+        w(u'<div id="myModal %s" class="modal %s">' % (id, klass))
         if title:
             stitle = self._cw.property_value('ui.site-title')
             if stitle:

@@ -202,11 +202,11 @@ form#entityForm legend{
 }
 /* LOGIN */
 /*-----------------------------------*/
-.loginBox .modal-body{
-	padding: 0;
+.modal .modal-body{
+	padding: 0px;
 	margin-top: 32px;
 }
-.loginBox .alert{
+.modal .alert{
 	margin: 0;
 	margin-bottom: 12px;
 }
