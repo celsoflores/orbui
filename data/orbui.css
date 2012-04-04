@@ -359,3 +359,19 @@ h3.boxTitle{
     line-height: 12px;
     padding: 0 4px;
 }
+/*
+----- Some Icons -----
+                   */
+
+th.sortable {
+  background: url("img/table_sortable.png") 0% 45% no-repeat;
+  padding-left:20px;
+}
+th.headerSortUp {
+  background: url("img/table_up.png") 0% 45% no-repeat;
+  padding-left:20px;
+}
+th.headerSortDown {
+  background: url("img/table_down.png") 0% 45% no-repeat;
+  padding-left:20px;
+}
