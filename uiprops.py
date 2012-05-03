@@ -3,7 +3,7 @@
 
 """
 """
-STYLESHEETS.append(data('css/bootstrap.css'))
-STYLESHEETS.append(data('css/custom.css'))
-STYLESHEETS.append(data('orbui.css'))
+STYLESHEETS = [data('css/bootstrap.css'),
+               #data('orbui.css'),
+               ]
 JAVASCRIPTS.append(data('js/bootstrap.js'))

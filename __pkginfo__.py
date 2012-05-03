@@ -13,8 +13,8 @@ author_email = 'info@crealibre.com'
 description = 'orbui framework for cubicweb'
 web = 'http://www.cubicweb.org/project/%s' % distname
 
-__depends__ =  {'cubicweb': '>= 3.14.1'}
-__depends_cubes__ =  {'cw_minimum_css': '>= 0.1.0'}
+__depends__ =  {'cubicweb': '>= 3.15.0'}
+__depends_cubes__ = {}
 __recommends__ = {}
 
 
