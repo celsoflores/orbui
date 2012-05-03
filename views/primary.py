@@ -109,9 +109,8 @@ class PrimaryViewOrbui(PrimaryView):
             u'<h6 class="span4">%s</h6>'
             u'<div class="span8"><p>%s</p></div></div>' % (label, value))
 
-# replace PrimaryView
 def registration_callback(vreg):
-    """register new primary view for orbui project
-    """
-    vreg.register_all(globals().values(), __name__, (PrimaryViewOrbui,))
-    vreg.register_and_replace(PrimaryViewOrbui, PrimaryView)
+    orbui_components = ((PrimaryViewOrbui, PrimaryView),)
+    vreg.register_all(globals().values(), __name__, [new for (new,old) in orbui_components])
+    for new, old in orbui_components:
+        vreg.register_and_replace(new, old)

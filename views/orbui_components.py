@@ -740,47 +740,30 @@ class LogFormViewOrbui(LogFormView):
 def registration_callback(vreg):
     """register new components for orbui
     """
-    orbui_components = (ApplLogoOrbui, SearchBoxOrbui, AnonUserStatusLinkOrbui,
-                        CookieLoginComponentOrbui, AuthenticatedUserStatusOrbui,
-                        LogFormOrbui, BookmarksBoxOrbui, EditBoxOrbui,
-                        ApplicationMessageOrbui, JSonControllerOrbui,
-                        TableLayoutOrbui, EntityCompositeFormRendererOrbui,
-                        ApplicationNameOrbui, BreadCrumbEntityVComponentOrbui,
-                        BreadCrumbAnyRSetVComponentOrbui,
-                        BreadCrumbETypeVComponentOrbui,
-                        ContextualBoxLayoutOrbui, ContextFreeBoxLayoutOrbui,
-                        FilterBoxOrbui, NextPrevNavigationComponentOrbui,
-                        SortedNavigationOrbui, PageNavigationSelectOrbui,
-                        LogFormViewOrbui)
-    vreg.register_all(globals().values(), __name__, orbui_components)
-    vreg.register_and_replace(ApplLogoOrbui, ApplLogo)
-    vreg.register_and_replace(SearchBoxOrbui, SearchBox)
-    vreg.register_and_replace(AnonUserStatusLinkOrbui, AnonUserStatusLink)
-    vreg.register_and_replace(CookieLoginComponentOrbui, CookieLoginComponent)
-    vreg.register_and_replace(AuthenticatedUserStatusOrbui,
-                              AuthenticatedUserStatus)
-    vreg.register_and_replace(LogFormOrbui, LogForm)
-    vreg.register_and_replace(BookmarksBoxOrbui, BookmarksBox)
-    vreg.register_and_replace(EditBoxOrbui, EditBox)
-    vreg.register_and_replace(ApplicationMessageOrbui, ApplicationMessage)
-    vreg.register_and_replace(JSonControllerOrbui, JSonController)
-    vreg.register_and_replace(TableLayoutOrbui, TableLayout)
-    vreg.register_and_replace(EntityCompositeFormRendererOrbui,
-                              EntityCompositeFormRenderer)
-    vreg.register_and_replace(ApplicationNameOrbui, ApplicationName)
-    vreg.register_and_replace(BreadCrumbEntityVComponentOrbui,
-                              BreadCrumbEntityVComponent)
-    vreg.register_and_replace(BreadCrumbAnyRSetVComponentOrbui,
-                              BreadCrumbAnyRSetVComponent)
-    vreg.register_and_replace(BreadCrumbETypeVComponentOrbui,
-                              BreadCrumbETypeVComponent)
-    vreg.register_and_replace(ContextualBoxLayoutOrbui,
-                              ContextualBoxLayout)
-    vreg.register_and_replace(ContextFreeBoxLayoutOrbui,
-                              ContextFreeBoxLayout)
-    vreg.register_and_replace(FilterBoxOrbui, FilterBox)
-    vreg.register_and_replace(NextPrevNavigationComponentOrbui,
-                              NextPrevNavigationComponent)
-    vreg.register_and_replace(SortedNavigationOrbui, SortedNavigation)
-    vreg.register_and_replace(PageNavigationSelectOrbui, PageNavigationSelect)
-    vreg.register_and_replace(LogFormViewOrbui, LogFormView)
+    orbui_components = ((ApplLogoOrbui, ApplLogo),
+                        (SearchBoxOrbui, SearchBox),
+                        (AnonUserStatusLinkOrbui, AnonUserStatusLink),
+                        (CookieLoginComponentOrbui, CookieLoginComponent),
+                        (AuthenticatedUserStatusOrbui, AuthenticatedUserStatus),
+                        (LogFormOrbui, LogForm),
+                        (BookmarksBoxOrbui, BookmarksBox),
+                        (EditBoxOrbui, EditBox),
+                        (ApplicationMessageOrbui, ApplicationMessage),
+                        (JSonControllerOrbui, JSonController),
+                        (TableLayoutOrbui, TableLayout),
+                        (EntityCompositeFormRendererOrbui, EntityCompositeFormRenderer),
+                        (ApplicationNameOrbui, ApplicationName),
+                        (BreadCrumbEntityVComponentOrbui, BreadCrumbEntityVComponent),
+                        (BreadCrumbAnyRSetVComponentOrbui, BreadCrumbAnyRSetVComponent),
+                        (BreadCrumbETypeVComponentOrbui, BreadCrumbETypeVComponent),
+                        (ContextualBoxLayoutOrbui, ContextualBoxLayout),
+                        (ContextFreeBoxLayoutOrbui, ContextFreeBoxLayout),
+                        (FilterBoxOrbui, FilterBox),
+                        (NextPrevNavigationComponentOrbui, NextPrevNavigationComponent),
+                        (SortedNavigationOrbui, SortedNavigation),
+                        (PageNavigationSelectOrbui, PageNavigationSelect),
+                        (LogFormViewOrbui, LogFormView),
+                        )
+    vreg.register_all(globals().values(), __name__, [new for (new,old) in orbui_components])
+    for new, old in orbui_components:
+        vreg.register_and_replace(new, old)

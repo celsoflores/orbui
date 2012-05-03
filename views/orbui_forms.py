@@ -223,9 +223,10 @@ class AutomaticEntityFormOrbui(AutomaticEntityForm):
 def registration_callback(vreg):
     """register new primary view for orbui project
     """
-    vreg.register_all(globals().values(), __name__, (FormRendererOrbui,
-                                                     EntityFormRendererOrbui,
-                                                     AutomaticEntityFormOrbui))
-    vreg.register_and_replace(FormRendererOrbui, FormRenderer)
-    vreg.register_and_replace(EntityFormRendererOrbui, EntityFormRenderer)
-    vreg.register_and_replace(AutomaticEntityFormOrbui, AutomaticEntityForm)
+    orbui_components = ((FormRendererOrbui, FormRenderer),
+                        (EntityFormRendererOrbui, EntityFormRenderer),
+                        (AutomaticEntityFormOrbui, AutomaticEntityForm),
+                        )
+    vreg.register_all(globals().values(), __name__, [new for (new,old) in orbui_components])
+    for new, old in orbui_components:
+        vreg.register_and_replace(new, old)
