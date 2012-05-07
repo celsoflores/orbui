@@ -245,7 +245,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         w(u'\n'.join(additional_headers) + u'\n')
         # FIXME this is a quick option to make cw work in IE9
         # you'll lose all IE9 functionality, the browser will act as IE8.
-        #w(u'<meta http-equiv="X-UA-Compatible" content="IE=8" />\n')
+        w(u'<meta http-equiv="X-UA-Compatible" content="IE=8" />\n')
         w(u'<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->\n'
           u'  <!--[if lt IE 9]>\n'
           u'        <script src="%s"></script>\n'
