@@ -330,6 +330,7 @@ h3.boxTitle{
                    */
 .pagination{
     margin:6px 0;
+    height:auto;
 }
 .pagination img{
     vertical-align:middle;
