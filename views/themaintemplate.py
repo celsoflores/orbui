@@ -261,14 +261,14 @@ class TheMainTemplateOrbui(TheMainTemplate):
         boxes = list(self._cw.vreg['ctxcomponents'].poss_visible_objects(
                 self._cw, rset=self.cw_rset, view=view, context=context))
         if boxes:
-            self.w(u'<aside id="aside-main" class="span3">'
+            self.w(u'<div id="aside-main" class="span3">'
                    u'<div class="well">'
                    u'<div class="navboxes">')
             for box in boxes:
                 box.render(w=self.w, view=view)
             self.w(u'</div>'
                    u'</div>'
-                   u'</aside>')
+                   u'</div>')
 
 
 def registration_callback(vreg):
