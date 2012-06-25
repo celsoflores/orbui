@@ -527,7 +527,7 @@ class ContextFreeBoxLayoutOrbui(ContextFreeBoxLayout):
             w(u'</div></div>\n')
 
 class FilterBoxOrbui(FilterBox):
-    bk_linkbox_template = u'<p class="btn btn-small">%s</p>'
+    bk_linkbox_template = u'<p class="btn btn-small btn-facet">%s</p>'
 
 class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
     """overwrites navigation Next and Previous on single entities
