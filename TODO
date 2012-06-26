@@ -1,0 +1,53 @@
+The main template
+-----------------
+
+The three columns layout is too wide. The right contextual boxes stick
+   out the black header band.
+
+Boxes
+------
+
+List styles need to be adapted.
+
+The leftsided boxes switch to the right site if the browser window is
+   narrow.
+
+Buttons
+-------
+
+The simpliest way to adapt the buttons classes seems to be css_class =
+   'validateButton btn' on formwidgets.Button in the cw
+
+Site preferencies
+-----------------
+
+To be done
+
+Error messages
+---------------
+
+To be adapted depending on their type (warning, error, etc)
+
+Forms
+-----------
+
+* errors display must to be adapt
+* hide/remplace "en cours de validation..."
+* show the required fields
+
+Reledit
+--------
+* Cancel button does not seem to work
+
+
+More styles
+-----------
+
+* sections (vid=list)
+* lists
+
+
+??
+--
+bootstrap-responsive and bootstrap defines difference styles for the
+   same classes : ex. span3 : 220px and 166px
