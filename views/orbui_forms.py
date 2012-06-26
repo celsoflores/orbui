@@ -22,6 +22,7 @@ from cubicweb.web.views.autoform import AutomaticEntityForm
 class FormRendererOrbui(FormRenderer):
     """form renderer class
     """
+    button_bar_class = u'form-actions'
 
     def render_content(self, w, form, values):
         if self.display_progress_div:
@@ -126,7 +127,7 @@ class FormRendererOrbui(FormRenderer):
         """
         if not form.form_buttons:
             return
-        w(u'<div class="form-actions %s">' % self.button_bar_class)
+        w(u'<div class="%s">' % self.button_bar_class)
         for button in form.form_buttons:
             w(u'%s' % button.render(form))
         w(u'</div>')
