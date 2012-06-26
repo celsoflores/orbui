@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # copyright 2012 CreaLibre (Monterrey, MEXICO), all rights reserved.
 # contact http://www.crealibre.com/ -- mailto:info@crealibre.com
 #
@@ -35,14 +36,16 @@ from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              BreadCrumbAnyRSetVComponent,
                                              BreadCrumbETypeVComponent,
                                              ibreadcrumb_adapter)
-from cubicweb.web.views.navigation import (NextPrevNavigationComponent,
+from cubicweb.web.views.navigation import (NavigationComponent,
+                                          NextPrevNavigationComponent,
                                           SortedNavigation,
+                                          PageNavigation,
                                           PageNavigationSelect)
 from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
-from cubicweb.selectors import non_final_entity, paginated_rset
+from cubicweb.selectors import non_final_entity
 from cubicweb.uilib import toggle_action
 from cubicweb import tags, uilib
 
@@ -529,9 +532,70 @@ class ContextFreeBoxLayoutOrbui(ContextFreeBoxLayout):
 class FilterBoxOrbui(FilterBox):
     bk_linkbox_template = u'<p class="btn btn-small btn-facet">%s</p>'
 
+class NavigationOrbuiMixIn(object):
+    page_link_templ = u'<li><a href="%s" title="%s">%s</a></li>'
+    selected_page_link_templ = u'<li class="active"><a href="%s" title="%s">%s</a></li>'
+    previous_page_link_templ = next_page_link_templ = page_link_templ
+
+    @property
+    def no_previous_page_link(self):
+        return u'<li class="disabled"><a href="#">««</a></li>'
+
+    @property
+    def no_next_page_link(self):
+        return u'<li class="disabled"><a href="#">»»</a></li>'
+
+    @property
+    def no_content_prev_link(self):
+        return u'««'
+
+    @property
+    def no_content_next_link(self):
+        return u'»»'
+
+class NavigationComponentOrbui(NavigationOrbuiMixIn, NavigationComponent):
+    pass
+
+class SortedNavigationOrbui(NavigationOrbuiMixIn, SortedNavigation):
+    def write_links(self, basepath, params, blocklist):
+        """Return HTML for the whole navigation: `blocklist` is a list of HTML
+        snippets for each page, `basepath` and `params` will be necessary to
+        build previous/next links.
+        """
+        self.w(u'<div class="pagination">')
+        self.w(u'<ul>')
+        self.w(u'%s&#160;' % self.previous_link(basepath, params))
+        self.w(u'%s' % u''.join(blocklist))
+        self.w(u'&#160;%s' % self.next_link(basepath, params))
+        self.w(u'</ul>')
+        self.w(u'</div>')
+
+
+class PageNavigationOrbui(NavigationOrbuiMixIn, PageNavigation):
+    def call(self):
+        """displays a resultset by page"""
+        params = dict(self._cw.form)
+        self.clean_params(params)
+        basepath = self._cw.relative_path(includeparams=False)
+        self.w(u'<div class="pagination">')
+        self.w(u'<ul>')
+        self.w(u'%s&#160;' % self.previous_link(basepath, params))
+        self.w(u'&#160;'.join(self.iter_page_links(basepath, params)))
+        self.w(u'&#160;%s' % self.next_link(basepath, params))
+        self.w(u'</ul>')
+        self.w(u'</div>')
+
 class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
     """overwrites navigation Next and Previous on single entities
     """
+
+    @property
+    def prev_icon(self):
+        return u'&#8592;'
+
+    @property
+    def next_icon(self):
+        return u'&#8594;'
 
     # Should be better done, but this works
     def render_body(self, w):
@@ -552,48 +616,6 @@ class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
         w(u'</li>')
         self._cw.html_headers.add_raw('<link rel="%s" href="%s" />' % (
               type, xml_escape(url)))
-
-
-class SortedNavigationOrbui(SortedNavigation):
-    """The default pagination component: display link to pages where each pages
-    is identified by the item number of its first and last elements.
-    """
-    page_link_templ = u'<a href="%s" title="%s">%s</a>'
-    selected_page_link_templ = u'<li class="active"><a href="%s" title="%s">%s</a></li>'
-    previous_page_link_templ = next_page_link_templ = page_link_templ
-
-    @property
-    def no_previous_page_link(self):
-        return (u'<li><a><img src="%s" alt="%s"/></a></li>' %
-                (self.prev_icon_url, self._cw._('there is no previous page')))
-
-    @property
-    def no_next_page_link(self):
-        return (u'<a><img src="%s" alt="%s" class="prevnext_nogo"/></a>' %
-                (self.next_icon_url, self._cw._('there is no next page')))
-
-    @property
-    def no_content_prev_link(self):
-        return (u'<img src="%s" alt="%s" class="prevnext"/>' % (
-                (self.prev_icon_url, self._cw._('no content prev link'))))
-
-    @property
-    def no_content_next_link(self):
-        return (u'<img src="%s" alt="%s" class="prevnext"/>' %
-                (self.next_icon_url, self._cw._('no content next link')))
-
-    def write_links(self, basepath, params, blocklist):
-        """Return HTML for the whole navigation: `blocklist` is a list of HTML
-        snippets for each page, `basepath` and `params` will be necessary to
-        build previous/next links.
-        """
-        self.w(u'<div class="pagination">')
-        self.w(u'<ul>')
-        self.w(u'<li>%s</li>' % self.previous_link(basepath, params))
-        self.w(u'%s' % u''.join(blocklist))
-        self.w(u'<li>%s</li>' % self.next_link(basepath, params))
-        self.w(u'</ul>')
-        self.w(u'</div>')
 
 def do_paginate(view, rset=None, w=None, show_all_option=True, page_size=None):
     """write pages index in w stream (default to view.w) and then limit the
@@ -653,7 +675,7 @@ View.do_paginate = do_paginate
 View.paginate = paginate
 View.handle_pagination = False
 
-class PageNavigationSelectOrbui(PageNavigationSelect):
+class PageNavigationSelectOrbui(NavigationOrbuiMixIn, PageNavigationSelect):
     """This pagination component displays a result-set by page as
     :class:`PageNavigation` but in a <select>, which is better when there are a
     lot of results.
@@ -661,30 +683,8 @@ class PageNavigationSelectOrbui(PageNavigationSelect):
     By default it will be selected when there are more than 4 pages to be
     displayed.
     """
-    __select__ = paginated_rset(4)
-
     page_link_templ = u'<option value="%s" title="%s">%s</option>'
     selected_page_link_templ = u'<option value="%s" selected="selected" title="%s">%s</option>'
-
-    @property
-    def no_previous_page_link(self):
-        return (u'<li><a><img src="%s" alt="%s"/></a></li>' %
-                (self.prev_icon_url, self._cw._('there is no previous page')))
-
-    @property
-    def no_next_page_link(self):
-        return (u'<a><img src="%s" alt="%s" class="prevnext_nogo"/></a>' %
-                (self.next_icon_url, self._cw._('there is no next page')))
-
-    @property
-    def no_content_prev_link(self):
-        return (u'<img src="%s" alt="%s" class="prevnext"/>' % (
-                (self.prev_icon_url, self._cw._('no content prev link'))))
-
-    @property
-    def no_content_next_link(self):
-        return (u'<img src="%s" alt="%s" class="prevnext"/>' %
-                (self.next_icon_url, self._cw._('no content next link')))
 
     def call(self):
         params = dict(self._cw.form)
@@ -693,14 +693,12 @@ class PageNavigationSelectOrbui(PageNavigationSelect):
         w = self.w
         w(u'<div class="pagination">')
         w(u'<ul>')
-        self.w(u'<li>%s</li>' % self.previous_link(basepath, params))
-        w(u'<li><a>')
-        w(u'<select onchange="javascript: document.location=this.options[this.selectedIndex].value">')
+        w(self.previous_link(basepath, params))
+        w(u'<li><select onchange="javascript: document.location=this.options[this.selectedIndex].value">')
         for option in self.iter_page_links(basepath, params):
             w(option)
-        w(u'</select>')
-        w(u'</a></li>')
-        w(u'%s' % self.next_link(basepath, params))
+        w(u'</select></li>')
+        w(u'&#160;%s' % self.next_link(basepath, params))
         w(u'</ul>')
         w(u'</div>')
 
@@ -758,7 +756,9 @@ def registration_callback(vreg):
                         (ContextFreeBoxLayoutOrbui, ContextFreeBoxLayout),
                         (FilterBoxOrbui, FilterBox),
                         (NextPrevNavigationComponentOrbui, NextPrevNavigationComponent),
+                        (NavigationComponentOrbui, NavigationComponent),
                         (SortedNavigationOrbui, SortedNavigation),
+                        (PageNavigationOrbui, PageNavigation),
                         (PageNavigationSelectOrbui, PageNavigationSelect),
                         (LogFormViewOrbui, LogFormView),
                         )

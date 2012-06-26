@@ -52,13 +52,23 @@ div.facet{
 
 /* pagination */
 
-.pagination li select{
-    float: left;
-    height: 36px;
-    margin-bottom: 0;
-    width: auto;
-}
+div.pagination{
+ margin: 0px 0 1em 0;
+ height: auto; /* in case of multiline pagination */
+ }
 
+  /* shadow is not ment to be used on multiline pagination */
+div.pagination ul{
+  box-shadow: none;
+ }
+
+.pagination li select{
+  float: left;
+  height: 36px;
+  margin-bottom: 0;
+  width: auto;
+  border-color: #DDDDDD;
+}
 
 /******************* from cubicweb ********************/
 
