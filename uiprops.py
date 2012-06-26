@@ -4,6 +4,7 @@
 """
 """
 STYLESHEETS = [data('css/bootstrap.css'),
+               data('css/custom.css'),
                #data('orbui.css'),
                ]
 JAVASCRIPTS.append(data('js/bootstrap.js'))
