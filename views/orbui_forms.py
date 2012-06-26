@@ -17,7 +17,9 @@
 
 from cubicweb.web.views.formrenderers import FormRenderer, EntityFormRenderer
 from cubicweb.web.views.autoform import AutomaticEntityForm
+from cubicweb.web.views.forms import FieldsForm
 
+FieldsForm.needs_css = ()
 
 class FormRendererOrbui(FormRenderer):
     """form renderer class
