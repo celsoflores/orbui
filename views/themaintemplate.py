@@ -181,8 +181,10 @@ class TheMainTemplateOrbui(TheMainTemplate):
             columns = 12
         self.w(u'<section id="main">'
                u'<div class="container">'
-               u'<div class="row">'
-               u'<div class="span%i pull-right" id="pageContent">' % columns)
+               u'<div class="row">')
+        # aside section - write boxes for this element
+        self.nav_column(view, 'left')
+        self.w(u'<div class="span%i pull-right" id="pageContent">' % columns)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
@@ -205,8 +207,6 @@ class TheMainTemplateOrbui(TheMainTemplate):
         view.render(w=self.w)
         self.w(nav_html.getvalue())
         self.w(u'</div>')
-        # aside section - write boxes for this element
-        self.nav_column(view, 'left')
         self.w(u'</div>'
                u'</div>'
                u'</section>')
