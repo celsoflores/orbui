@@ -95,8 +95,8 @@ class AnonUserStatusLinkOrbui(AnonUserStatusLink):
     """overwrites the original AnonUserStatusLink of cubicweb to change
     the display format
     """
-    #FIXME the selections of possible visible objects does not filter by context
-    #for AnonUserStatusLinkOrbui object
+    # FIXME the selections of possible visible objects does not filter by context
+    # for AnonUserStatusLinkOrbui object
     context = _('header-top-right')
 
     def render(self, w):
@@ -109,9 +109,9 @@ class CookieLoginComponentOrbui(CookieLoginComponent):
     the display format
     """
     context = _('header-top-right')
-    _html = (u'<li class="divider-vertical"></li><!--%s-->'
-             u'<li><a title="%s" data-toggle="modal"'
-             u' href="#loginModal">%s</a></li>')
+    _html = (u'''<!--%s-->
+             <li><a title="%s" data-toggle="modal"
+             href="#loginModal">%s</a></li>''')
 
     def call(self):
         self.w(self._html % (self._cw._('login / password'),
@@ -142,10 +142,9 @@ class AuthenticatedUserStatusOrbui(AuthenticatedUserStatus):
         # display useractions and siteactions
         actions = self._cw.vreg['actions'].possible_actions(
             self._cw, rset=self.cw_rset)
-        w(u'<li class="divider-vertical"></li>'
-          u'<li class="dropdown"><a href="#" class="dropdown-toggle"'
-          u' data-toggle="dropdown">%s <b class="caret"></b></a>'
-          u'<ul class="dropdown-menu">' % name)
+        w(u'''<li class="dropdown"><a href="#" class="dropdown-toggle"
+              data-toggle="dropdown">%s <b class="caret"></b></a>
+              <ul class="dropdown-menu">''' % name)
         for action in actions.get('useractions', ()):
             w(u'<li>')
             self.action_link(action).render(w=w)

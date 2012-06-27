@@ -59,6 +59,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
             self.w(u'<ul class="nav">')
             for component in components_top_left:
                 component.render(w=self.w)
+                self.w(u'</li>')
             self.w(u'</ul>')
 
     def header_top_right(self, view, ctxcomponents):
@@ -69,7 +70,9 @@ class TheMainTemplateOrbui(TheMainTemplate):
                                context='header-top-right')
         if components_top_right:
             self.w(u'<ul class="nav pull-right">')
-            for component in components_top_right:
+            for i, component in enumerate(components_top_right):
+                if i > 0:
+                    self.w(u'<li class="divider-vertical"></li>')
                 component.render(w=self.w)
             self.w(u'</ul>')
 
@@ -148,22 +151,23 @@ class TheMainTemplateOrbui(TheMainTemplate):
         """display contextual toolbar
         """
         ctxcomponents = self._cw.vreg['ctxcomponents']
-        self.w(u'<nav id="toolbar" class="container">'
-               u'<div class="row">'
-               u'<div class="span12">')
         components_toolbar = ctxcomponents.poss_visible_objects(self._cw,
                              rset=self.cw_rset,
                              view=view, context='main-toolbar')
-        self.w(u'<ul class="nav nav-pills pull-right">')
-        for component in components_toolbar:
-            component.render(w=self.w, cw_rset=self.cw_rset)
-        self.w(u'</ul>')
-        #FIXME right now we are not displaying this section
-        # writes ctxcomponents for this element
-        #self.wview('contentheader', rset=self.cw_rset, view=view)
-        self.w(u'</div>'
-               u'</div>'
-               u'</nav>')
+        if components_toolbar:
+            self.w(u'<nav id="toolbar" class="container">'
+                   u'<div class="row">'
+                   u'<div class="span12">')
+            self.w(u'<ul class="nav nav-pills pull-right">')
+            for component in components_toolbar:
+                component.render(w=self.w, cw_rset=self.cw_rset)
+            self.w(u'</ul>')
+            # FIXME right now we are not displaying this section
+            # writes ctxcomponents for this element
+            # self.wview('contentheader', rset=self.cw_rset, view=view)
+            self.w(u'</div>'
+                   u'</div>'
+                   u'</nav>')
 
     def page_main(self, view):
         """display main section of the main template
