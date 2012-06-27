@@ -33,7 +33,7 @@ class PrimaryViewOrbui(primary.PrimaryView):
             boxes = self._prepare_side_boxes(entity)
         else:
             boxes = None
-        self.w(u'<div class="container">'
+        self.w(u'<div class="container-fluid">'
                u'<div class="row">'
                u'<div class="span12">'
                u'<div class="row-fluid">'
