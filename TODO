@@ -1,15 +1,14 @@
 Boxes
 ------
 
-List styles need to be adapted.
+* The leftsided boxes styles should be adapted.
 
-The leftsided boxes switch to the right site if the browser window is
-   narrow.
+* There is some little problems with the left boxes position
 
 Buttons
 -------
 
-The simpliest way to adapt the buttons classes seems to be css_class =
+ * The simpliest way to adapt the buttons classes seems to be css_class =
    'validateButton btn' on formwidgets.Button in the cw
 
 Site preferencies
@@ -20,7 +19,8 @@ To be done
 Error messages
 ---------------
 
-To be adapted depending on their type (warning, error, etc)
+* To be adapted depending on their type (warning, error, etc)
+
 
 Forms
 -----------
@@ -29,19 +29,45 @@ Forms
 * hide/remplace "en cours de validation..."
 * show the required fields
 
+Facet
+-----
+
+* Change the select color.
+
+
 Reledit
 --------
-* Cancel button does not seem to work
 
+*  buttons does not seem to work
+
+TableFilter
+-----------
+
+* to be adapted
+
+ToolTipes (alt on imahes)
+-------------------------
+
+* to be adapted
+
+
+CTXTOOLBAR
+----------
+
+* to be adapted
+
+Tabs
+----
+* adapt more css ?
+
+Footpage
+--------
+
+* "contentfooter" view must no be a part of footer
 
 More styles
 -----------
 
 * sections (vid=list)
 * lists
-
-
-??
---
-bootstrap-responsive and bootstrap defines difference styles for the
-   same classes : ex. span3 : 220px and 166px
+* comments
