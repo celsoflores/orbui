@@ -11,15 +11,6 @@
   border-bottom: 1px solid #ffffff;
 }
 
-/* invisible class is used in bootsrapt, bet also in cw to handle relations in edition form  */
-li.invisible {
-  visibility: visible;
-}
-
-li.invisible div{
-  display: inline;
-}
-
 /* form v.2.0.0 */
 .form-horizontal .control-group > label {
   float: left;
@@ -28,6 +19,7 @@ li.invisible div{
   text-align: right;
 }
 
+/* from v.2.0.0 */
 select {
   background-color: #FFFFFF;
   border-radius: 3px;
@@ -70,15 +62,61 @@ div.pagination ul{
   border-color: #DDDDDD;
 }
 
+/* forms */
+
+iframe{
+ border:0;
+}
+
+.iformBody {
+  margin-left: -80px;
+ /* inlined form for subentites, check .form-horizontal .controls
+ {margin-left : 160px;} */
+}
+
+label.required {
+  padding-right: 10px;
+  background: url("required.png") 100% 70% no-repeat;
+}
+
+.errorMessage{
+  /* equals to  . alert .alert-danger */
+  background-color: #F2DEDE;
+  border-color: #EED3D7;
+  color: #B94A48;
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 18px;
+  color: #c09853;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+div#progress {
+  display : none
+}
+
+.controls.no-margin{
+ margin : 0;
+ }
+
+/* same as .form-horizontal .control-group > label */
+.form-horizontal .control-group > span.form-label {
+    float: left;
+    padding-top: 5px;
+    text-align: right;
+    width: 140px;
+    display: block;
+}
+
 /******************* from cubicweb ********************/
 
 .hidden {
   display: none;
   visibility: hidden;
-}
-
-iframe{
- border:0;
 }
 
 /* jquery-ui tabs */
