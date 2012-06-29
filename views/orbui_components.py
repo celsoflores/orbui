@@ -341,8 +341,9 @@ class ApplicationMessageOrbui(ApplicationMessage):
         else:
             msgs = [msg]
         for msg in msgs:
-            self.w(u'<div class="message alert alert-info" id="%s">'
-                   u'<a class="close" data-dismiss="alert">x</a>'
+            # XXX should we prefer alert-info to alert- -success as default value
+            self.w(u'<div class="alert alert-success" id="%s">'
+                   u'<button class="close" data-dismiss="alert" type="button">x</button>'
                    u' %s</div>' % (self.domid, msg))
 
 
@@ -547,8 +548,8 @@ class LogFormViewOrbui(LogFormView):
               u'</div>' % stitle)
         w(u'<div class="modal-body">')
         if showmessage and self._cw.message:
-            w(u'<div class="alert">%s'
-              u'<a class="close" data-dismiss="alert">x</a></div>' % self._cw.message)
+            w(u'<div class="alert alert-error">%s'
+              u'<button class="close" data-dismiss="alert">x</button></div>' % self._cw.message)
         config = self._cw.vreg.config
         if config['auth-mode'] != 'http':
             self.login_form(id) # Cookie authentication
