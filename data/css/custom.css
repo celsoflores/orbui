@@ -1,6 +1,10 @@
 /* Your Custom CSS */
 /*-----------------------------------*/
 
+ul.breadcrumb{
+ margin-bottom: 0;
+ }
+
 .nav-list .divider {
   *width: 100%;
   height: 1px;
