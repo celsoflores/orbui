@@ -53,13 +53,19 @@ nav#toolbar ul.nav {
     margin-bottom: 0px;
 }
 nav#toolbar .dropdown-menu li{
-    padding:3px 0 0 6px;
+    padding-top:3px;
     font-weight:bold;
 }
+
+nav#toolbar .dropdown-menu li.divider{
+    padding: 0;
+}
+
 nav#toolbar .pull-right .dropdown-menu {/*Fixing the Aling left Dropdown-Menu*/
     left:auto;
     right: 0;
 }
+
 nav#toolbar .pull-right .dropdown-menu:after {
     left: auto;
     right: 13px;

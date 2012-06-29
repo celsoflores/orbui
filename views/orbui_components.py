@@ -143,7 +143,7 @@ class AuthenticatedUserStatusOrbui(AuthenticatedUserStatus):
         actions = self._cw.vreg['actions'].possible_actions(
             self._cw, rset=self.cw_rset)
         w(u'''<li class="dropdown"><a href="#" class="dropdown-toggle"
-              data-toggle="dropdown">%s <b class="caret"></b></a>
+              data-toggle="dropdown">%s <span class="caret"></span></a>
               <ul class="dropdown-menu">''' % name)
         for action in actions.get('useractions', ()):
             w(u'<li>')
@@ -202,7 +202,7 @@ class BookmarksBoxOrbui(component.CtxComponent):
         w(u'<li class="dropdown">'
           u'<a class="dropdown-toggle" data-toggle="dropdown" href="#">'
           u'%s'
-          u'<b class="caret"></b>'
+          u'<span class="caret"></span>'
           u'</a>'
           u'<ul class="dropdown-menu">' % self._cw._('bookmarks'))
         for bookmark in self.bookmarks_rset.entities():
@@ -214,9 +214,9 @@ class BookmarksBoxOrbui(component.CtxComponent):
                          u'title="%s">[-]</a>' % (bookmark.eid,
                                                  req._('delete this bookmark')))
                 dlink = u''
-                w(u'<li>%s %s</li>' % (dlink, label))
+                w(u'<li><span class="action-category">%s %s</span></a></li>' % (dlink, label))
         if self.can_edit:
-            w(u'<li>%s</li>' % req._('manage bookmarks'))
+            w(u'<li><span class="action-category">%s</span></li>' % req._('manage bookmarks'))
             linkto = 'bookmarked_by:%s:subject' % ueid
             # use a relative path so that we can move the instance without
             # loosing bookmarks
@@ -253,7 +253,8 @@ class EditBoxOrbui(component.CtxComponent):
     """
     __regid__ = 'edit_box'
     context = _('main-toolbar')
-
+    li_template = u'<li><span class="action-category">%s%s</span></li>'
+    icon_template = u'<span class="icon-%s"></span>'
     def _get_menu(self, id, title=None, label_prefix=None):
         try:
             return self._menus_by_id[id]
@@ -277,8 +278,9 @@ class EditBoxOrbui(component.CtxComponent):
         actions = self._cw.vreg['actions'].possible_actions(self._cw, cw_rset,
                   **self.cw_extra_kwargs)
         other_menu = self._get_menu('moreactions', _('more actions'))
-        for category in ('re-selection', 'mainactions', 'moreactions','addrelated'):
-            menu_options = self.menu_options(actions, category)
+        for category, icon in (('re-selection', ''), ('mainactions', ''), ('moreactions', 'cog'),
+                               ('addrelated', '')):
+            menu_options = self.menu_options(actions, category, icon)
             if actions.get(category, ()):
                 menu_actions = actions.get(category, ())
                 # if the menu has just one option display it as a simple link
@@ -293,27 +295,29 @@ class EditBoxOrbui(component.CtxComponent):
                     w(u'<li class="%s">'
                       u'<a class="dropdown-toggle" data-toggle="dropdown" '
                       u'href="#">%s'
-                      u'<b class="caret"></b>'
+                      u'<span class="caret"></span>'
                       u'</a>'
                       u'<ul class="dropdown-menu">' % (li_class, self._cw._(category)))
                     w(menu_options)
                     w(u'</ul>'
                       u'</li>')
 
-    def menu_options(self, actions, category):
+    def menu_options(self, actions, category, icon):
         """return html code or an empty string to display
         the toolbar menus of certain category given.
         """
         menu_label = u''
         menu_list = []
-        for action in actions.get(category, ()):
+        if icon:
+            icon = self.icon_template % icon
+        for i, action in enumerate(actions.get(category, ())):
             if action.submenu:
                 menu = self._get_menu(action.submenu)
                 if menu_label != menu.label:
                     menu_label = menu.label
-                    menu_list.append(u'<li class="divider"></li>')
-                    menu_list.append(u'<li><strong>%s</strong></li>' %
-                                     menu.label)
+                    if i:
+                        menu_list.append(u'<li class="divider"></li>')
+                    menu_list.append(self.li_template % (icon, menu.label))
                 for subaction in action.actual_actions():
                     menu_list.append(u'<li><a href="%s">%s</a></li>' %
                                         (xml_escape(subaction.url()),
