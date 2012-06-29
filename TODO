@@ -25,10 +25,10 @@ Error messages
 Forms
 -----------
 
+Messages
+--------
+
 * errors display must to be adapt
-* hide/remplace "en cours de validation..."
-* show the required fields
-* adapt the relatedEntities table
 
 Facet
 -----

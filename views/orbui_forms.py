@@ -58,18 +58,35 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                 w(u'</div>')
                 w(u'</div>')
         pendings = list(field.restore_pending_inserts(form))
+        w(u'<div class="control-group">')
+        w(u'<div class="controls">')
+        # table is here in order to keep the js compatibility with cw,
+        # otherwise get ride of the table
+        w(u'<table class="table table-layout table-condensed">')
         if pendings:
             for row in pendings:
                 # soon to be linked to entities
-                w(u'<div id="tr%s">' % row[1])
-                w(u'<span class="label label-warning">%s</span>' % row[3])
-                w(u'<a class="handle" title="%s" href="%s">[x]</a>&nbsp;' %
+                w(u'<tr id="tr%s">' % row[1])
+                w(u'<th>%s</th>' % row[3])
+                w(u'<td>')
+                w(u'<a class="handle" title="%s" href="%s">[x]</a>' %
                   (_('cancel this insert'), row[2]))
                 w(u'<a id="a%s" class="editionPending" href="%s">%s</a>'
                   % (row[1], row[4], xml_escape(row[5])))
-                w(u'</div>')
+                w(u'</td>')
+                w(u'</tr>')
+                # # soon to be linked to entities : orbui version
+                # w(u'<div id="tr%s">' % row[1])
+                # w(u'<span class="label">%s</span>' % row[3])
+                # w(u'<a class="handle" title="%s" href="%s">[x]</a>&nbsp;' %
+                #   (_('cancel this insert'), row[2]))
+                # w(u'<a id="a%s" class="editionPending" href="%s">%s</a>'
+                #   % (row[1], row[4], xml_escape(row[5])))
+                # w(u'</div>')
+        w(u'<tr id="relationSelectorRow_%s" class="span6">&nbsp;</tr>' % eid)
+        w(u'</table>')
         w(u'<div class="row-fluid">')
-        w(u'<div id="relationSelectorRow_%s" class="span6">' % eid)
+        w(u'<div class="span6">')
         w(u'<select id="relationSelector_%s" tabindex="%s" '
           'onchange="javascript:showMatchingSelect(this.options[this.selectedIndex].value,%s);">'
           % (eid, req.next_tabindex(), xml_escape(json_dumps(eid))))
@@ -80,6 +97,8 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         w(u'</select>')
         w(u'</div>')
         w(u'<div id="unrelatedDivs_%s"></div>' % eid)
+        w(u'</div>')
+        w(u'</div>')
         w(u'</div>')
         return '\n'.join(stream)
 

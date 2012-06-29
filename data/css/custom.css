@@ -112,6 +112,14 @@ div#progress {
     display: block;
 }
 
+/* tables */
+
+table.table-layout th,
+table.table-layout tr,
+table.table-layout td{
+  border: none;
+}
+
 /******************* from cubicweb ********************/
 
 .hidden {

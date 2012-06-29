@@ -277,7 +277,7 @@ class EditBoxOrbui(component.CtxComponent):
         actions = self._cw.vreg['actions'].possible_actions(self._cw, cw_rset,
                   **self.cw_extra_kwargs)
         other_menu = self._get_menu('moreactions', _('more actions'))
-        for category in ('mainactions', 'moreactions','addrelated'):
+        for category in ('re-selection', 'mainactions', 'moreactions','addrelated'):
             menu_options = self.menu_options(actions, category)
             if actions.get(category, ()):
                 menu_actions = actions.get(category, ())
@@ -287,12 +287,15 @@ class EditBoxOrbui(component.CtxComponent):
                       {'url': xml_escape(menu_actions[0].url()),
                        'action': menu_actions[0].title})
                 elif len(menu_actions) > 1:
-                    w(u'<li class="dropdown">'
+                    li_class = 'dropdown'
+                    if category == 're-selection':
+                        li_class += ' open'
+                    w(u'<li class="%s">'
                       u'<a class="dropdown-toggle" data-toggle="dropdown" '
                       u'href="#">%s'
                       u'<b class="caret"></b>'
                       u'</a>'
-                      u'<ul class="dropdown-menu">' % self._cw._(category))
+                      u'<ul class="dropdown-menu">' % (li_class, self._cw._(category)))
                     w(menu_options)
                     w(u'</ul>'
                       u'</li>')
