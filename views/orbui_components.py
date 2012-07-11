@@ -19,6 +19,7 @@
 from __future__ import with_statement
 
 from logilab.mtconverter import xml_escape
+
 from cubicweb.web.views.boxes import (SearchBox, EditBox, ContextualBoxLayout,
                                       ContextFreeBoxLayout)
 from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
@@ -40,7 +41,7 @@ from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
-from cubicweb.selectors import non_final_entity
+from cubicweb.selectors import non_final_entity, match_context
 from cubicweb.uilib import toggle_action
 from cubicweb import tags, uilib
 
@@ -102,7 +103,6 @@ class AnonUserStatusLinkOrbui(AnonUserStatusLink):
     def render(self, w):
         # do nothing for now, what is the real use of it?
         pass
-
 
 class CookieLoginComponentOrbui(CookieLoginComponent):
     """overwrites original CookieLoginComponent of cubicweb to change
@@ -177,6 +177,7 @@ class BookmarksBoxOrbui(component.CtxComponent):
     rql = ('Any B,T,P ORDERBY lower(T) '
            'WHERE B is Bookmark,B title T, B path P, B bookmarked_by U, '
            'U eid %(x)s')
+    order = 1
 
     def render(self, w, cw_rset):
         """render bookmarks
@@ -248,86 +249,111 @@ class BookmarksBoxOrbui(component.CtxComponent):
           u'</li>')
 
 
-class EditBoxOrbui(component.CtxComponent):
+
+class MainToolbarBoxMenu(htmlwidgets.BoxMenu):
+
+    def _start_li(self):
+        return u'<li class="dropdown">'
+
+    def _begin_menu(self):
+        self.w(u'<ul class="dropdown-menu">')
+
+    def _render(self):
+        if self.isitem:
+            self.w(self._start_li())
+        ident = self.ident
+        self.w(u'<a href="#" class="dropdown-toggle" data-toggle="dropdown">%s' % (
+            self.label))
+        self.w(u'<span class="caret"></span></a>')
+        self._begin_menu()
+        for item in self.items:
+            _bwcompatible_render_item(self.w, item)
+        self._end_menu()
+        if self.isitem:
+            self.w(u'</li>')
+
+class Separator(object):
+    """a menu separator.
+
+    Use this rather than `cw.web.htmlwidgets.BoxSeparator`.
+    """
+    newstyle = True
+
+    def render(self, w):
+        w(u'<li class="divider"></li>')
+
+
+def _bwcompatible_render_item(w, item):
+    if hasattr(item, 'render'):
+        if getattr(item, 'newstyle', False):
+            if isinstance(item, Separator):
+                item.render(w)
+            else:
+                w(u'<li>')
+                item.render(w)
+                w(u'</li>')
+        else:
+            item.render(w) # XXX displays <li> by itself
+    else:
+        w(u'<li>%s</li>' % item)
+
+
+class EditBoxOrbui(EditBox): #component.CtxComponent):
     """overwrites the original EditBox class for orbui template
     """
-    __regid__ = 'edit_box'
+    # __regid__ = 'edit_box'
+
     context = _('main-toolbar')
-    li_template = u'<li><span class="action-category">%s%s</span></li>'
-    icon_template = u'<span class="icon-%s"></span>'
+    contextual = False
+    order = 0
+
     def _get_menu(self, id, title=None, label_prefix=None):
         try:
             return self._menus_by_id[id]
         except KeyError:
             if title is None:
                 title = self._cw._(id)
-            self._menus_by_id[id] = menu = htmlwidgets.BoxMenu(title)
+            self._menus_by_id[id] = menu = MainToolbarBoxMenu(title)
             menu.label_prefix = label_prefix
             self._menus_in_order.append(menu)
             return menu
 
-    def render(self, w, cw_rset):
-        """builds the menu in the toolbar for top navigations of the component
-        """
-        #FIXME this method is not compatible with the complete cubicweb
-        #functionality, it is just a partial solution.
+    def render_items(self, w, items=None):
+        if items is None:
+            items = self.items
+        assert items
+        for item in items:
+            _bwcompatible_render_item(w, item)
+
+    def init_rendering(self):
+        super(EditBox, self).init_rendering()
         _ = self._cw._
         self._menus_in_order = []
         self._menus_by_id = {}
         # build list of actions
-        actions = self._cw.vreg['actions'].possible_actions(self._cw, cw_rset,
-                  **self.cw_extra_kwargs)
+        actions = self._cw.vreg['actions'].possible_actions(self._cw, self.cw_rset,
+                                                            **self.cw_extra_kwargs)
         other_menu = self._get_menu('moreactions', _('more actions'))
-        for category, icon in (('re-selection', ''), ('mainactions', ''), ('moreactions', 'cog'),
-                               ('addrelated', '')):
-            menu_options = self.menu_options(actions, category, icon)
-            if actions.get(category, ()):
-                menu_actions = actions.get(category, ())
-                # if the menu has just one option display it as a simple link
-                if len(menu_actions) == 1:
-                    w(u'<li><a href="%(url)s">%(action)s</a></li>' %
-                      {'url': xml_escape(menu_actions[0].url()),
-                       'action': menu_actions[0].title})
-                elif len(menu_actions) > 1:
-                    li_class = 'dropdown'
-                    if category == 're-selection':
-                        li_class += ' open'
-                    w(u'<li class="%s">'
-                      u'<a class="dropdown-toggle" data-toggle="dropdown" '
-                      u'href="#">%s'
-                      u'<span class="caret"></span>'
-                      u'</a>'
-                      u'<ul class="dropdown-menu">' % (li_class, self._cw._(category)))
-                    w(menu_options)
-                    w(u'</ul>'
-                      u'</li>')
-
-    def menu_options(self, actions, category, icon):
-        """return html code or an empty string to display
-        the toolbar menus of certain category given.
-        """
-        menu_label = u''
-        menu_list = []
-        if icon:
-            icon = self.icon_template % icon
-        for i, action in enumerate(actions.get(category, ())):
-            if action.submenu:
-                menu = self._get_menu(action.submenu)
-                if menu_label != menu.label:
-                    menu_label = menu.label
-                    if i:
-                        menu_list.append(u'<li class="divider"></li>')
-                    menu_list.append(self.li_template % (icon, menu.label))
-                for subaction in action.actual_actions():
-                    menu_list.append(u'<li><a href="%s">%s</a></li>' %
-                                        (xml_escape(subaction.url()),
-                                         self._cw._(subaction.title)))
-            else:
-                menu_list.append(u'<li><a href="%s">%s</a></li>' %
-                                    (xml_escape(action.url()),
-                                     self._cw._(action.title)))
-        return u''.join(menu_list)
-
+        for category, defaultmenu in (('re-selection', self),
+                                      ('mainactions', self),
+                                      ('moreactions', other_menu),
+                                      ('addrelated', other_menu)):
+            for action in actions.get(category, ()):
+                if action.submenu and not defaultmenu:
+                    menu = self._get_menu(action.submenu)
+                else:
+                    menu = defaultmenu
+                action.fill_menu(self, menu)
+        # if we've nothing but actions in the other_menu, add them directly into the box
+        if not self.items and len(self._menus_by_id) == 1 and not other_menu.is_empty():
+            self.items = other_menu.items
+        else: # ensure 'more actions' menu appears last
+            self._menus_in_order.remove(other_menu)
+            self._menus_in_order.append(other_menu)
+            for submenu in self._menus_in_order:
+                self.add_submenu(self, submenu)
+        if not self.items:
+            raise component.EmptyComponent()
 
 class ApplicationMessageOrbui(ApplicationMessage):
     """overwrites application message class for orbui
@@ -494,6 +520,14 @@ class BreadCrumbETypeVComponentOrbui(BreadCrumbETypeVComponent,
     """overwrites BreadCrumbETypeVComponent component for orbui template
     """
 
+class MainToolbar(component.Layout):
+   __select__ = match_context('main-toolbar',)
+   cssclass = 'section'
+
+   def render(self, w):
+        if self.init_rendering():
+            view = self.cw_extra_kwargs['view']
+            view.render_body(w)
 
 class ContextualBoxLayoutOrbui(ContextualBoxLayout):
     #__select__ = match_context('incontext', 'left', 'right') & contextual()
@@ -530,6 +564,7 @@ class ContextFreeBoxLayoutOrbui(ContextFreeBoxLayout):
             # We dissapear the boxFooter CSS place holder, as shadows
             # or effect will be made with CSS
             w(u'</div></div>\n')
+
 
 class FilterBoxOrbui(FilterBox):
     bk_linkbox_template = u'<p class="btn btn-small btn-facet">%s</p>'
