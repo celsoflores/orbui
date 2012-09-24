@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from cubicweb.web.views.primary import PrimaryView
+from cubicweb.web.views import tabs, primary
 
-class PrimaryViewOrbui(PrimaryView):
+class PrimaryViewOrbui(primary.PrimaryView):
     """overwrites the original PrimaryView de cubicweb to remove
      unnecessary tables
     """
@@ -36,7 +36,6 @@ class PrimaryViewOrbui(PrimaryView):
         self.w(u'<div class="container">'
                u'<div class="row">'
                u'<div class="span12">'
-               u'<div class="well">'
                u'<div class="row-fluid">'
                u'<div class="span9">')
         if hasattr(self, 'render_entity_summary'):
@@ -61,7 +60,6 @@ class PrimaryViewOrbui(PrimaryView):
         if boxes or hasattr(self, 'render_side_related'):
             self.render_side_boxes(boxes)
         self.w(u'</div>'
-               u'</div>'
                u'</div>'
                u'</div>'
                u'</div>'
@@ -107,10 +105,37 @@ class PrimaryViewOrbui(PrimaryView):
         """
         self.w(u'<div class="row-fluid"> '
             u'<h6 class="span4">%s</h6>'
-            u'<div class="span8"><p>%s</p></div></div>' % (label, value))
+            u'<div class="span8">%s</div></div>' % (label, value))
+
+class TabbedPrimaryViewOrbui(tabs.TabsMixin, PrimaryViewOrbui):
+    __abstract__ = True # don't register
+
+    tabs = [_('main_tab')]
+    default_tab = 'main_tab'
+
+    def cell_call(self, row, col):
+        entity = self.cw_rset.complete_entity(row, col)
+        self.render_entity_toolbox(entity)
+        self.w(u'<div class="tabbedprimary"></div>')
+        self.render_entity_title(entity)
+        self.render_tabs(self.tabs, self.default_tab, entity)
+
+class PrimaryTabOrbui(PrimaryViewOrbui):
+    __regid__ = 'main_tab'
+    title = None # should not appear in possible views
+
+    def is_primary(self):
+        return True
+
+    def render_entity_title(self, entity):
+        pass
+    def render_entity_toolbox(self, entity):
+        pass
 
 def registration_callback(vreg):
-    orbui_components = ((PrimaryViewOrbui, PrimaryView),)
+    orbui_components = ((PrimaryViewOrbui, primary.PrimaryView),
+                        (PrimaryTabOrbui, tabs.PrimaryTab),
+                        )
     vreg.register_all(globals().values(), __name__, [new for (new,old) in orbui_components])
     for new, old in orbui_components:
         vreg.register_and_replace(new, old)
