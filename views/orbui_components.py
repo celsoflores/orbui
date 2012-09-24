@@ -28,7 +28,6 @@ from cubicweb.web.views.basecomponents import (ApplLogo, CookieLoginComponent,
 from cubicweb.web.views.bookmark import BookmarksBox
 from cubicweb.web.views.basetemplates import LogForm, LogFormView
 from cubicweb.web.views.basecontrollers import JSonController
-from cubicweb.web.views.tableview import TableLayout
 from cubicweb.web.views.formrenderers import (FormRenderer,
                                               EntityCompositeFormRenderer)
 from cubicweb.web.views.formrenderers import field_label, checkbox
@@ -383,13 +382,6 @@ class JSonControllerOrbui(JSonController):
         if divid == 'pageContent':
             stream.write(u'</div>%s</div>' % nav_html.getvalue())
         return stream.getvalue()
-
-
-class TableLayoutOrbui(TableLayout):
-    """overwrites Table class for orbui template
-    """
-    cssclass = "table table-striped table-bordered table-condensed"
-
 
 class EntityCompositeFormRendererOrbui(EntityCompositeFormRenderer):
     """Multiple Edition Table for orbui template 'muledit' HTML5
@@ -757,7 +749,6 @@ def registration_callback(vreg):
                         (EditBoxOrbui, EditBox),
                         (ApplicationMessageOrbui, ApplicationMessage),
                         (JSonControllerOrbui, JSonController),
-                        (TableLayoutOrbui, TableLayout),
                         (EntityCompositeFormRendererOrbui, EntityCompositeFormRenderer),
                         (ApplicationNameOrbui, ApplicationName),
                         (BreadCrumbEntityVComponentOrbui, BreadCrumbEntityVComponent),
