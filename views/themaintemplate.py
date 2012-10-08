@@ -18,7 +18,7 @@
 from logilab.mtconverter import xml_escape
 from cubicweb.utils import UStringIO
 from cubicweb.web.views.basetemplates import TheMainTemplate, templatable_view
-from cubicweb.view import MainTemplate
+from cubicweb import view
 
 # Switching all doctypes to HTML5 , from cubicweb.view.MainTemplate
 
@@ -42,6 +42,11 @@ class TheMainTemplateOrbui(TheMainTemplate):
 
     Each section has more inner sections according to its related components.
     """
+    @property
+    def doctype(self):
+       if self._cw.xhtml_browser():
+           return STRICT_DOCTYPE
+       return STRICT_DOCTYPE_NOEXT
 
     def call(self, view):
         """call all methods to build the main template
