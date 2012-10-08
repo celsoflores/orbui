@@ -18,6 +18,15 @@
 from logilab.mtconverter import xml_escape
 from cubicweb.utils import UStringIO
 from cubicweb.web.views.basetemplates import TheMainTemplate, templatable_view
+from cubicweb.view import MainTemplate
+
+# Switching all doctypes to HTML5 , from cubicweb.view.MainTemplate
+
+HTML5 = u'<!DOCTYPE html>'
+TRANSITIONAL_DOCTYPE = HTML5
+TRANSITIONAL_DOCTYPE_NOEXT = HTML5
+STRICT_DOCTYPE = HTML5
+STRICT_DOCTYPE_NOEXT = HTML5
 
 class TheMainTemplateOrbui(TheMainTemplate):
     """the main template for orbui
