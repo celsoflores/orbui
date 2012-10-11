@@ -181,9 +181,6 @@ table.attributeForm tr th{
     margin:0;
     padding:0;
 }
-.entityfield .releditField fieldset{
-    height:24px;
-}
 .entityfield .releditField .buttonbar td{
     padding:2px 12px 12px 12px;
 }
@@ -205,6 +202,13 @@ form#entityForm legend{
     font-weight:bold;
     border-bottom:1px solid #ddd;
     color:#aaa;
+}
+/* reledit fixing from CubicWeb CSS   */
+.releditForm {
+ display:none;
+}
+.releditField {
+    display: inline;
 }
 /* LOGIN */
 /*-----------------------------------*/
