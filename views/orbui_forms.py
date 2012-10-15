@@ -83,7 +83,9 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                 # w(u'<a id="a%s" class="editionPending" href="%s">%s</a>'
                 #   % (row[1], row[4], xml_escape(row[5])))
                 # w(u'</div>')
-        w(u'<tr id="relationSelectorRow_%s" class="span6">&nbsp;</tr>' % eid)
+        w(u'<tr id="relationSelectorRow_%s" class="span6">%s</tr>'
+          % (eid, xml_escape('')))
+        # xml_escape should probably change
         w(u'</table>')
         w(u'<div class="row-fluid">')
         w(u'<div class="span6">')
