@@ -215,7 +215,7 @@ class BookmarksBoxOrbui(component.CtxComponent):
                          u'title="%s">[-]</a>' % (bookmark.eid,
                                                  req._('delete this bookmark')))
                 dlink = u''
-                w(u'<li><span class="action-category">%s %s</span></a></li>' % (dlink, label))
+                w(u'<li><span class="action-category">%s %s</span></li>' % (dlink, label))
         if self.can_edit:
             w(u'<li><span class="action-category">%s</span></li>' % req._('manage bookmarks'))
             linkto = 'bookmarked_by:%s:subject' % ueid
