@@ -210,6 +210,10 @@ form#entityForm legend{
 .releditField {
     display: inline;
 }
+.editableField { /*This allows the reledit pencil in HTML fields*/
+    margin-left: -10px;
+    margin-top: -9px;
+}
 /* LOGIN */
 /*-----------------------------------*/
 .modal .modal-header{
