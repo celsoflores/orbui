@@ -134,6 +134,9 @@ th {
 p { /*This is Important for reledit viewing*/
   margin: 0;
 }
+table { /* for reledit viewing */
+    width: 100%;
+}
 /* Primary View */
 form .errorMsg{
     color: #B94A48;
@@ -271,6 +274,7 @@ form#entityForm legend{
 }
 table.buttonbar{
     margin:0;
+    max-width:190px; /*for two buttons display on reledit*/
 }
 /* Input Text facet fix */
 .facet_filterbox h3.boxTitle{
@@ -302,9 +306,10 @@ a#facetBkLink{
 .facetValueDisabled{
     font-style:italic;
 }
-input.input-text, textarea{
-    width:75%;
+html input.input-text, html textarea{
+    width:98%;
     min-width:150px;
+    margin:2% 0 0 0;
 }
 table.attributeForm table#relatedEntities tr li{
     margin:0;
