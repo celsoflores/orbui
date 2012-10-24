@@ -131,6 +131,9 @@ th {
     line-height:18px;
     padding:12px;
 }
+p { /*This is Important for reledit viewing*/
+  margin: 0;
+}
 /* Primary View */
 form .errorMsg{
     color: #B94A48;
