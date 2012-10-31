@@ -127,9 +127,13 @@ div#progress {
     display: block;
     float: left;
     padding-right: 2%;
-    padding-top: 5px;
+    padding-top: 1px;
     text-align: right;
     width: 33%;
+}
+
+.form-horizontal .control-group div.controls ul li a{
+    padding: 3px;
 }
 
 /* tables */
