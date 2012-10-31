@@ -124,11 +124,12 @@ div#progress {
 
 /* same as .form-horizontal .control-group > label */
 .form-horizontal .control-group > span.form-label {
+    display: block;
     float: left;
+    padding-right: 2%;
     padding-top: 5px;
     text-align: right;
-    width: 140px;
-    display: block;
+    width: 33%;
 }
 
 /* tables */
