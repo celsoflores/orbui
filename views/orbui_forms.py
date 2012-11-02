@@ -257,6 +257,19 @@ class EntityFormRendererOrbui(FormRendererOrbui, formrenderers.EntityFormRendere
 
 
 class EntityInlinedFormRendererOrbui(EntityFormRendererOrbui, formrenderers.EntityInlinedFormRenderer):
+    def open_form(self, w, form, values):
+        try:
+            w(u'<div id="div-%(divid)s" onclick="%(divonclick)s">' % values)
+        except KeyError:
+            w(u'<div id="div-%(divid)s">' % values)
+        else:
+            w(u'<div id="notice-%s" class="notice">%s</div>' % (
+                values['divid'], self._cw._('click on the box to cancel the deletion')))
+        w(u'<div class="iformBody">')
+
+    def close_form(self, w, form, values):
+        w(u'</div></div>')
+
     def render_fields(self, w, form, values):
         w(u'<fieldset id="fs-%(divid)s">' % values)
         fields = self._render_hidden_fields(w, form)
