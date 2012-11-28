@@ -124,7 +124,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                                    rset=self.cw_rset, view=view,
                                    context='header-top-left-dont-hide')
         self.w(u'<header id="pageheader">'
-               u'<div class="navbar">'
+               u'<div class="navbar navbar-fixed-top navbar-inverse">'
                u'<div class="navbar-inner">'
                u'<div class="container">'
                u'<a class="btn btn-navbar" data-toggle="collapse"'
@@ -158,7 +158,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<div class="modal-body">' % self._cw._('log in'))
         login.render(w=self.w)
         self.w(u'</div>'
-               u' <div class="modal-footer"></div>'
+               
                u'</div>')
 
     def page_toolbar(self, view):
@@ -198,8 +198,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         else:
             columns = 12
         self.w(u'<section id="main">'
-               u'<div class="container-fluid">'
-               u'<div class="row-fluid">')
+               u'<div class="container">'
+               u'<div class="row">')
         # aside section - write boxes for this element
         self.nav_column(view, 'left')
         self.w(u'<div class="span%i pull-right" id="pageContent">' % columns)
