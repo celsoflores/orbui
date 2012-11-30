@@ -63,10 +63,11 @@ class SearchBoxOrbui(SearchBox):
     # make search box appear as first element (left to right) in navbar
     order = -100
     formdef = (u'<li>'
-               u'<form action="%(action)s" class="navbar-search pull-left">'
+               u'<form action="%(action)s"'
+               u' class="navbar-search form-search pull-left">'
                u'<input id="norql" type="text" accesskey="q" tabindex="%(tabindex1)s"'
                u'       title="search text" value="%(value)s" name="rql"'
-               u'       class="search-query span2" placeholder="Search"/>'
+               u'       class="input-medium search-query span2" placeholder="Search"/>'
                u'       <input type="hidden" name="__fromsearchbox" '
                u'              value="1" />'
                u'       <input type="hidden" name="subvid" '
