@@ -198,8 +198,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         else:
             columns = 12
         self.w(u'<section id="main">'
-               u'<div class="container-fluid">'
-               u'<div class="row-fluid">')
+               u'<div class="container">'
+               u'<div class="row">')
         # aside section - write boxes for this element
         self.nav_column(view, 'left')
         self.w(u'<div class="span%i pull-right" id="pageContent">' % columns)
