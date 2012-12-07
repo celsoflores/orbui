@@ -19,7 +19,7 @@
 /* HEADER STYLES */
 /*----------------------------------- */
 header#pageheader {
-    padding-top: 60px;
+    padding-top: 0px;
     padding-bottom: 5px;
 }
 @media (max-width: 768px) {
