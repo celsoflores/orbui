@@ -37,7 +37,7 @@ class PrimaryViewOrbui(primary.PrimaryView):
                u'<div class="row">'
                u'<div class="span12">'
                u'<div class="row-fluid">'
-               u'<div class="span9">')
+               u'<div class="span8">')
         if hasattr(self, 'render_entity_summary'):
             warn('[3.10] render_entity_summary method is deprecated (%s)' %
                  self, DeprecationWarning)
@@ -55,7 +55,7 @@ class PrimaryViewOrbui(primary.PrimaryView):
         self.w(u'</div>')
         self.content_navigation_components('navcontentbottom')
         self.w(u'</div>'
-               u'<div class="span3">')
+               u'<div class="span4">')
         # side boxes
         if boxes or hasattr(self, 'render_side_related'):
             self.render_side_boxes(boxes)
