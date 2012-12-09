@@ -1,6 +1,20 @@
 /* Your Custom CSS */
 /*-----------------------------------*/
 
+@media (max-width: 767px) {
+  body {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+
+
+@media (max-width: 767px) {
+  .header-content, nav, section, footer {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+
 [class^="icon-"],
 [class*=" icon-"] {
   background-image: url("../data/img/glyphicons-halflings.png");

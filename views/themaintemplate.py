@@ -103,7 +103,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         components_header_right = ctxcomponents.poss_visible_objects(self._cw,
                                   rset=self.cw_rset,
                                   view=view, context='header-right')
-        self.w(u'<div class="container">'
+        self.w(u'<div class="container header-content">'
                u'<div class="row">'
                u'<div class="span2">')
         for component in components_header_left:
@@ -124,7 +124,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                                    rset=self.cw_rset, view=view,
                                    context='header-top-left-dont-hide')
         self.w(u'<header id="pageheader">'
-               u'<div class="navbar navbar-fixed-top navbar-inverse">'
+               u'<div class="navbar navbar-inverse">'
                u'<div class="navbar-inner">'
                u'<div class="container">'
                u'<a class="btn btn-navbar" data-toggle="collapse"'
