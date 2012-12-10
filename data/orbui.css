@@ -19,9 +19,13 @@
 /* HEADER STYLES */
 /*----------------------------------- */
 header#pageheader {
-    padding-top: 0px;
     padding-bottom: 5px;
 }
+
+    div.header-content {
+        padding-top: 40px;
+    }
+
 @media (max-width: 768px) {
     header#pageheader ul.breadcrumb, header#pageheader a.btn.btn-full {
 	   display: none;

@@ -124,7 +124,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                                    rset=self.cw_rset, view=view,
                                    context='header-top-left-dont-hide')
         self.w(u'<header id="pageheader">'
-               u'<div class="navbar navbar-inverse">'
+               u'<div class="navbar navbar-static-top navbar-inverse">'
                u'<div class="navbar-inner">'
                u'<div class="container">'
                u'<a class="btn btn-navbar" data-toggle="collapse"'
