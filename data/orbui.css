@@ -26,7 +26,7 @@ header#pageheader {
     header#pageheader ul.breadcrumb, header#pageheader a.btn.btn-full {
 	   display: none;
     }
-} 
+}
 
 
 
@@ -217,7 +217,7 @@ form#entityForm legend{
 }
 
 #loginForm input.data {
-    
+
 }
 
 /* Primary View */
