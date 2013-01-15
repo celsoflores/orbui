@@ -58,11 +58,14 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.wview('htmlheader', rset=self.cw_rset)
         self.w(u'<body>')
         self.page_header(view)
+        self.w(u'<div class="container" id="page">')
         self.page_toolbar(view)
         self.page_main(view)
+        self.w(u'</div>')
         self.page_footer(view)
         self.w(u'</body>')
 
+    # html header section
     def header_top_left(self, view, ctxcomponents):
         """render components assigned to the top left place of the header
         """
@@ -105,11 +108,11 @@ class TheMainTemplateOrbui(TheMainTemplate):
                                   view=view, context='header-right')
         self.w(u'<div class="container header-content">'
                u'<div class="row">'
-               u'<div class="span2">')
+               u'<div class="span3">')
         for component in components_header_left:
             component.render(w=self.w)
         self.w(u'</div>'
-               u'<div class="span10">')
+               u'<div class="span9">')
         for component in components_header_main:
             component.render(w=self.w)
         self.w(u'</div>'
@@ -158,9 +161,9 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<div class="modal-body">' % self._cw._('log in'))
         login.render(w=self.w)
         self.w(u'</div>'
-               
                u'</div>')
 
+    # html Page Toolbar starts
     def page_toolbar(self, view):
         """display contextual toolbar
         """
@@ -183,6 +186,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                    u'</div>'
                    u'</nav>')
 
+    # html Page main
     def page_main(self, view):
         """display main section of the main template
         """
@@ -229,6 +233,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'</div>'
                u'</section> -->')
 
+    # html Page footer
     def page_footer(self, view):
         """display page footer
         """
