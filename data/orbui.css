@@ -16,6 +16,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>..
  */
 
+
 /* HEADER STYLES */
 /*----------------------------------- */
 header#pageheader {
@@ -378,4 +379,12 @@ th.headerSortUp {
 th.headerSortDown {
   background: url("img/table_down.png") 0% 45% no-repeat;
   padding-left:20px;
+}
+
+/*
+----- UI content -----
+                   */
+body h1, .ui-widget{
+    margin:0 auto;
+    width:96%;
 }
