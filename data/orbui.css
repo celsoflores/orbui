@@ -234,6 +234,10 @@ form#entityForm legend{
     border:0;
     margin:0;
 }
+.editableFieldValue{
+    white-space: pre-line;
+    text-align: justify;
+}
 .editableFieldValue:hover{
     opacity:.8;
 }
