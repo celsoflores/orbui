@@ -62,7 +62,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<div class="row">')
         self.page_toolbar(view)
         self.w(u'</div>')
-        self.w(u'<div class="row">')
+        self.w(u'<div id="maincontent">')
         self.page_main(view)
         self.w(u'</div>')
         self.page_footer(view)
@@ -207,8 +207,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<!-- <section id="main">'
                u'<div class="container">'
                u'<div class="row"> -->')
-        # aside section - write boxes for this element
-        self.nav_column(view, 'left')
+
         self.w(u'<div class="span%i" id="pageContent">' % columns)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
@@ -232,6 +231,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         view.render(w=self.w)
         self.w(nav_html.getvalue())
         self.w(u'</div>')
+        # aside section - write boxes for this element
+        self.nav_column(view, 'left')
         self.w(u'<!-- </div>'
                u'</div>'
                u'</section> -->')
