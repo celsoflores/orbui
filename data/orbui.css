@@ -302,8 +302,9 @@ a#facetBkLink{
 }
 .facetValueDisabled span, div.facetCheckBox span{
     opacity:.6;
-    padding-left:16px;
+    padding-left:18px;
     text-decoration:none;
+    font-size:12px;
 }
 div div.facetValueSelected{
     background-color: #08C;
@@ -414,7 +415,41 @@ th.headerSortDown {
 /*
 ----- UI content -----
                    */
-body h1, .ui-widget{
-    margin:0 auto;
-    width:96%;
+
+
+@media only screen
+and (min-width : 1224px) {
+/* Styles */
+
+div#maincontent #aside-main {
+    margin: 0;
+    position: absolute;
+    right: 10px;
+    top: 120px;
+}
+#page #maincontent{
+    min-height:400px;
+}
+#maincontent table.album{
+    width:70%;
+}
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px) {
+/* Styles */
+#aside-main{
+    position:relative;
+}
+#page #maincontent{
+    min-height:100px;
+}
+#maincontent table.album{
+    width:100%;
+}
+.facetFilteredBox fieldset input{
+    max-width:80px;
+}
 }
