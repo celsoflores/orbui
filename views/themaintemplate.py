@@ -65,6 +65,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<div id="maincontent">')
         self.page_main(view)
         self.w(u'</div>')
+        self.w(u'</div>')
         self.page_footer(view)
         self.w(u'</body>')
 
