@@ -290,6 +290,32 @@ a#facetBkLink{
 .facetValueDisabled{
     font-style:italic;
 }
+/* facets */
+.facetTitle {
+    margin-bottom: 6px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 6px;
+}
+.facet select {
+    display:none;
+}
+.facetValueDisabled span, div.facetCheckBox span{
+    opacity:.6;
+    padding-left:16px;
+    text-decoration:none;
+}
+div div.facetValueSelected{
+    background-color: #08C;
+    color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin:2px;
+}
+div.facetValueSelected span{
+    opacity:1;
+}
 html input.input-text, html textarea{
     width:98%;
     min-width:150px;
