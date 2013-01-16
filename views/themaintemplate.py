@@ -59,7 +59,10 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<body>')
         self.page_header(view)
         self.w(u'<div class="container" id="page">')
+        self.w(u'<div class="row">')
         self.page_toolbar(view)
+        self.w(u'</div>')
+        self.w(u'<div class="row">')
         self.page_main(view)
         self.w(u'</div>')
         self.page_footer(view)
@@ -206,7 +209,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<div class="row"> -->')
         # aside section - write boxes for this element
         self.nav_column(view, 'left')
-        self.w(u'<div class="span%i pull-right" id="pageContent">' % columns)
+        self.w(u'<div class="span%i" id="pageContent">' % columns)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
