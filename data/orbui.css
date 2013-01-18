@@ -426,14 +426,14 @@ th.headerSortDown {
 
 
 @media only screen
-and (min-width : 1224px) {
+and (min-width : 800px) {
 /* Styles */
 
 div#maincontent #aside-main {
     margin: 0;
     position: absolute;
     right: 10px;
-    top: 120px;
+    top: 150px;
 }
 #page #maincontent{
     min-height:400px;

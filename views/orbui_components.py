@@ -59,7 +59,7 @@ class ApplLogoOrbui(ApplLogo):
 class SearchBoxOrbui(SearchBox):
     """display a box with a simple search form
     """
-    context = _('header-main')
+    context = _('header-top-right')
     # make search box appear as first element (left to right) in navbar
     #order = 100
     formdef = (u'<div class="pull-right" id="search-box">'

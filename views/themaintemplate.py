@@ -90,7 +90,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                                rset=self.cw_rset, view=view,
                                context='header-top-right')
         if components_top_right:
-            self.w(u'<ul class="nav pull-right">')
+            self.w(u'<ul class="nav pull-right header-top-right">')
             for i, component in enumerate(components_top_right):
                 if i > 0:
                     self.w(u'<li class="divider-vertical"></li>')
