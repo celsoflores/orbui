@@ -337,6 +337,14 @@ table.attributeForm table#relatedEntities th,table.attributeForm table#relatedEn
 table.attributeForm td{
     vertical-align:middle;
 }
+
+table.schemaInfo{ /*From Bootstrap*/
+border:1px solid #ddd;border-collapse:separate;*border-collapse:collapse;border-left:0;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px
+}
+table.schemaInfo td{ /*From Bootstrap*/
+border:1px solid #eee;border-collapse:separate;*border-collapse:collapse;
+}
+
 .cwinoutadd, .cwinoutremove{
     margin:3px 12px;
 }
