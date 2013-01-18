@@ -59,10 +59,10 @@ class ApplLogoOrbui(ApplLogo):
 class SearchBoxOrbui(SearchBox):
     """display a box with a simple search form
     """
-    context = _('header-top-right')
+    context = _('header-main')
     # make search box appear as first element (left to right) in navbar
-    order = -100
-    formdef = (u'<li>'
+    #order = 100
+    formdef = (u'<div class="pull-right" id="search-box">'
                u'<form action="%(action)s"'
                u' class="navbar-search form-search pull-left">'
                u'<input id="norql" type="text" accesskey="q" tabindex="%(tabindex1)s"'
@@ -77,7 +77,7 @@ class SearchBoxOrbui(SearchBox):
                #also
                u'<!--input tabindex="%(tabindex2)s" type="submit" id="rqlboxsubmit"'
                u'    class="rqlsubmit" value="" /-->'
-               u'</form></li>')
+               u'</form></div>')
 
     def render(self, w):
         """overwrites SearchBox component for orbui template
@@ -143,19 +143,25 @@ class AuthenticatedUserStatusOrbui(AuthenticatedUserStatus):
         # display useractions and siteactions
         actions = self._cw.vreg['actions'].possible_actions(
             self._cw, rset=self.cw_rset)
-        w(u'''<li class="dropdown"><a href="#" class="dropdown-toggle"
-              data-toggle="dropdown">%s <span class="caret"></span></a>
-              <ul class="dropdown-menu">''' % name)
-        for action in actions.get('useractions', ()):
-            w(u'<li>')
+        w(u'<li id="user-name"><small><a>%s</a></small></li>' % name)
+        w(u'<li class="divider">|</li>')
+        for action in actions.get('useractions', ())[2:]:
+            w(u'<li id="logout"><small>')
             self.action_link(action).render(w=w)
-            w(u'</li>')
-        for action in actions.get('siteactions', ()):
-            w(u'<li>')
-            self.action_link(action).render(w=w)
-            w(u'</li>')
+            w(u'</small></li>')
         w(u'</ul>'
           u'</li>')
+#        w(u'''<li class="dropdown"><a href="#" class="dropdown-toggle"
+#              data-toggle="dropdown">%s <span class="caret"></span></a>
+#              <ul class="dropdown-menu">''' % name)
+#        for action in actions.get('useractions', ())[-1]:
+#            w(u'<li>')
+#            self.action_link(action).render(w=w)
+#            w(u'</li>')
+#        for action in actions.get('siteactions', ()):
+#            w(u'<li>')
+#            self.action_link(action).render(w=w)
+#            w(u'</li>')
 
 
 class LogFormOrbui(LogForm):
@@ -512,7 +518,7 @@ class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent,
         w(u'<ul class="breadcrumb">')
         if self.first_separator:
             w(u'<li><span class="divider">%s</span></li>' % self.separator)
-        w(u'<li>%s</li>' % self._cw._('search'))
+        w(u'<li id="search">%s</li>' % self._cw._('search'))
         w(u'</ul>')
 
 
