@@ -149,8 +149,6 @@ class AuthenticatedUserStatusOrbui(AuthenticatedUserStatus):
             w(u'<li id="logout"><small>')
             self.action_link(action).render(w=w)
             w(u'</small></li>')
-        w(u'</ul>'
-          u'</li>')
 #        w(u'''<li class="dropdown"><a href="#" class="dropdown-toggle"
 #              data-toggle="dropdown">%s <span class="caret"></span></a>
 #              <ul class="dropdown-menu">''' % name)
