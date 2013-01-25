@@ -129,8 +129,9 @@ table.attributeForm tr th{
 }
 .editableField{
     position:absolute;
-    width:100%;
     opacity:.6;
+    margin-top:-2px;
+    padding:2px 0;
 }
 .editableField:hover{
     opacity:1;
