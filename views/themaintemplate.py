@@ -62,7 +62,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<div class="row">')
         self.page_toolbar(view)
         self.w(u'</div>')
-        self.w(u'<div id="maincontent">')
+        self.w(u'<div id="maincontent" class="row">')
         self.page_main(view)
         self.w(u'</div>')
         self.w(u'</div>')
@@ -209,7 +209,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                u'<div class="container">'
                u'<div class="row"> -->')
 
-        self.w(u'<div class="span%i" id="pageContent">' % columns)
+        self.w(u'<div class="span%i container" id="pageContent">' % columns)
         if rqlcomp:
             rqlcomp.render(w=self.w, view=view)
         msgcomp = components.select_or_none('applmessages', self._cw,
