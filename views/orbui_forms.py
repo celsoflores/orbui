@@ -72,7 +72,7 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                                'label': label, 'add_new': add_new})
                 w(u'<div id="collapse_%s" class="accordion-body collapse in">'
                   u'    <div class="accordion-inner">'
-                  u'        <ul>' % rschema)
+                  u'        <ul class="thumbnails">' % rschema)
                 for viewparams in related:
                     w(u'<li>%s'
                       u'<div id="span%s" class="%s">%s</div>'
