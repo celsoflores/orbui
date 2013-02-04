@@ -15,9 +15,8 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 from logilab.mtconverter import xml_escape
-
+from cubicweb import neg_role
 from cubicweb.utils import json_dumps
-
 from cubicweb.web import formwidgets
 from cubicweb.web.views import formrenderers
 from cubicweb.web.views.autoform import (AutomaticEntityForm,
@@ -26,6 +25,7 @@ from cubicweb.web.views.forms import FieldsForm
 
 FieldsForm.needs_css = ()
 FieldsForm.cssclass = 'form-horizontal'
+
 
 class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
     """override the GenericRelation default widget.
@@ -39,22 +39,37 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         _ = req._
         __ = _
         eid = form.edited_entity.eid
+        etype = form.edited_entity.e_schema
+        relative_url = '%s' % eid
         w(u'<div class="accordion" id="accordion_%s">'
            % eid)
         for rschema, role, related in field.relations_table(form):
             # already linked entities
             if related:
+                # FIXME should be a more optimized way to get the name of
+                # the target entity.
+                relation = req.entity_from_eid(rschema.eid)
+                target = rschema.targets(etype, role)[0]
                 label = rschema.display_name(req, role,
                         context=form.edited_entity.__regid__)
+
+                linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
+                link_label = u'%s %s' % (req._('add'), req._(target))
+                add_new = (u'<a href="/add/%(target)s?__linkto=%(linkto)s'
+                           '&__redirectpath=%(url)s&__redirectvid=edition">'
+                           '%(link_label)s</a>' %
+                           {'linkto': linkto, 'url': relative_url,
+                            'link_label': link_label, 'target': target})
+
                 w(u'<div class="accordion-group">'
                   u'<div class="accordion-heading">'
                   u'<a class="accordion-toggle" data-toggle="collapse" '
                   u'data-parent="#accordion_%(eid)s" '
                   u'href="#collapse_%(relation_name)s">'
-                  u'%(label)s'
+                  u'%(label)s %(add_new)s'
                   u'</a>'
                   u'</div>' % {'eid': eid, 'relation_name': rschema,
-                               'label': label})
+                               'label': label, 'add_new': add_new})
                 w(u'<div id="collapse_%s" class="accordion-body collapse in">'
                   u'    <div class="accordion-inner">'
                   u'        <ul>' % rschema)
