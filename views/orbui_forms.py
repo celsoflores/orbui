@@ -20,7 +20,8 @@ from cubicweb.utils import json_dumps
 
 from cubicweb.web import formwidgets
 from cubicweb.web.views import formrenderers
-from cubicweb.web.views.autoform import AutomaticEntityForm, GenericRelationsField
+from cubicweb.web.views.autoform import (AutomaticEntityForm,
+                                         GenericRelationsField)
 from cubicweb.web.views.forms import FieldsForm
 
 FieldsForm.needs_css = ()
@@ -38,32 +39,47 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         _ = req._
         __ = _
         eid = form.edited_entity.eid
+        w(u'<div class="accordion" id="accordion_%s">'
+           % eid)
         for rschema, role, related in field.relations_table(form):
             # already linked entities
             if related:
-                label = rschema.display_name(req, role, context=form.edited_entity.__regid__)
-                w(u'<div class="control-group">')
-                w(u'<span class="form-label">%s</span>' % label)
-                w(u'<div class="controls">')
-                w(u'<ul>')
+                label = rschema.display_name(req, role,
+                        context=form.edited_entity.__regid__)
+                w(u'<div class="accordion-group">'
+                  u'<div class="accordion-heading">'
+                  u'<a class="accordion-toggle" data-toggle="collapse" '
+                  u'data-parent="#accordion_%(eid)s" '
+                  u'href="#collapse_%(relation_name)s">'
+                  u'%(label)s'
+                  u'</a>'
+                  u'</div>' % {'eid': eid, 'relation_name': rschema,
+                               'label': label})
+                w(u'<div id="collapse_%s" class="accordion-body collapse in">'
+                  u'    <div class="accordion-inner">'
+                  u'        <ul>' % rschema)
                 for viewparams in related:
-                    w(u'<li>%s <span id="span%s" class="%s">%s</span></li>'
-                      % (viewparams[1], viewparams[0], viewparams[2], viewparams[3]))
+                    w(u'<li>%s'
+                      u'<div id="span%s" class="%s">%s</div>'
+                      u'</li>' % (viewparams[1], viewparams[0],
+                                  viewparams[2], viewparams[3]))
                 if not form.force_display and form.maxrelitems < len(related):
-                    link = (u'<span>'
-                            '[<a href="javascript: window.location.href+=\'&amp;__force_display=1\'">%s</a>]'
+                    link = (u'<span>[<a href="javascript:window.location.href+='
+                            u'\'&amp;__force_display=1\'">%s</a>]'
                             '</span>' % _('view all'))
                     w(u'<li>%s</li>' % link)
-                w(u'</ul>')
-                w(u'</div>')
-                w(u'</div>')
+                w(u'        </ul>'
+                  u'    </div>'
+                  u'</div>'
+                  u'</div>')
         pendings = list(field.restore_pending_inserts(form))
-        w(u'<div class="control-group">')
-        w(u'<div class="controls">')
-        # table is here in order to keep the js compatibility with cw,
-        # otherwise get ride of the table
-        w(u'<table class="table table-layout table-condensed">')
-        if pendings:
+        w(u'    </div>'
+          u'</div>')
+        # FIXME try to change this table with a fancy html code.
+        w(u'<table id="relatedEntities">')
+        if not pendings:
+            w(u'<tr><th>&#160;</th><td>&#160;</td></tr>')
+        else:
             for row in pendings:
                 # soon to be linked to entities
                 w(u'<tr id="tr%s">' % row[1])
@@ -75,34 +91,23 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                   % (row[1], row[4], xml_escape(row[5])))
                 w(u'</td>')
                 w(u'</tr>')
-                # # soon to be linked to entities : orbui version
-                # w(u'<div id="tr%s">' % row[1])
-                # w(u'<span class="label">%s</span>' % row[3])
-                # w(u'<a class="handle" title="%s" href="%s">[x]</a>&nbsp;' %
-                #   (_('cancel this insert'), row[2]))
-                # w(u'<a id="a%s" class="editionPending" href="%s">%s</a>'
-                #   % (row[1], row[4], xml_escape(row[5])))
-                # w(u'</div>')
-        w(u'<tr id="relationSelectorRow_%s" class="span6">%s</tr>'
-          % (eid, xml_escape('')))
-        # xml_escape should probably change
-        w(u'</table>')
-        w(u'<div class="row-fluid">')
-        w(u'<div class="span6">')
+        w(u'<tr id="relationSelectorRow_%s" class="separator">' % eid)
+        w(u'<th class="labelCol">')
         w(u'<select id="relationSelector_%s" tabindex="%s" '
-          'onchange="javascript:showMatchingSelect(this.options[this.selectedIndex].value,%s);">'
+          u'onchange="javascript:showMatchingSelect'
+          u'(this.options[this.selectedIndex].value,%s);">'
           % (eid, req.next_tabindex(), xml_escape(json_dumps(eid))))
         w(u'<option value="">%s</option>' % _('select a relation'))
         for i18nrtype, rschema, role in field.relations:
             # more entities to link to
             w(u'<option value="%s_%s">%s</option>' % (rschema, role, i18nrtype))
         w(u'</select>')
-        w(u'</div>')
-        w(u'<div id="unrelatedDivs_%s"></div>' % eid)
-        w(u'</div>')
-        w(u'</div>')
-        w(u'</div>')
+        w(u'</th>')
+        w(u'<td id="unrelatedDivs_%s"></td>' % eid)
+        w(u'</tr>')
+        w(u'</table>')
         return '\n'.join(stream)
+
 
 GenericRelationsField.widget = GenericRelationsWidgetOrbui
 GenericRelationsField.control_field = False
