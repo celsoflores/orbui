@@ -92,6 +92,9 @@ th {
     border-radius: 6px;
     border-bottom: 1px solid #C4C4C4;
 }
+ul.breadcrumb{
+    margin-top:12px;
+}
 p { /*This is Important for reledit viewing*/
   margin: 0;
 }
