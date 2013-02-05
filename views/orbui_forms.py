@@ -41,7 +41,7 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         eid = form.edited_entity.eid
         etype = form.edited_entity.e_schema
         relative_url = '%s' % eid
-        w(u'<div class="accordion" id="accordion_%s">'
+        w(u'<div class="accordion form-relation" id="accordion_%s">'
            % eid)
         for rschema, role, related in field.relations_table(form):
             # already linked entities
@@ -56,14 +56,17 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                 linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
                 link_label = u'%s %s' % (req._('add'), req._(target))
                 add_new = (u'<a href="/add/%(target)s?__linkto=%(linkto)s'
-                           '&__redirectpath=%(url)s&__redirectvid=edition">'
-                           '%(link_label)s</a>' %
+                           '&__redirectpath=%(url)s&__redirectvid=edition "'
+                           'class="accordion-toggle span2 '
+                           'btn btn-small btn-success pull-right">'
+                           '%(link_label)s'
+                           '</a>' %
                            {'linkto': linkto, 'url': relative_url,
                             'link_label': link_label, 'target': target})
 
                 w(u'<div class="accordion-group">'
-                  u'<div class="accordion-heading">'
-                  u'<a class="accordion-toggle" data-toggle="collapse" '
+                  u'<div class="accordion-heading row">'
+                  u'<a class="accordion-toggle span9" data-toggle="collapse" '
                   u'data-parent="#accordion_%(eid)s" '
                   u'href="#collapse_%(relation_name)s">'
                   u'%(label)s %(add_new)s'
@@ -74,8 +77,8 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                   u'    <div class="accordion-inner">'
                   u'        <ul class="thumbnails">' % rschema)
                 for viewparams in related:
-                    w(u'<li>%s'
-                      u'<div id="span%s" class="%s">%s</div>'
+                    w(u'<li class=""><div class="btn btn-small">%s</div>'
+                      u'<div id="span%s" class="%s span3 pull-right">%s</div>'
                       u'</li>' % (viewparams[1], viewparams[0],
                                   viewparams[2], viewparams[3]))
                 if not form.force_display and form.maxrelitems < len(related):

@@ -171,6 +171,35 @@ form#entityForm legend{
     border-bottom:1px solid #ddd;
     color:#aaa;
 }
+/* FORMS relations */
+.form-relation .accordion-group{
+    border:1px solid #ddd;
+    background:#fbfbfc;
+    margin-bottom:10px;
+}
+.form-relation .accordion-inner{
+    background:#fffefe;
+}
+.form-relation .accordion-inner .thumbnails{
+    margin:0;
+    margin-top:15px;
+}
+.form-relation .accordion-inner .btn{
+    color:transparent;
+    color:#eee;
+    font-size:0;
+}
+.form-relation .accordion-inner .btn a{
+    color:#888;
+    font-size:16px;
+    line-height:18px;
+}
+.pendingDelete a{ /*Bring color and line through*/
+    color:rgb(221, 17, 68);
+    text-decoration:line-through;
+    font-style:italic;
+}
+
 /* reledit fixing from CubicWeb CSS   */
 .releditForm {
  display:none;
