@@ -33,8 +33,15 @@ header#pageheader {
     }
 }
 
-
-
+header#pageheader #search-box{
+    max-width:150px;
+    background:transparent;
+    border:none;
+    box-shadow:none;
+}
+header#pageheader #search-box form{
+    margin:0;
+}
 /* MAIN SECTION STYLES */
 /*-----------------------------------*/
 @media screen and (min-width: 768px) {

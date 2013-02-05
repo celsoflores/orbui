@@ -62,7 +62,7 @@ class SearchBoxOrbui(SearchBox):
     context = _('header-top-right')
     # make search box appear as first element (left to right) in navbar
     #order = 100
-    formdef = (u'<div class="pull-right" id="search-box">'
+    formdef = (u'<div class="btn btn-small" id="search-box">'
                u'<form action="%(action)s"'
                u' class="navbar-search form-search pull-left">'
                u'<input id="norql" type="text" accesskey="q" tabindex="%(tabindex1)s"'
@@ -143,10 +143,9 @@ class AuthenticatedUserStatusOrbui(AuthenticatedUserStatus):
         # display useractions and siteactions
         actions = self._cw.vreg['actions'].possible_actions(
             self._cw, rset=self.cw_rset)
-        w(u'<li id="user-name"><small><a>%s</a></small></li>' % name)
-        w(u'<li class="divider">|</li>')
+        w(u'<li id="user-name" class="btn btn-small"><small><a>%s</a></small></li>' % name)
         for action in actions.get('useractions', ())[2:]:
-            w(u'<li id="logout"><small>')
+            w(u'<li id="logout" class="btn btn-small"><small>')
             self.action_link(action).render(w=w)
             w(u'</small></li>')
 #        w(u'''<li class="dropdown"><a href="#" class="dropdown-toggle"
