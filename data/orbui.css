@@ -130,6 +130,9 @@ form .errorMsg{
     padding:12px;
     text-align:right;
 }
+form .control-group label{ /*Strong*/
+    font-weight:bold;
+}
 table.attributeForm label.required {
   background: url("required.png") 100% 50% no-repeat;
   padding-right:8px;

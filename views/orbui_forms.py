@@ -156,10 +156,10 @@ class FormRendererOrbui(formrenderers.FormRenderer):
                      "and field as argument (%s)" % field, DeprecationWarning)
                 descr = descr(form)
         if descr:
-            help.append('<p class="help-block">%s</p>' % self._cw._(descr))
+            help.append('<p class="muted"><small>%s</small></p>' % self._cw._(descr))
         example = field.example_format(self._cw)
         if example:
-            help.append('<p class="help-block">(%s: %s)</p>'
+            help.append('<p class="muted"><small>(%s: %s)</small></p>'
                         % (self._cw._('sample format'), example))
         return u'&#160;'.join(help)
 
