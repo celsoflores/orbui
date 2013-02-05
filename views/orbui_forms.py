@@ -44,52 +44,49 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         w(u'<div class="accordion form-relation" id="accordion_%s">'
            % eid)
         for rschema, role, related in field.relations_table(form):
-            # already linked entities
-            if related:
-                # FIXME should be a more optimized way to get the name of
-                # the target entity.
-                relation = req.entity_from_eid(rschema.eid)
-                target = rschema.targets(etype, role)[0]
-                label = rschema.display_name(req, role,
-                        context=form.edited_entity.__regid__)
+            # FIXME should be a more optimized way to get the name of
+            # the target entity.
+            relation = req.entity_from_eid(rschema.eid)
+            target = rschema.targets(etype, role)[0]
+            label = rschema.display_name(req, role,
+                                         context=form.edited_entity.__regid__)
 
-                linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
-                link_label = u'%s %s' % (req._('add'), req._(target))
-                add_new = (u'<a href="/add/%(target)s?__linkto=%(linkto)s'
-                           '&__redirectpath=%(url)s&__redirectvid=edition "'
-                           'class="accordion-toggle span2 '
-                           'btn btn-small btn-success pull-right">'
-                           '%(link_label)s'
-                           '</a>' %
-                           {'linkto': linkto, 'url': relative_url,
-                            'link_label': link_label, 'target': target})
-
-                w(u'<div class="accordion-group">'
-                  u'<div class="accordion-heading row">'
-                  u'<a class="accordion-toggle span9" data-toggle="collapse" '
-                  u'data-parent="#accordion_%(eid)s" '
-                  u'href="#collapse_%(relation_name)s">'
-                  u'%(label)s %(add_new)s'
-                  u'</a>'
-                  u'</div>' % {'eid': eid, 'relation_name': rschema,
-                               'label': label, 'add_new': add_new})
-                w(u'<div id="collapse_%s" class="accordion-body collapse in">'
-                  u'    <div class="accordion-inner">'
-                  u'        <ul class="thumbnails">' % rschema)
-                for viewparams in related:
-                    w(u'<li class=""><div class="btn btn-small">%s</div>'
-                      u'<div id="span%s" class="%s span3 pull-right">%s</div>'
-                      u'</li>' % (viewparams[1], viewparams[0],
-                                  viewparams[2], viewparams[3]))
-                if not form.force_display and form.maxrelitems < len(related):
-                    link = (u'<span>[<a href="javascript:window.location.href+='
-                            u'\'&amp;__force_display=1\'">%s</a>]'
-                            '</span>' % _('view all'))
-                    w(u'<li>%s</li>' % link)
-                w(u'        </ul>'
-                  u'    </div>'
-                  u'</div>'
-                  u'</div>')
+            linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
+            link_label = u'%s %s' % (req._('add'), req._(target))
+            add_new = (u'<a href="/add/%(target)s?__linkto=%(linkto)s'
+                       '&__redirectpath=%(url)s&__redirectvid=edition "'
+                       'class="accordion-toggle span2 '
+                       'btn btn-small btn-success pull-right">'
+                       '%(link_label)s'
+                       '</a>' %
+                       {'linkto': linkto, 'url': relative_url,
+                        'link_label': link_label, 'target': target})
+            w(u'<div class="accordion-group">'
+              u'<div class="accordion-heading row">'
+              u'<a class="accordion-toggle span9" data-toggle="collapse" '
+              u'data-parent="#accordion_%(eid)s" '
+              u'href="#collapse_%(relation_name)s">'
+              u'%(label)s %(add_new)s'
+              u'</a>'
+              u'</div>' % {'eid': eid, 'relation_name': rschema,
+                           'label': label, 'add_new': add_new})
+            w(u'<div id="collapse_%s" class="accordion-body collapse in">'
+              u'    <div class="accordion-inner">'
+              u'        <ul class="thumbnails">' % rschema)
+            for viewparams in related:
+                w(u'<li class=""><div class="btn btn-small">%s</div>'
+                  u'<div id="span%s" class="%s span3 pull-right">%s</div>'
+                  u'</li>' % (viewparams[1], viewparams[0],
+                              viewparams[2], viewparams[3]))
+            if not form.force_display and form.maxrelitems < len(related):
+                link = (u'<span>[<a href="javascript:window.location.href+='
+                        u'\'&amp;__force_display=1\'">%s</a>]'
+                        '</span>' % _('view all'))
+                w(u'<li>%s</li>' % link)
+            w(u'        </ul>'
+              u'    </div>'
+              u'</div>'
+              u'</div>')
         pendings = list(field.restore_pending_inserts(form))
         w(u'    </div>'
           u'</div>')
