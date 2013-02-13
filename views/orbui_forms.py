@@ -54,30 +54,37 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
 
             linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
             link_label = u'%s %s' % (req._('add'), req._(target))
-            add_new = (u'<a href="/add/%(target)s?__linkto=%(linkto)s'
-                       '&__redirectpath=%(url)s&__redirectvid=edition "'
-                       'class="accordion-toggle span2 '
-                       'btn btn-small btn-success pull-right">'
-                       '%(link_label)s'
-                       '</a>' %
-                       {'linkto': linkto, 'url': relative_url,
-                        'link_label': link_label, 'target': target})
             relate_entity = entity.view('autocomplete-edition-view',relation=rschema,
                                         role=role, etype_search=target)
+            add_new = (u'<div class="span8 relate-entity">%(relate_entity)s</div>'
+                       '<div class="pull-right">'
+                       '<a href="/add/%(target)s?__linkto=%(linkto)s'
+                       '&__redirectpath=%(url)s&__redirectvid=edition "'
+                       'class="accordion-toggle '
+                       'btn btn-micro btn-success pull-right">'
+                       '%(link_label)s'
+                       '</a>'
+                       '</div>'
+                        %
+                       {'relate_entity': relate_entity,
+                       'linkto': linkto, 'url': relative_url,
+                        'link_label': link_label, 'target': target})
             w(u'<div class="accordion-group">'
-              u'<div class="accordion-heading row">'
-              u'<a class="accordion-toggle span9" data-toggle="collapse" '
-              u'data-parent="#accordion_%(eid)s" '
+              u'<div class="accordion-heading container-fluid">'
+              u'<div class="row">'
+              u'<a class="accordion-toggle" data-toggle="collapse" '
+              u'data-parent="# accordion_%(eid)s" '
               u'href="#collapse_%(relation_name)s">'
-              u'%(label)s %(add_new)s'
+              u'%(label)s'
               u'</a>'
-              u'</div>' % {'eid': eid, 'relation_name': rschema, 'label': label,
+              u'</div>'
+              u'<div class="row" id="add-relation-combo">%(add_new)s</div>'
+              u'</div>'
+               % {'eid': eid, 'relation_name': rschema, 'label': label,
                            'add_new': add_new})
             w(u'<div id="collapse_%(relation)s" class="accordion-body collapse in">'
               u'    <div class="accordion-inner">'
-              u'     %(relate_entity)s'
-              u'        <ul class="thumbnails">' % {'relation':rschema,
-                                                    'relate_entity': relate_entity })
+              u'        <ul class="thumbnails">' % {'relation':rschema})
             for viewparams in related:
                 w(u'<li class=""><div class="btn btn-small">%s</div>'
                   u'<div id="span%s" class="%s span3 pull-right">%s</div>'

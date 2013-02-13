@@ -184,7 +184,9 @@ form#entityForm legend{
     border-bottom:1px solid #ddd;
     color:#aaa;
 }
-/* FORMS relations */
+/*
+----- Form Relations -----
+                            */
 .form-relation .accordion-group{
     border:1px solid #ddd;
     background:#fbfbfc;
@@ -202,6 +204,10 @@ form#entityForm legend{
     color:#eee;
     font-size:0;
 }
+.form-relation .accordion-inner fieldset .btn{
+    font-size:18px;
+    color:#eee;
+}
 .form-relation .accordion-inner .btn a{
     color:#888;
     font-size:16px;
@@ -212,7 +218,85 @@ form#entityForm legend{
     text-decoration:line-through;
     font-style:italic;
 }
-
+#add-relation-combo{
+    padding:6px 0;
+}
+#add-relation-combo form{
+    margin-bottom:3px ;
+}
+#add-relation-combo label{
+    margin:6px 6px 0 0;
+}
+#btn-add-relation{
+    margin-left:10px;
+}
+/* Autocomplete from Jquery*/
+.ac_results {
+	padding: 6px 0;
+	border: 1px solid #eee;
+	background-color: white;
+	overflow: hidden;
+	z-index: 99999;
+	list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+     -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;
+}
+.ac_results = dropdown
+.ac_results  ul { /*Equals dropdown-menu css*/
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+/*  display: none;*/
+    float: left;
+    min-width: 160px;
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.ac_results li {
+    line-height: 20px;
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: default;
+	display: block;
+	/*
+	if width will be 100% horizontal scrollbar will apear
+	when scroll mode will be used
+	*/
+	/*width: 100%;*/
+	font: menu;
+	/*
+	it is very important, if line-height not setted or setted
+	in relative units scroll will be broken in firefox
+	*/
+	overflow: hidden;
+    background-image: none;
+}
+.ac_loading {
+	background: white url('ajax-loader.gif') 98% center no-repeat;
+}
+.ac_odd {
+	background-color: white;
+}
+.ac_over {
+	background-color: #0088CC;
+	color: #efefef;
+}
 /* reledit fixing from CubicWeb CSS   */
 .releditForm {
  display:none;
@@ -454,12 +538,9 @@ th.headerSortDown {
   background: url("img/table_down.png") 0% 45% no-repeat;
   padding-left:20px;
 }
-
 /*
 ----- UI content -----
                    */
-
-
 @media only screen
 and (min-width : 800px) {
 /* Styles */
@@ -477,7 +558,6 @@ div#maincontent #aside-main {
     width:70%;
 }
 }
-
 /* iPads (portrait and landscape) ----------- */
 @media only screen
 and (min-device-width : 768px)
@@ -496,3 +576,4 @@ and (max-device-width : 1024px) {
     max-width:80px;
 }
 }
+
