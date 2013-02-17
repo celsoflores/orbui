@@ -96,30 +96,23 @@ class AutocompleteEditionView(EntityView):
                   % {'eid': eid, 'relation': relation, 'subject': subject,
                      'etype_search': etype_search})
         self._cw.add_onload(jscode)
-        self.w(u'<form method="get" action="/autocomplete-entity-controller" '
-               u'name="entityname_%(relation)s_%(eid)s">'
-               u'<fieldset>'
-               u'<label class="span4 muted"><small class="pull-right">%(name)s</small>'
+        self.w(u'<fieldset>'
+               u'<label class="span4 muted">'
+               u'<small class="pull-right">%(name)s</small>'
                u'</label>'
                u'<input id="entityname_%(relation)s_%(eid)s" '
                u'name="entityname_%(relation)s_%(eid)s" type="text" '
                u'class="input"/>'
                u'<input id="entityeid_%(relation)s_%(eid)s" '
                u'name="entityeid_%(relation)s_%(eid)s" type="hidden"/>'
-               u'<input id="__redirectpath" value="%(url)s" '
-               u'name="__redirectpath" type="hidden"/>'
-               u'<input id="relation" value="%(relation)s" '
-               u'name="relation" type="hidden"/>'
-               u'<input id="subject" value="%(subject)s" '
-               u'name="subject" type="hidden"/>'
-               u'<input id="parent_eid" value="%(eid)s" '
-               u'name="parent_eid" type="hidden"/>'
-               u'<button type="submit" class="btn btn-success btn-small" '
-               u'id="btn-add-relation" >+</button>'
+               u'<button type="button" class="btn btn-success btn-small" '
+               u'id="btn-add-relation" '
+               u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
+               u'\'%(relation)s\',\'%(eid)s\',\'%(url)s\');">+</button>'
                u'</fieldset>'
-               u'</form>' % {'name': etype_search, 'eid': eid,
-                            'relation': relation, 'url': url,
-                            'subject': subject})
+               u'' % {'name': etype_search, 'eid': eid,
+                      'relation': relation, 'url': url,
+                      'subject': subject})
 
 
 class AutocompleteEntityController(controller.Controller):

@@ -26,3 +26,16 @@ function makeautocomplete(elementid, vidparam, hiddeninput, extra_params)
 	    $(hiddeninput).val(data[2]);
     });
 }
+
+function redirect_edit_controller(subject, relation, parent_eid, url)
+{
+    related_entity_id = 'entityeid_' + relation + '_' + parent_eid;
+    related_entity = $('#' + related_entity_id).val();
+    if (related_entity.length > 0){
+        controller = "/autocomplete-entity-controller?subject="+subject+"&relation="+relation+"&parent_eid="+parent_eid+"&__redirect="+url+'&'+related_entity_id+'='+related_entity;
+        window.location=controller;
+    }
+    else{
+        alert("Please select a value");
+    }
+}
