@@ -66,6 +66,9 @@ footer#pagefooter p.copyright {
 #loginBox .btn{
     margin:0 5%;
 }
+.btn-warning a, .btn-success a, .btn-info a{
+    color:#fff;
+}
 /* Fixed modal window position on mobile resolutions. */
 @media screen and (max-width: 480px) {
     div.modal.fade.in {
