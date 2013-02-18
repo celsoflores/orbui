@@ -34,7 +34,7 @@ class SortedNavigationOrbui(NavigationOrbuiMixIn, SortedNavigation):
         snippets for each page, `basepath` and `params` will be necessary to
         build previous/next links.
         """
-        self.w(u'<div class="pagination">')
+        self.w(u'<div class="pagination pagination-small">')
         self.w(u'<ul>')
         self.w(u'%s&#160;' % self.previous_link(basepath, params))
         self.w(u'%s' % u''.join(blocklist))
@@ -49,7 +49,7 @@ class PageNavigationOrbui(NavigationOrbuiMixIn, PageNavigation):
         params = dict(self._cw.form)
         self.clean_params(params)
         basepath = self._cw.relative_path(includeparams=False)
-        self.w(u'<div class="pagination">')
+        self.w(u'<div class="pagination pagination-small">')
         self.w(u'<ul>')
         self.w(u'%s&#160;' % self.previous_link(basepath, params))
         self.w(u'&#160;'.join(self.iter_page_links(basepath, params)))
@@ -163,7 +163,7 @@ class PageNavigationSelectOrbui(NavigationOrbuiMixIn, PageNavigationSelect):
         self.clean_params(params)
         basepath = self._cw.relative_path(includeparams=False)
         w = self.w
-        w(u'<div class="pagination">')
+        w(u'<div class="pagination pagination-small">')
         w(u'<ul>')
         w(self.previous_link(basepath, params))
         w(u'<li><select onchange="javascript: document.location=this.options[this.selectedIndex].value">')

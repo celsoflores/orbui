@@ -526,12 +526,14 @@ h3.boxTitle{
 .displayAllLink{ /*This class is a button btn*/
     margin:0;
 }
-.pagination select{
-    border:0px;
-    width:88px;
+div .pagination li select{
+    border:0px;/*
+    width:88px;*/
     color:#aaa;
     font-size:14px;
-    padding:4px;
+    height: 25px;
+    margin: 0;
+    padding: 0 3px 0 7px;
 }
 .pagination select:focus{
     outline-offset:0;
