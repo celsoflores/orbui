@@ -403,7 +403,7 @@ table.buttonbar{
 }
 /* Input Text facet fix */
 .facet_filterbox h3.boxTitle{
-    margin:0 0 9px 0;
+    margin:0;
 }
 /* .facet input{ */
 /*     width: 90%; */
