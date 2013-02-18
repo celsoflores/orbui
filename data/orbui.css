@@ -165,6 +165,25 @@ table.attributeForm tr th{
     margin:0;
     padding:0;
 }
+.releditField form.releditForm{
+    margin:0;
+}
+.releditField form.releditForm > fieldset{
+    background:#fff;
+    border:1px solid #efefef;
+    position:relative;
+    padding:6px;
+}
+form.releditForm > fieldset table.buttonbar{
+    margin:16px auto 6px auto;
+    max-width:none;
+}
+form.releditForm > fieldset table input{
+    margin:0 auto;
+}
+form.releditForm > fieldset table .validateButton{
+    margin:0 auto;
+}
 .entityfield .releditField .buttonbar td{
     padding:2px 12px 12px 12px;
 }
