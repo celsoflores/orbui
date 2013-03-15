@@ -290,8 +290,18 @@ class TheMainTemplateOrbui(TheMainTemplate):
                 self._cw, rset=self.cw_rset, view=view, context=context))
         if boxes:
             self.w(u'<div id="aside-main" class="span3">'
+                   u'<button class="btn btn-small pull-right" id="filter-close">'                   
+                   u'<small>%s</small></button>'            
                    u'<div class="well">'
-                   u'<div class="navboxes">')
+                   u'<div class="navboxes">' % 
+                   self._cw._('close')) # XXX Should arrange Facets soon
+            # This Script will close the Facets at any moment       
+            self.w(u'''<script>
+                    // Close Button for OrbUI Facets 
+                    $("button#filter-close").click(function() {
+                    $(this).parent().hide();
+                    })
+                    </script>''')                   
             for box in boxes:
                 box.render(w=self.w, view=view)
             self.w(u'</div>'
