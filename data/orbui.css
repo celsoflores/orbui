@@ -475,6 +475,9 @@ table.attributeForm table#relatedEntities th,table.attributeForm table#relatedEn
     padding:0;
     padding-left:6px;
 }
+#relatedEntities select option{
+    max-width:500px;
+}
 table.attributeForm td{
     vertical-align:middle;
 }
