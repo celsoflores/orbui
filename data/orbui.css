@@ -34,7 +34,6 @@ header#pageheader {
 }
 
 header#pageheader #search-box{
-    max-width:150px;
     background:transparent;
     border:none;
     box-shadow:none;
@@ -603,4 +602,3 @@ and (max-device-width : 1024px) {
     max-width:80px;
 }
 }
-
