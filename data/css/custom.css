@@ -1,20 +1,8 @@
 /* Your Custom CSS */
 /*-----------------------------------*/
-
-
-[class^="icon-"],
-[class*=" icon-"] {
-  background-image: url("../data/img/glyphicons-halflings.png");
-}
-
-.icon-white {
-  background-image: url("../data/img/glyphicons-halflings-white.png");
-}
-
 ul.breadcrumb{
  margin-bottom: 0;
  }
-
 .nav-list .divider {
  /* same as .dropdown-menu .divider*/
   *width: 100%;
@@ -25,7 +13,6 @@ ul.breadcrumb{
   background-color: #e5e5e5;
   border-bottom: 1px solid #ffffff;
 }
-
 .dropdown-menu .action-category{
   font-weight: bold;
   padding-left: 6px;
