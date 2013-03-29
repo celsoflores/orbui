@@ -549,6 +549,35 @@ div .pagination li select{
     line-height: 12px;
     padding: 0 4px;
 }
+/* Log History UndoHistory View */
+ul.undo-transactions{
+    width:60%;
+    margin:4% auto 2% auto;
+    background:#fff;
+    padding:2% 6%;
+    border:1px solid #efefef;
+    color:#aaa;
+    font-size:12px;
+}
+ul.undo-transactions>li{
+    margin:12px 0;
+    border-bottom:1px dotted #efefef;
+}
+ul.undo-transactions>li>a{
+    font-size:16px;
+}
+ul.undo-transactions span.undo a{
+    color:orange;
+    padding:0 3px;
+}
+ol.undo-actions{
+    margin:3px auto;
+    background:#efefef;
+    padding:1% 6%;
+    border-bottom:1px dotted #efefef;
+    color:#404040;
+    font-size:12px;
+}
 /*
 ----- Some Icons -----
                    */
