@@ -85,7 +85,8 @@ class PrimaryViewOrbui(primary.PrimaryView):
             if value is not None and value != '':
                 display_attributes.append( (rschema, role, dispctrl, value) )
         if display_attributes:
-            self.w(u'<div>')
+            self.w(u'<h3 class="boxTitle">Info</h3>')
+            self.w(u'<div class="boxBody">')
             for rschema, role, dispctrl, value in display_attributes:
                 # pylint: disable=E1101
                 if not hasattr(self, '_render_attribute'):
@@ -99,6 +100,7 @@ class PrimaryViewOrbui(primary.PrimaryView):
                                            table=True)
             self.w(u'</div>')
 
+
     def render_attribute(self, label, value, table=False):
         """overwrites the original method to use list instead of table
         to display attributes.
@@ -106,6 +108,16 @@ class PrimaryViewOrbui(primary.PrimaryView):
         self.w(u'<div class="row-fluid"> '
             u'<h6 class="span4">%s</h6>'
             u'<div class="span8">%s</div></div>' % (label, value))
+
+    def render_relation(self, label, value):
+        self.w(u'<div class="relations">')
+        if label:
+            self.w(u'<h3 class="boxTitle">%s</h3>' % label)
+        self.w(u'<div class="boxBody">')
+        self.w(value)
+        self.w(u'</div>')
+        self.w(u'</div>')
+
 
 class TabbedPrimaryViewOrbui(tabs.TabsMixin, PrimaryViewOrbui):
     __abstract__ = True # don't register
