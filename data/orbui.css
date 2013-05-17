@@ -583,7 +583,8 @@ table.filter-table td a{
 ----- Table Sortable and icons -----
                                     */
 table th{
-line-height:16px;
+    line-height:16px;
+    background-color: #eee;
 }
 th.sortable {
   background: #eee url("img/table_sortable.png") 99% 2px no-repeat;
