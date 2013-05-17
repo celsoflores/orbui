@@ -434,6 +434,7 @@ div div.facetValueSelected{
 }
 div.facetValueSelected span{
     opacity:1;
+    padding-left: 4px;
 }
 html input.input-text, html textarea{
     width:98%;
@@ -679,7 +680,7 @@ div#maincontent #aside-main {
     margin: 0;
     position: absolute;
     right: 10px;
-    top: 160px;
+    top: 180px;
 }
 #page #maincontent{
     min-height:400px;
