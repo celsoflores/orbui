@@ -268,8 +268,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self._cw.html_headers.define_var('BASE_URL', self._cw.base_url())
         w(u'<meta http-equiv="content-type" content="%s; charset=%s"/>\n'
           % (content_type, self._cw.encoding))
-        w(u'<meta name="viewport" content="initial-scale=1.0; '
-          u'maximum-scale=1.0; width=device-width; "/>')
+        w(u'<meta name="viewport" content="initial-scale=1.0, '
+          u'maximum-scale=1.0, width=device-width, "/>')
         w(u'\n'.join(additional_headers) + u'\n')
         # FIXME this is a quick option to make cw work in IE9
         # you'll lose all IE9 functionality, the browser will act as IE8.
@@ -290,18 +290,18 @@ class TheMainTemplateOrbui(TheMainTemplate):
                 self._cw, rset=self.cw_rset, view=view, context=context))
         if boxes:
             self.w(u'<div id="aside-main" class="span3">'
-                   u'<button class="btn btn-small pull-right" id="filter-close">'                   
-                   u'<small>%s</small></button>'            
+                   u'<button class="btn btn-small pull-right" id="filter-close">'
+                   u'<small>%s</small></button>'
                    u'<div class="well">'
-                   u'<div class="navboxes">' % 
+                   u'<div class="navboxes">' %
                    self._cw._('close')) # XXX Should arrange Facets soon
-            # This Script will close the Facets at any moment       
+            # This Script will close the Facets at any moment
             self.w(u'''<script>
-                    // Close Button for OrbUI Facets 
+                    // Close Button for OrbUI Facets
                     $("button#filter-close").click(function() {
                     $(this).parent().hide();
                     })
-                    </script>''')                   
+                    </script>''')
             for box in boxes:
                 box.render(w=self.w, view=view)
             self.w(u'</div>'
