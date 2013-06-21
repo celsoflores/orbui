@@ -553,6 +553,10 @@ div.facet{
 .filter .facetGroup:first-child .facet:first-child input{
     margin: 0.4em .6em;
 }
+.filter .facetGroup div.facet{
+    border-bottom-right-radius:5px !important;
+    border-top-left-radius:5px !important;
+}
 /* RangeFacet (also for Date Facet) */
 .filter .facetGroup:first-child div.rangeFacet{
     width:20em;
