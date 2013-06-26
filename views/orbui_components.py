@@ -589,6 +589,9 @@ class LogFormViewOrbui(LogFormView):
             w(u'<div class="modal-header">'
               u'<h2>%s</h2>'
               u'</div>' % stitle)
+            w(u'<div class="modal-header2">'
+              u'<h2>  </h2>'
+              u'</div>')
         w(u'<div class="modal-body">')
         if showmessage and self._cw.message:
             w(u'<div class="alert alert-error">%s'
@@ -601,8 +604,10 @@ class LogFormViewOrbui(LogFormView):
             path = xml_escape(config['base-url'] + self._cw.relative_path())
             w(u'<div class="loginMessage alert"><a href="%s">%s</a></div>\n'
               % (path, self._cw._('No account? Try public access at %s') % path))
-        w(u'</div>')
-
+        w(u'<div class="modal-links">'
+        u'<h2>  </h2>'
+        u'</div>'
+        u'</div>')
 
 def registration_callback(vreg):
     """register new components for orbui
