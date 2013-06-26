@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
+
 from logilab.mtconverter import xml_escape
 from cubicweb import neg_role
 from cubicweb.utils import json_dumps
@@ -71,7 +72,7 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                         'link_label': link_label, 'target': target})
             w(u'<div class="accordion-group">'
               u'<div class="accordion-heading container-fluid">'
-              u'<div class="row">'
+              u'<div class="row" id="RDR_%(relation_name)s">'
               u'<a class="accordion-toggle" data-toggle="collapse" '
               u'data-parent="# accordion_%(eid)s" '
               u'href="#collapse_%(relation_name)s">'

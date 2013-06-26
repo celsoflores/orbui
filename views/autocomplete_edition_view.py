@@ -148,8 +148,8 @@ class AutocompleteEntityController(controller.Controller):
         """success redirection
         """
         form = self._cw.form
-        print repr(form)
+
         if '__redirectpath' in form:
             return self._cw.build_url(form['__redirectpath'])
         else:
-            return entity.absolute_url() + '?vid=edition' + '#collapse_' + form['relation']
+            return entity.absolute_url() + '?vid=edition' + '#RDR_' + form['relation']
