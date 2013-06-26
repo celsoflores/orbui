@@ -599,15 +599,15 @@ class LogFormViewOrbui(LogFormView):
         config = self._cw.vreg.config
         if config['auth-mode'] != 'http':
             self.login_form(id) # Cookie authentication
-        w(u'</div>')
+        w(u'<div class="modal-links span3">'
+          u'<h4>  </h4>'
+          u'</div>'
+          u'</div>')
         if self._cw.https and config.anonymous_user()[0]:
             path = xml_escape(config['base-url'] + self._cw.relative_path())
             w(u'<div class="loginMessage alert"><a href="%s">%s</a></div>\n'
               % (path, self._cw._('No account? Try public access at %s') % path))
-        w(u'<div class="modal-links">'
-        u'<h2>  </h2>'
-        u'</div>'
-        u'</div>')
+        w(u'</div>')
 
 def registration_callback(vreg):
     """register new components for orbui
