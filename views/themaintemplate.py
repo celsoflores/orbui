@@ -28,6 +28,7 @@ TRANSITIONAL_DOCTYPE_NOEXT = HTML5
 STRICT_DOCTYPE = HTML5
 STRICT_DOCTYPE_NOEXT = HTML5
 
+
 class TheMainTemplateOrbui(TheMainTemplate):
     """the main template for orbui
 
@@ -44,9 +45,9 @@ class TheMainTemplateOrbui(TheMainTemplate):
     """
     @property
     def doctype(self):
-       if self._cw.xhtml_browser():
-           return STRICT_DOCTYPE
-       return STRICT_DOCTYPE_NOEXT
+        if self._cw.xhtml_browser():
+            return STRICT_DOCTYPE
+        return STRICT_DOCTYPE_NOEXT
 
     def call(self, view):
         """call all methods to build the main template
@@ -126,7 +127,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
     def page_header(self, view):
         """display the components assigned to the header of the application
         """
-        ctxcomponents =  self._cw.vreg['ctxcomponents']
+        ctxcomponents = self._cw.vreg['ctxcomponents']
         components_top_dont_hide = ctxcomponents.poss_visible_objects(self._cw,
                                    rset=self.cw_rset, view=view,
                                    context='header-top-left-dont-hide')
@@ -147,10 +148,10 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self.w(u'<div class="nav-collapse">')
         self.header_top_left(view, ctxcomponents)
         self.header_top_right(view, ctxcomponents)
-        self.w(u'</div>'# nav-collapse
-               u'</div>'# container
-               u'</div>'# navbar-inner
-               u'</div>')# navbar
+        self.w(u'</div>'  # nav-collapse
+               u'</div>'  # container
+               u'</div>'  # navbar-inner
+               u'</div>')  # navbar
         # display bottom header
         self.header_bottom(view, ctxcomponents)
         self.w(u'</header>')
@@ -268,8 +269,8 @@ class TheMainTemplateOrbui(TheMainTemplate):
         self._cw.html_headers.define_var('BASE_URL', self._cw.base_url())
         w(u'<meta http-equiv="content-type" content="%s; charset=%s"/>\n'
           % (content_type, self._cw.encoding))
-        w(u'<meta name="viewport" content="initial-scale=1.0, '
-          u'maximum-scale=1.0, width=device-width, "/>')
+        w(u'<meta name="viewport" content="width=device-width, initial-scale=1.0, '
+          u'maximum-scale=1.0"/>')
         w(u'\n'.join(additional_headers) + u'\n')
         # FIXME this is a quick option to make cw work in IE9
         # you'll lose all IE9 functionality, the browser will act as IE8.
@@ -294,7 +295,7 @@ class TheMainTemplateOrbui(TheMainTemplate):
                    u'<small>%s</small></button>'
                    u'<div class="well">'
                    u'<div class="navboxes">' %
-                   self._cw._('close')) # XXX Should arrange Facets soon
+                   self._cw._('close'))  # XXX Should arrange Facets soon
             # This Script will close the Facets at any moment
             self.w(u'''<script>
                     // Close Button for OrbUI Facets
