@@ -29,7 +29,11 @@ function makeautocomplete(elementid, vidparam, hiddeninput, extra_params)
 
 function redirect_edit_controller(subject, relation, parent_eid, url)
 {
-    related_entity_id = 'entityeid_' + relation + '_' + parent_eid;
+    if (subject == 'True')
+    	related_entity_id = 'entityeid_' + relation + '_' + parent_eid + '_subject';
+    else
+	related_entity_id = 'entityeid_' + relation + '_' + parent_eid + '_object';
+
     related_entity = $('#' + related_entity_id).val();
     if (related_entity.length > 0){
         controller = "/autocomplete-entity-controller?subject="+subject+"&relation="+relation+"&parent_eid="+parent_eid+"&__redirect="+url+'&'+related_entity_id+'='+related_entity;

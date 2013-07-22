@@ -55,37 +55,54 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
 
             linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
             link_label = u'%s %s' % (req._('add'), req._(target))
-            relate_entity = entity.view('autocomplete-edition-view',relation=rschema,
+            lsearch = u'%s %s' % (req._('search'), req._(target))
+
+            relate_entity = entity.view('autocomplete-edition-view', relation=rschema,
                                         role=role, etype_search=target)
-            add_new = (u'<div class="span8 relate-entity">%(relate_entity)s</div>'
-                       '<div class="pull-right">'
-                       '<a href="/add/%(target)s?__linkto=%(linkto)s'
-                       '&__redirectpath=%(url)s&__redirectvid=edition "'
+
+            search_url = (u'<div class="span8 relate-entity">%(relate_entity)s</div>'
+                       '<div class="pull-left">'
+                       '<a href="?__mode=%(role)s:%(eid)s:%(rschema)s:'
+                       '%(target)s&vid=search-associate"'
                        'class="accordion-toggle '
-                       'btn btn-micro btn-success pull-right">'
+                       'btn btn-micro btn-link">'
                        '%(link_label)s'
                        '</a>'
                        '</div>'
                         %
-                       {'relate_entity': relate_entity,
-                       'linkto': linkto, 'url': relative_url,
+                       {'relate_entity': relate_entity, 'role': role,
+                       'rschema': rschema, 'eid': eid,
+                        'link_label': lsearch, 'target': target})
+
+            add_new = (u'<div class="pull-right">'
+                       '<a href="/add/%(target)s?__linkto=%(linkto)s'
+                       '&__redirectpath=%(url)s&__redirectvid=edition "'
+                       'class="accordion-toggle '
+                       'btn btn-micro btn-link pull-right">'
+                       '%(link_label)s'
+                       '</a>'
+                       '</div>'
+                        %
+                       {'linkto': linkto, 'url': relative_url,
                         'link_label': link_label, 'target': target})
+
             w(u'<div class="accordion-group">'
               u'<div class="accordion-heading container-fluid">'
-              u'<div class="row" id="RDR_%(relation_name)s">'
+              u'<div class="row" id="RDR_%(relation_name)s_%(role)s">'
               u'<a class="accordion-toggle" data-toggle="collapse" '
               u'data-parent="# accordion_%(eid)s" '
               u'href="#collapse_%(relation_name)s">'
               u'%(label)s'
               u'</a>'
               u'</div>'
-              u'<div class="row" id="add-relation-combo">%(add_new)s</div>'
+              u'<div class="row" id="add-relation-combo">%(search)s %(add_new)s</div>'
               u'</div>'
-               % {'eid': eid, 'relation_name': rschema, 'label': label,
-                           'add_new': add_new})
+               % {'eid': eid, 'relation_name': rschema,
+                  'label': label, 'search': search_url,
+                  'add_new': add_new, 'role': role})
             w(u'<div id="collapse_%(relation)s" class="accordion-body collapse in">'
               u'    <div class="accordion-inner">'
-              u'        <ul class="thumbnails">' % {'relation':rschema})
+              u'        <ul class="thumbnails">' % {'relation': rschema})
             for viewparams in related:
                 w(u'<li class=""><div class="btn btn-small">%s</div>'
                   u'<div id="span%s" class="%s span3 pull-right">%s</div>'
@@ -140,6 +157,7 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
 GenericRelationsField.widget = GenericRelationsWidgetOrbui
 GenericRelationsField.control_field = False
 
+
 class FormRendererOrbui(formrenderers.FormRenderer):
     """form renderer class
     """
@@ -149,6 +167,16 @@ class FormRendererOrbui(formrenderers.FormRenderer):
         if self.display_progress_div:
             w(u'<div id="progress">%s</div>' % self._cw._('validating...'))
         w(u'<fieldset>')
+
+        if hasattr(form, 'edited_entity'):
+            entity = form.edited_entity
+            if hasattr(entity, 'has_eid'):
+                if entity.has_eid():
+                    redirect_path = entity.rest_path()
+                    w(u'<input name="__redirectpath" type="hidden" value="%s" />'
+                                 % redirect_path)
+                    w(u'<input name="__redirectparams" type="hidden" value="" />')
+
         self.render_fields(w, form, values)
         self.render_buttons(w, form)
         w(u'</fieldset>')
@@ -221,9 +249,8 @@ class FormRendererOrbui(formrenderers.FormRenderer):
             for field in fields:
                 error = form.field_error(field)
                 control = not hasattr(field, 'control_field') or field.control_field
-                w(u'<div class="control-group %s-%s_row %s">' % (field.name,
-                                                                 field.role,
-                                                                 'error' if error else ''))
+                w(u'<div class="control-group %s-%s_row %s">' %
+                                    (field.name, field.role, 'error' if error else ''))
                 if self.display_label and field.label is not None:
                     w(u'%s' % self.render_label(form, field))
                 if control:
@@ -289,7 +316,8 @@ class EntityFormRendererOrbui(FormRendererOrbui, formrenderers.EntityFormRendere
             super(formrenderers.EntityFormRenderer, self).render_buttons(w, form)
 
 
-class EntityInlinedFormRendererOrbui(EntityFormRendererOrbui, formrenderers.EntityInlinedFormRenderer):
+class EntityInlinedFormRendererOrbui(EntityFormRendererOrbui,
+                                        formrenderers.EntityInlinedFormRenderer):
     def open_form(self, w, form, values):
         try:
             w(u'<div id="div-%(divid)s" onclick="%(divonclick)s">' % values)
@@ -317,6 +345,7 @@ class AutomaticEntityFormOrbui(AutomaticEntityForm):
     """
     cssclass = 'form-horizontal'
 
+
 # replace FormRenderer
 def registration_callback(vreg):
     """register new primary view for orbui project
@@ -326,6 +355,7 @@ def registration_callback(vreg):
                         (EntityInlinedFormRendererOrbui, formrenderers.EntityInlinedFormRenderer),
                         (AutomaticEntityFormOrbui, AutomaticEntityForm),
                         )
-    vreg.register_all(globals().values(), __name__, [new for (new,old) in orbui_components])
+    vreg.register_all(globals().values(), __name__,
+                        [new for (new, old) in orbui_components])
     for new, old in orbui_components:
         vreg.register_and_replace(new, old)
