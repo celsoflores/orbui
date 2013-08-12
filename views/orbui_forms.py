@@ -168,14 +168,15 @@ class FormRendererOrbui(formrenderers.FormRenderer):
             w(u'<div id="progress">%s</div>' % self._cw._('validating...'))
         w(u'<fieldset>')
 
-        if hasattr(form, 'edited_entity'):
-            entity = form.edited_entity
-            if hasattr(entity, 'has_eid'):
-                if entity.has_eid():
-                    redirect_path = entity.rest_path()
-                    w(u'<input name="__redirectpath" type="hidden" value="%s" />'
+        if '__redirectpath' not in self._cw.form:
+            if hasattr(form, 'edited_entity'):
+                entity = form.edited_entity
+                if hasattr(entity, 'has_eid'):
+                    if entity.has_eid():
+                        redirect_path = entity.rest_path()
+                        w(u'<input name="__redirectpath" type="hidden" value="%s" />'
                                  % redirect_path)
-                    w(u'<input name="__redirectparams" type="hidden" value="" />')
+                        w(u'<input name="__redirectparams" type="hidden" value="" />')
 
         self.render_fields(w, form, values)
         self.render_buttons(w, form)
