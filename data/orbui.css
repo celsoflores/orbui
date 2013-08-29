@@ -406,7 +406,8 @@ a#facetBkLink{
     font-weight:bold;
 }
 .facetValueDisabled{
-    font-style:italic;
+    font-style: italic;
+    background: #eeeeee;
 }
 /* facets */
 .facetTitle {
