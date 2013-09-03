@@ -113,7 +113,7 @@ class AutocompleteEditionView(EntityView):
                u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
                u'\'%(relation)s\',\'%(eid)s\',\'%(url)s\');">+</button>'
                u'</fieldset>'
-               u'' % {'name': etype_search, 'eid': eid,
+               u'' % {'name': self._cw._(etype_search), 'eid': eid,
                       'relation': relation, 'url': url,
                       'subject': subject,
                       'role': role})
