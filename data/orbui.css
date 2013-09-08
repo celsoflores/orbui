@@ -489,6 +489,12 @@ h3.boxTitle, .facetTitle{
     margin:18px 0;
     padding-bottom:9px;
 }
+div h3.boxTitle{
+    margin:0;
+    font-size:17.5px;
+    line-height:20px;
+    padding:15px 10px;
+}
 h3.boxTitle, .facetTitle{
     background: #FFF;
 	padding: 5px 10px;
