@@ -16,7 +16,6 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from cubicweb.web.views import startup
-from cubicweb import schema
 from cubicweb.web import controller, Redirect
 from cubicweb.view import EntityView
 from cubicweb.selectors import is_instance
@@ -25,6 +24,14 @@ from cubicweb.selectors import is_instance
 class AutoCompleteEntityRetriever(startup.IndexView):
     """retrieves entity for autocomplete function using the main attribute.
     """
+    # special search of autocomplete
+    SPECIALSEARCH = {'EntityA|relation|EntityB': ', filters..',
+                    '__ud': ' '}
+
+    # special condition of autocomplete
+    SPECIALCONDITION = {'EntityA|relation|EntityB': ', Conditions..',
+                        }
+
     templatable = False
     content_type = 'text/html'
     cache_max_age = 0  # no cache
@@ -36,7 +43,6 @@ class AutoCompleteEntityRetriever(startup.IndexView):
         subject = True
         relation = ''
         etype_search = ''
-        eid_parent = 0
         form = self._cw.form
         if 'subject' in form:
             subject = True if form['subject'] == 'True' else False
@@ -58,13 +64,46 @@ class AutoCompleteEntityRetriever(startup.IndexView):
         if 'q' in form:
             search = form['q']
             main_attribute = self._cw.vreg.schema.eschema(etype_search).main_attribute()
-            constraint = ', %s %s ILIKE "%%%s%%"' % (letter, main_attribute, search)
+            specialsearch = self.getSpecialSearch(parent_entity, relation, etype_search, role, letter)
+            constraint = ', %s %s ILIKE "%%%s%%" %s' % (letter, main_attribute, search, specialsearch)
             unrelated = parent_entity.cw_unrelated_rql(relation, etype_search, role)
-            rql = unrelated[0] + constraint
+            rql = (unrelated[0] + constraint).replace('DESC WHERE', 'DESC LIMIT 12 WHERE')
             rset = self._cw.execute(rql, unrelated[1])
             for entity in rset.entities():
                 printable_value = entity.printable_value(entity.e_schema.main_attribute())
                 self.w(u'%s||%s\n' % (printable_value, entity.eid))
+
+    def getSpecialSearch(self, parent_entity, relation, etype_search, role, letter):
+        SPECIALSEARCH = self.SPECIALSEARCH
+        SPECIALCONDITION = self.SPECIALCONDITION
+        eid = parent_entity.eid
+        paren_name = type(parent_entity).__name__
+
+        target = '%(paren_name)s|%(relation)s%(role)s|%(etype_search)s' % {
+                                            'paren_name': paren_name,
+                                            'relation': relation,
+                                            'role': ('' if role == 'subject' else '_object'),
+                                            'etype_search': etype_search}
+
+        #Evalua si existe una condicion especial
+        if target in SPECIALSEARCH:
+            specialsearch = SPECIALSEARCH[target]
+        else:
+            return SPECIALSEARCH['__ud']
+
+        #Evalua si existe una condicion especial para hacer o no la busqueda
+        if target in SPECIALCONDITION:
+            specialcondition = SPECIALCONDITION[target]
+        else:
+            return specialsearch
+
+        #En caso de que exista una condicion especial para la busqueda,
+        #evaluar que exista informacion y regresa la condicion espadial
+        rset = self._cw.execute(specialcondition % {'eid': eid, })
+        if rset.rowcount > 0:
+            return specialsearch
+        else:
+            return SPECIALSEARCH['__ud']
 
 
 class AutocompleteEditionView(EntityView):
@@ -79,7 +118,6 @@ class AutocompleteEditionView(EntityView):
         """
         self._cw.add_js('jquery.autocomplete.js')
         self._cw.add_js('orbui.autocomplete.js')
-        form = self._cw.form
         if role == 'subject':
             subject = True
         else:
