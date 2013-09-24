@@ -14,19 +14,19 @@ class NavigationOrbuiMixIn(object):
 
     @property
     def no_previous_page_link(self):
-        return u'<li class="disabled"><a href="#">«</a></li>'
+        return u'<li class="disabled"><a href="#">?</a></li>'
 
     @property
     def no_next_page_link(self):
-        return u'<li class="disabled"><a href="#">»</a></li>'
+        return u'<li class="disabled"><a href="#">?</a></li>'
 
     @property
     def no_content_prev_link(self):
-        return u'«'
+        return u'?'
 
     @property
     def no_content_next_link(self):
-        return u'»'
+        return u'?'
 
 class SortedNavigationOrbui(NavigationOrbuiMixIn, SortedNavigation):
     def write_links(self, basepath, params, blocklist):
@@ -126,10 +126,16 @@ def do_paginate(view, rset=None, w=None, show_all_option=True, page_size=None):
                 basepath = req.relative_path(includeparams=False)
                 params['__force_display'] = 1
                 params['__fromnavigation'] = 1
-                url = nav.page_url(basepath, params)
+
+                if basepath == 'ajax':
+                    url = nav.ajax_page_url(**params)
+                else:
+                    url = nav.page_url(basepath, params)
+
                 w(u'<div class="displayAllLink btn btn-small">'
                   u'<a href="%s">%s</a></div>\n'
                   % (xml_escape(url), req._('show %s results') % len(rset)))
+
             rset.limit(offset=start, limit=stop-start, inplace=True)
 
 
