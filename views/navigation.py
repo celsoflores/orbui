@@ -7,6 +7,7 @@ from cubicweb.web.views.navigation import (NavigationComponent,
                                           PageNavigation,
                                           PageNavigationSelect)
 
+
 class NavigationOrbuiMixIn(object):
     page_link_templ = u'<li><a href="%s" title="%s">%s</a></li>'
     selected_page_link_templ = u'<li class="active"><a href="%s" title="%s">%s</a></li>'
@@ -14,19 +15,20 @@ class NavigationOrbuiMixIn(object):
 
     @property
     def no_previous_page_link(self):
-        return u'<li class="disabled"><a href="#">?</a></li>'
+        return u'<li class="disabled"><a href="#">&laquo;</a></li>'
 
     @property
     def no_next_page_link(self):
-        return u'<li class="disabled"><a href="#">?</a></li>'
+        return u'<li class="disabled"><a href="#">&raquo;</a></li>'
 
     @property
     def no_content_prev_link(self):
-        return u'?'
+        return u'&laquo;'
 
     @property
     def no_content_next_link(self):
-        return u'?'
+        return u'&raquo;'
+
 
 class SortedNavigationOrbui(NavigationOrbuiMixIn, SortedNavigation):
     def write_links(self, basepath, params, blocklist):
@@ -56,6 +58,7 @@ class PageNavigationOrbui(NavigationOrbuiMixIn, PageNavigation):
         self.w(u'&#160;%s' % self.next_link(basepath, params))
         self.w(u'</ul>')
         self.w(u'</div>')
+
 
 class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
     """overwrites navigation Next and Previous on single entities
@@ -88,6 +91,7 @@ class NextPrevNavigationComponentOrbui(NextPrevNavigationComponent):
         w(u'</li>')
         self._cw.html_headers.add_raw('<link rel="%s" href="%s" />' % (
               type, xml_escape(url)))
+
 
 def do_paginate(view, rset=None, w=None, show_all_option=True, page_size=None):
     """write pages index in w stream (default to view.w) and then limit the
@@ -152,6 +156,7 @@ from cubicweb.view import View
 View.do_paginate = do_paginate
 View.paginate = paginate
 View.handle_pagination = False
+
 
 class PageNavigationSelectOrbui(NavigationOrbuiMixIn, PageNavigationSelect):
     """This pagination component displays a result-set by page as
