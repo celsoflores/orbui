@@ -4,7 +4,7 @@
 modname = 'orbui'
 distname = 'cubicweb-orbui'
 
-numversion = (0, 1, 0)
+numversion = (0, 2, 0)
 version = '.'.join(str(num) for num in numversion)
 
 license = 'LGPL'
@@ -13,7 +13,7 @@ author_email = 'info@crealibre.com'
 description = 'orbui framework for cubicweb'
 web = 'http://www.cubicweb.org/project/%s' % distname
 
-__depends__ =  {'cubicweb': '>= 3.15.0'}
+__depends__ = {'cubicweb': '>= 3.17.10'}
 __depends_cubes__ = {}
 __recommends__ = {}
 
