@@ -48,6 +48,7 @@ class AutoCompleteEntityRetriever(startup.IndexView):
             subject = True if form['subject'] == 'True' else False
         if 'etype_search' in form:
             etype_search = form['etype_search']
+            #print 'call etype_search  %s' %etype_search
         if 'relation' in form:
             relation = form['relation']
         if 'eid_parent' in form:
@@ -113,9 +114,10 @@ class AutocompleteEditionView(EntityView):
     __regid__ = 'autocomplete-edition-view'
     __select__ = is_instance('Any')
 
-    def cell_call(self, row, col, relation='', role='subject', etype_search=''):
+    def cell_call(self, row, col, relation='', role='subject', etype_search='', showname="Y"):
         """display the autocomplete widget
         """
+        #Quitar print 'row %s, col %s, relation (%s), role= %s, etype_search= %s' %(row, col, relation, role,etype_search)
         self._cw.add_js('jquery.autocomplete.js')
         self._cw.add_js('orbui.autocomplete.js')
         if role == 'subject':
@@ -123,37 +125,45 @@ class AutocompleteEditionView(EntityView):
         else:
             subject = False
         entity = self.cw_rset.get_entity(row, col)
-        url = entity.rest_path() + '?vid=edition'
+        #Quitar  print '>>> %s <<<' %entity
         eid = entity.eid
         jscode = (u'var params = new Array();'
                   u'params[\'subject\'] = \'%(subject)s\';'
                   u'params[\'etype_search\'] = \'%(etype_search)s\';'
                   u'params[\'relation\'] = \'%(relation)s\';'
                   u'params[\'eid_parent\'] = \'%(eid)s\';'
-                  u'makeautocomplete("#entityname_%(relation)s_%(eid)s_%(role)s",'
+                  u'makeautocomplete("#entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s",'
                   u'"autocomplete-entity-retriever",'
-                  u'"#entityeid_%(relation)s_%(eid)s_%(role)s", params);'
+                  u'"#entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s", params);'
                   % {'eid': eid, 'relation': relation, 'subject': subject,
                      'etype_search': etype_search,
                      'role': role})
         self._cw.add_onload(jscode)
-        self.w(u'<fieldset>'
-               u'<label class="span4 muted">'
+
+        if showname == "Y":
+            namee = (u'<label class="span4 muted">'
                u'<small class="pull-right">%(name)s</small>'
-               u'</label>'
-               u'<input id="entityname_%(relation)s_%(eid)s_%(role)s" '
-               u'name="entityname_%(relation)s_%(eid)s_%(role)s" type="text" '
+               u'</label>' % {'name': self._cw._(etype_search)})
+            url = entity.rest_path() + '?vid=edition'
+        else:
+            namee = ''
+            url = entity.rest_path()
+
+        self.w(u'<fieldset>'
+               u'%(name)s'
+               u'<input id="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
+               u'name="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="text" '
                u'class="input"/>'
-               u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s" '
-               u'name="entityeid_%(relation)s_%(eid)s_%(role)s" type="hidden"/>'
+               u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
+               u'name="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="hidden"/>'
                u'<button type="button" class="btn btn-success btn-small" '
                u'id="btn-add-relation" '
                u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
-               u'\'%(relation)s\',\'%(eid)s\',\'%(url)s\');">+</button>'
+               u'\'%(relation)s\',\'%(eid)s\',\'%(etype_search)s\',\'%(url)s\');">crear</button>'
                u'</fieldset>'
-               u'' % {'name': self._cw._(etype_search), 'eid': eid,
+               u'' % {'name': namee, 'eid': eid,
                       'relation': relation, 'url': url,
-                      'subject': subject,
+                      'subject': subject, 'etype_search': etype_search,
                       'role': role})
 
 
@@ -171,13 +181,14 @@ class AutocompleteEntityController(controller.Controller):
         frm = self._cw.form
         subject = frm['subject']
         relation = frm['relation']
+        etype_search = frm['etype_search']
 
         if subject == 'True':
-            related_eid = frm['entityeid_%s_%s_subject' % (relation, frm['parent_eid'])]
+            related_eid = frm['entityeid_%s_%s_subject_%s' % (relation, frm['parent_eid'], etype_search)]
             subject_eid = frm['parent_eid']
             object_eid = related_eid
         else:
-            related_eid = frm['entityeid_%s_%s_object' % (relation, frm['parent_eid'])]
+            related_eid = frm['entityeid_%s_%s_object_%s' % (relation, frm['parent_eid'], etype_search)]
             subject_eid = related_eid
             object_eid = frm['parent_eid']
         rql = ('SET X %(relation)s Y '
@@ -194,9 +205,14 @@ class AutocompleteEntityController(controller.Controller):
         form = self._cw.form
         subject = form['subject']
 
-        if '__redirectpath' in form:
-            return self._cw.build_url(form['__redirectpath'])
+        sr_RDR = '#RDR_' + form['relation'] + \
+                   ('_subject_' if subject == 'True' else '_object_') + \
+                   form['etype_search']
+
+        if '__redirect' in form:
+            return self._cw.build_url(form['__redirect']) + sr_RDR
         else:
-            return entity.absolute_url() + '?vid=edition' + \
-                   '#RDR_' + form['relation'] + \
-                   ('_subject' if subject == 'True' else '_object')
+            return entity.absolute_url() + '?vid=edition' + sr_RDR
+
+
+

@@ -16,12 +16,12 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from logilab.mtconverter import xml_escape
-from cubicweb import neg_role
+from cubicweb import Unauthorized, neg_role
 from cubicweb.utils import json_dumps
 from cubicweb.web import formwidgets
 from cubicweb.web.views import formrenderers
-from cubicweb.web.views.autoform import (AutomaticEntityForm,
-                                         GenericRelationsField)
+from cubicweb.web.views.autoform import (AutomaticEntityForm, get_pending_deletes, relation_id,
+                                         GenericRelationsField, toggleable_relation_link)
 from cubicweb.web.views.forms import FieldsForm
 
 FieldsForm.needs_css = ()
@@ -45,82 +45,89 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         relative_url = '%s' % eid
         w(u'<div class="accordion form-relation" id="accordion_%s">'
            % eid)
-        for rschema, role, related in field.relations_table(form):
+        for label, rschema, role in field.relations:
             # FIXME should be a more optimized way to get the name of
             # the target entity.
             relation = req.entity_from_eid(rschema.eid)
-            target = rschema.targets(etype, role)[0]
-            label = rschema.display_name(req, role,
-                                         context=entity.__regid__)
+            targets = rschema.targets(etype, role)
+        #----
+        #    Agregar ciclo sobre targets
+        #----
+            for target in targets:
 
-            linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
-            link_label = u'%s %s' % (req._('add'), req._(target))
-            lsearch = u'%s %s' % (req._('search'), req._(target))
+                linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
+                link_label = u'%s %s' % (req._('add'), req._(target))
+                lsearch = u'%s %s' % (req._('search'), req._(target))
 
-            relate_entity = entity.view('autocomplete-edition-view', relation=rschema,
-                                        role=role, etype_search=target)
+                relate_entity = entity.view('autocomplete-edition-view', relation=rschema,
+                                            role=role, etype_search=target)
 
-            search_url = (u'<div class="span8 relate-entity">%(relate_entity)s</div>'
-                       '<div class="pull-left">'
-                       '<a href="?__mode=%(role)s:%(eid)s:%(rschema)s:'
-                       '%(target)s&vid=search-associate"'
-                       'class="accordion-toggle '
-                       'btn btn-micro btn-link">'
-                       '%(link_label)s'
-                       '</a>'
-                       '</div>'
-                        %
-                       {'relate_entity': relate_entity, 'role': role,
-                       'rschema': rschema, 'eid': eid,
-                        'link_label': lsearch, 'target': target})
+                search_url = (u'<div class="span8 relate-entity">%(relate_entity)s</div>'
+                           '<div class="pull-left">'
+                           '<a href="?__mode=%(role)s:%(eid)s:%(rschema)s:'
+                           '%(target)s&vid=search-associate"'
+                           'class="accordion-toggle '
+                           'btn btn-micro btn-link">'
+                           '%(link_label)s'
+                           '</a>'
+                           '</div>'
+                            %
+                           {'relate_entity': relate_entity, 'role': role,
+                           'rschema': rschema, 'eid': eid,
+                            'link_label': lsearch, 'target': target})
 
-            add_new = (u'<div class="pull-right">'
-                       '<a href="/add/%(target)s?__linkto=%(linkto)s'
-                       '&__redirectpath=%(url)s&__redirectvid=edition "'
-                       'class="accordion-toggle '
-                       'btn btn-micro btn-link pull-right">'
-                       '%(link_label)s'
-                       '</a>'
-                       '</div>'
-                        %
-                       {'linkto': linkto, 'url': relative_url,
-                        'link_label': link_label, 'target': target})
+                add_new = (u'<div class="pull-right">'
+                           '<a href="/add/%(target)s?__linkto=%(linkto)s'
+                           '&__redirectpath=%(url)s&__redirectvid=edition "'
+                           'class="accordion-toggle '
+                           'btn btn-micro btn-link pull-right">'
+                           '%(link_label)s'
+                           '</a>'
+                           '</div>'
+                            %
+                           {'linkto': linkto, 'url': relative_url,
+                            'link_label': link_label, 'target': target})
 
-            w(u'<div class="accordion-group">'
-              u'<div class="accordion-heading container-fluid">'
-              u'<div class="row" id="RDR_%(relation_name)s_%(role)s">'
-              u'<a class="accordion-toggle" data-toggle="collapse" '
-              u'data-parent="# accordion_%(eid)s" '
-              u'href="#collapse_%(relation_name)s">'
-              u'%(label)s'
-              u'</a>'
-              u'</div>'
-              u'<div class="row" id="add-relation-combo">%(search)s %(add_new)s</div>'
-              u'</div>'
-               % {'eid': eid, 'relation_name': rschema,
-                  'label': label, 'search': search_url,
-                  'add_new': add_new, 'role': role})
-            w(u'<div id="collapse_%(relation)s" class="accordion-body collapse in">'
-              u'    <div class="accordion-inner">'
-              u'        <ul class="thumbnails">' % {'relation': rschema})
-            for viewparams in related:
-                w(u'<li class=""><div class="btn btn-small">%s</div>'
-                  u'<div id="span%s" class="%s span3 pull-right">%s</div>'
-                  u'</li>' % (viewparams[1], viewparams[0],
-                              viewparams[2], viewparams[3]))
-            if not form.force_display and form.maxrelitems < len(related):
-                link = (u'<span>[<a href="javascript:window.location.href+='
-                        u'\'&amp;__force_display=1\'">%s</a>]'
-                        '</span>' % _('view all'))
-                w(u'<li>%s</li>' % link)
-            w(u'        </ul>'
-              u'    </div>'
-              u'</div>'
-              u'</div>')
-        pendings = list(field.restore_pending_inserts(form))
+                w(u'<div class="accordion-group">'
+                  u'<div class="accordion-heading container-fluid">'
+                  u'<div class="row" id="RDR_%(relation_name)s_%(role)s_%(target)s">'
+                  u'<a class="accordion-toggle" data-toggle="collapse" '
+                  u'data-parent="# accordion_%(eid)s" '
+                  u'href="#collapse_%(relation_name)s">'
+                  u'%(label)s'
+                  u'</a>'
+                  u'</div>'
+                  u'<div class="row" id="add-relation-combo">%(search)s %(add_new)s</div>'
+                  u'</div>'
+                   % {'eid': eid, 'relation_name': rschema, 'target': target,
+                      'label': label, 'search': search_url,
+                      'add_new': add_new, 'role': role})
+                w(u'<div id="collapse_%(relation)s" class="accordion-body collapse in">'
+                  u'    <div class="accordion-inner">'
+                  u'        <ul class="thumbnails">' % {'relation': rschema})
+
+                related = related_table(field, form, rschema, role, safe=True, target=target)
+                for viewparams in related:
+                    w(u'<li class=""><div class="btn btn-small">%s</div>'
+                      u'<div id="span%s" class="%s span3 pull-right">%s</div>'
+                      u'</li>' % (viewparams[1], viewparams[0],
+                                  viewparams[2], viewparams[3]))
+                if not form.force_display and form.maxrelitems < len(related):
+                    link = (u'<span>[<a href="javascript:window.location.href+='
+                            u'\'&amp;__force_display=1\'">%s</a>]'
+                            '</span>' % _('view all'))
+                    w(u'<li>%s</li>' % link)
+                w(u'        </ul>'
+                  u'    </div>'
+                  u'</div>'
+                  u'</div>')
         w(u'    </div>'
           u'</div>')
+
         # FIXME try to change this table with a fancy html code.
+
+        pendings = list(field.restore_pending_inserts(form))
+
         w(u'<table id="relatedEntities">')
         if not pendings:
             w(u'<tr><th>&#160;</th><td>&#160;</td></tr>')
@@ -156,6 +163,41 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
 
 GenericRelationsField.widget = GenericRelationsWidgetOrbui
 GenericRelationsField.control_field = False
+
+
+def related_table(self, form, rschema, role, target=None, safe=True):
+    entity = form.edited_entity
+    pending_deletes = get_pending_deletes(form._cw, entity.eid)
+
+    related = []
+    if entity.has_eid():
+        rql = entity.cw_related_rql(rschema.type, role, limit=form.related_limit, targettypes=(target.type,))
+        try:
+            rset = form._cw.execute(rql, {'x': entity.eid})
+        except Unauthorized:
+            if not safe:
+                raise
+            rset = form._cw.empty_rset()
+        if role == 'subject':
+            haspermkwargs = {'fromeid': entity.eid}
+        else:
+            haspermkwargs = {'toeid': entity.eid}
+        if rschema.has_perm(form._cw, 'delete', **haspermkwargs):
+            toggleable_rel_link_func = toggleable_relation_link
+        else:
+            toggleable_rel_link_func = lambda x, y, z: u''
+        for row in xrange(rset.rowcount):
+            nodeid = relation_id(entity.eid, rschema, role,
+                                 rset[row][0])
+            if nodeid in pending_deletes:
+                status, label = u'pendingDelete', '+'
+            else:
+                status, label = u'', 'x'
+            dellink = toggleable_rel_link_func(entity.eid, nodeid, label)
+            eview = form._cw.view('oneline', rset, row=row)
+            related.append((nodeid, dellink, status, eview))
+    #yield (rschema, role, related)
+    return related
 
 
 class FormRendererOrbui(formrenderers.FormRenderer):
