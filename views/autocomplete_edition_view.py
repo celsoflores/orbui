@@ -48,7 +48,6 @@ class AutoCompleteEntityRetriever(startup.IndexView):
             subject = True if form['subject'] == 'True' else False
         if 'etype_search' in form:
             etype_search = form['etype_search']
-            #print 'call etype_search  %s' %etype_search
         if 'relation' in form:
             relation = form['relation']
         if 'eid_parent' in form:
@@ -60,7 +59,6 @@ class AutoCompleteEntityRetriever(startup.IndexView):
             letter = 'S'
             role = 'object'
         parent_entity = self._cw.entity_from_eid(eid)
-        #print form['__redirectpath']
 
         if 'q' in form:
             search = form['q']
@@ -117,7 +115,6 @@ class AutocompleteEditionView(EntityView):
     def cell_call(self, row, col, relation='', role='subject', etype_search='', showname="Y"):
         """display the autocomplete widget
         """
-        #Quitar print 'row %s, col %s, relation (%s), role= %s, etype_search= %s' %(row, col, relation, role,etype_search)
         self._cw.add_js('jquery.autocomplete.js')
         self._cw.add_js('orbui.autocomplete.js')
         if role == 'subject':
@@ -125,7 +122,6 @@ class AutocompleteEditionView(EntityView):
         else:
             subject = False
         entity = self.cw_rset.get_entity(row, col)
-        #Quitar  print '>>> %s <<<' %entity
         eid = entity.eid
         jscode = (u'var params = new Array();'
                   u'params[\'subject\'] = \'%(subject)s\';'
@@ -156,14 +152,15 @@ class AutocompleteEditionView(EntityView):
                u'class="input"/>'
                u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="hidden"/>'
-               u'<button type="button" class="btn btn-success btn-small" '
+               u'<button type="button" class="btn btn-mini btn-success" '
                u'id="btn-add-relation" '
                u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
-               u'\'%(relation)s\',\'%(eid)s\',\'%(etype_search)s\',\'%(url)s\');">crear</button>'
+               u'\'%(relation)s\',\'%(eid)s\',\'%(etype_search)s\',\'%(url)s\');">%(confirm)s</button>'
                u'</fieldset>'
                u'' % {'name': namee, 'eid': eid,
                       'relation': relation, 'url': url,
                       'subject': subject, 'etype_search': etype_search,
+                      'confirm': self._cw._(u'Confirm'),
                       'role': role})
 
 
