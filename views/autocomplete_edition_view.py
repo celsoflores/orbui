@@ -63,16 +63,16 @@ class AutoCompleteEntityRetriever(startup.IndexView):
         if 'q' in form:
             search = form['q']
             main_attribute = self._cw.vreg.schema.eschema(etype_search).main_attribute()
-            specialsearch = self.getSpecialSearch(parent_entity, relation, etype_search, role, letter)
+            specialsearch = self.getSpecialSearch(self._cw, parent_entity, relation, etype_search, role)
             constraint = ', %s %s ILIKE "%%%s%%" %s' % (letter, main_attribute, search, specialsearch)
             unrelated = parent_entity.cw_unrelated_rql(relation, etype_search, role)
-            rql = (unrelated[0] + constraint).replace('DESC WHERE', 'DESC LIMIT 12 WHERE')
+            rql = (unrelated[0] + constraint).replace('DESC WHERE', 'DESC LIMIT 30 WHERE')
             rset = self._cw.execute(rql, unrelated[1])
             for entity in rset.entities():
                 printable_value = entity.printable_value(entity.e_schema.main_attribute())
                 self.w(u'%s||%s\n' % (printable_value, entity.eid))
 
-    def getSpecialSearch(self, parent_entity, relation, etype_search, role, letter):
+    def getSpecialSearch(self, session, parent_entity, relation, etype_search, role):
         SPECIALSEARCH = self.SPECIALSEARCH
         SPECIALCONDITION = self.SPECIALCONDITION
         eid = parent_entity.eid
@@ -98,7 +98,7 @@ class AutoCompleteEntityRetriever(startup.IndexView):
 
         #En caso de que exista una condicion especial para la busqueda,
         #evaluar que exista informacion y regresa la condicion espadial
-        rset = self._cw.execute(specialcondition % {'eid': eid, })
+        rset = session.execute(specialcondition % {'eid': eid, })
         if rset.rowcount > 0:
             return specialsearch
         else:
