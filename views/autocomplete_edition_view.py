@@ -31,6 +31,8 @@ class AutoCompleteEntityRetriever(startup.IndexView):
     # special condition of autocomplete
     SPECIALCONDITION = {'EntityA|relation|EntityB': ', Conditions..',
                         }
+    # Help messages and error messages if add any relation not valid
+    HELP_MESSAGES = {}
 
     templatable = False
     content_type = 'text/html'
@@ -73,8 +75,6 @@ class AutoCompleteEntityRetriever(startup.IndexView):
                 self.w(u'%s||%s\n' % (printable_value, entity.eid))
 
     def getSpecialSearch(self, session, parent_entity, relation, etype_search, role):
-        SPECIALSEARCH = self.SPECIALSEARCH
-        SPECIALCONDITION = self.SPECIALCONDITION
         eid = parent_entity.eid
         paren_name = type(parent_entity).__name__
 
@@ -83,6 +83,8 @@ class AutoCompleteEntityRetriever(startup.IndexView):
                                             'relation': relation,
                                             'role': ('' if role == 'subject' else '_object'),
                                             'etype_search': etype_search}
+        SPECIALSEARCH = self.SPECIALSEARCH
+        SPECIALCONDITION = self.SPECIALCONDITION
 
         #Evalua si existe una condicion especial
         if target in SPECIALSEARCH:
@@ -123,6 +125,18 @@ class AutocompleteEditionView(EntityView):
             subject = False
         entity = self.cw_rset.get_entity(row, col)
         eid = entity.eid
+
+        target = ('%(entity)s|%(relation)s%(role)s|%(etype_search)s'
+                % {'entity': type(entity).__name__,
+                   'relation': relation,
+                   'role': ('' if role == 'subject' else '_object'),
+                   'etype_search': etype_search})
+        helpmsg = ''
+        if target in AutoCompleteEntityRetriever().HELP_MESSAGES:
+            helpmsg = ('<p class="text-info">'
+               u'<small>%(help)s</small>'
+               u'</p>' % {'help': self._cw._(AutoCompleteEntityRetriever().HELP_MESSAGES[target])})
+
         jscode = (u'var params = new Array();'
                   u'params[\'subject\'] = \'%(subject)s\';'
                   u'params[\'etype_search\'] = \'%(etype_search)s\';'
@@ -153,15 +167,15 @@ class AutocompleteEditionView(EntityView):
                u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="hidden"/>'
                u'<button type="button" class="btn btn-mini btn-success" '
-               u'id="btn-add-relation" '
+               u'id="btn-add-relation"'
                u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
                u'\'%(relation)s\',\'%(eid)s\',\'%(etype_search)s\',\'%(url)s\');">%(confirm)s</button>'
-               u'</fieldset>'
+               u'</fieldset>%(helpmsg)s'
                u'' % {'name': namee, 'eid': eid,
                       'relation': relation, 'url': url,
                       'subject': subject, 'etype_search': etype_search,
                       'confirm': self._cw._(u'Confirm'),
-                      'role': role})
+                      'role': role, 'helpmsg': helpmsg})
 
 
 class AutocompleteEntityController(controller.Controller):
