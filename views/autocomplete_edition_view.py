@@ -68,8 +68,10 @@ class AutoCompleteEntityRetriever(startup.IndexView):
             specialsearch = self.getSpecialSearch(self._cw, parent_entity, relation, etype_search, role)
             constraint = ', %s %s ILIKE "%%%s%%" %s' % (letter, main_attribute, search, specialsearch)
             unrelated = parent_entity.cw_unrelated_rql(relation, etype_search, role)
-            rql = (unrelated[0] + constraint).replace('DESC WHERE', 'DESC LIMIT 30 WHERE')
+            rql = (unrelated[0] + constraint).replace('DESC WHERE', 'DESC LIMIT 30 WHERE').replace('Any ','DISTINCT Any ')
             rset = self._cw.execute(rql, unrelated[1])
+            print rql
+            print unrelated[1]
             for entity in rset.entities():
                 printable_value = entity.printable_value(entity.e_schema.main_attribute())
                 self.w(u'%s||%s\n' % (printable_value, entity.eid))

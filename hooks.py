@@ -27,7 +27,7 @@ class Validate_Autocomplete_RulesHook(Hook):
         if specialsearch != ' ':
             unrelated = eidfrom.cw_unrelated_rql(self.rtype, type(eidto).__name__, 'subject')
             srql = ((unrelated[0] % unrelated[1]) + specialsearch + ', O eid ' + str(self.eidto))
-            if self._cw.execute(srql).rowcount != 1:
+            if self._cw.execute(srql).rowcount < 1:
                 target = ('%(entity)s|%(relation)s%(role)s|%(etype_search)s'
                 % {'entity': type(eidfrom).__name__,
                    'relation': self.rtype, 'role': '',
@@ -43,7 +43,7 @@ class Validate_Autocomplete_RulesHook(Hook):
         if specialsearch != ' ':
             unrelated = eidto.cw_unrelated_rql(self.rtype, type(eidfrom).__name__, 'object')
             srql = ((unrelated[0] % unrelated[1]) + specialsearch + ', S eid ' + str(self.eidfrom))
-            if self._cw.execute(srql).rowcount != 1:
+            if self._cw.execute(srql).rowcount < 1:
                 target = ('%(entity)s|%(relation)s%(role)s|%(etype_search)s'
                 % {'entity': type(eidto).__name__,
                    'relation': self.rtype, 'role': '_object',
