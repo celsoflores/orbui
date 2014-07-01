@@ -21,10 +21,6 @@ class Validate_Autocomplete_RulesHook(Hook):
         eidfrom = self._cw.entity_from_eid(self.eidfrom)
         eidto = self._cw.entity_from_eid(self.eidto)
 
-        # Evalua si está duplicada
-        if self._cw.execute('Any S WHERE S %s O, S eid %s, O eid %s' % (self.rtype, self.eidfrom, self.eidto)).rowcount > 0:
-            raise ValidationError(self.eidfrom, {self.rtype: 'The relation already exists'})
-
         #Evaluate the direct relation
         target = ''
         specialsearch = AutoCompleteEntityRetriever().getSpecialSearch(self._cw, eidfrom, self.rtype, type(eidto).__name__, 'subject')
