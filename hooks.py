@@ -18,6 +18,12 @@ class Validate_Autocomplete_RulesHook(Hook):
     events = ('before_add_relation',)
 
     def __call__(self):
+        #print 'eidfrom: %s, eidto: %s, rtype: %s' % (self.eidfrom, self.eidto, self.rtype)
+        #Cuando ya existe la relación no se evaluan las condiciones especiales
+        srql = 'Any X, Y WHERE X %s Y, X eid %s, Y eid %s' % (self.rtype, self.eidfrom, self.eidto)
+        if self._cw.execute(srql).rowcount > 0:
+            return
+
         eidfrom = self._cw.entity_from_eid(self.eidfrom)
         eidto = self._cw.entity_from_eid(self.eidto)
 
