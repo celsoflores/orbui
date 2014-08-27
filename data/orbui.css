@@ -134,12 +134,14 @@ table.attributeForm tr th{
     padding:12px 12px 12px 0;
     vertical-align:top;
 }
+
 .editableField{
-    position:absolute;
+    position:relative;
     opacity:.6;
     margin-top:-4px;
     padding:2px 0;
 }
+
 .editableField:hover{
     opacity:1;
 }
