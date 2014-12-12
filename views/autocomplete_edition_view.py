@@ -151,9 +151,12 @@ class AutocompleteEditionView(EntityView):
         self._cw.add_onload(jscode)
 
         if showname == "Y":
-            namee = (u'<label class="span4 muted">'
-               u'<small class="pull-right">%(name)s</small>'
-               u'</label>' % {'name': self._cw._(etype_search)})
+            namee = (u'<div class="muted">'
+               u'<small>%(name)s</small>'
+               u'</div>' % {'name': self._cw._(etype_search)})
+            url = entity.rest_path() + '?vid=edition'
+        elif showname == "E":
+            namee = ''
             url = entity.rest_path() + '?vid=edition'
         else:
             namee = ''
@@ -163,18 +166,18 @@ class AutocompleteEditionView(EntityView):
                u'%(name)s'
                u'<input id="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="text" '
-               u'class="input"/>'
+               u'class="input" placeholder="%(etype_searchT)s"/>'
                u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="hidden"/>'
-               u'<button type="button" class="btn btn-mini btn-success" '
+               u'<button type="button" class="btn btn-micro btn-success" '
                u'id="btn-add-relation"'
                u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
                u'\'%(relation)s\',\'%(eid)s\',\'%(etype_search)s\',\'%(url)s\');">%(confirm)s</button>'
                u'</fieldset>%(helpmsg)s'
                u'' % {'name': namee, 'eid': eid,
                       'relation': relation, 'url': url,
-                      'subject': subject, 'etype_search': etype_search,
-                      'confirm': self._cw._(u'Confirm'),
+                      'subject': subject, 'etype_search': etype_search,'etype_searchT': self._cw._(etype_search),
+                      'confirm': '<i class="icon-white icon-ok"></i>',  # changed label "Confirm" by icon
                       'role': role, 'helpmsg': helpmsg})
 
 

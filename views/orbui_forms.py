@@ -45,83 +45,121 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         relative_url = '%s' % eid
         w(u'<div class="accordion form-relation" id="accordion_%s">'
            % eid)
+        w_num_rel = 0
         for label, rschema, role in field.relations:
             # FIXME should be a more optimized way to get the name of
             # the target entity.
             relation = req.entity_from_eid(rschema.eid)
             targets = rschema.targets(etype, role)
+      
         #----
         #    Agregar ciclo sobre targets
         #----
             for target in targets:
-
+                if w_num_rel == 0:
+                    w(u'<div class="row-fluid">')
+                w_num_rel = w_num_rel+1
+                
                 linkto = '%s:%s:%s' % (rschema, eid, neg_role(role))
                 link_label = u'%s %s' % (req._('add'), req._(target))
                 lsearch = u'%s %s' % (req._('search'), req._(target))
 
-                relate_entity = entity.view('autocomplete-edition-view', relation=rschema,
-                                            role=role, etype_search=target)
+                relate_entity = (u'<div class="relate-entity">%(relate_entity)s</div>'%
+                                 {'relate_entity': entity.view('autocomplete-edition-view', relation=rschema,
+                                            role=role, etype_search=target,showname="E")})
 
-                search_url = (u'<div class="span8 relate-entity">%(relate_entity)s</div>'
-                           '<div class="pull-left">'
-                           '<a href="?__mode=%(role)s:%(eid)s:%(rschema)s:'
+                search_url = ('<a href="?__mode=%(role)s:%(eid)s:%(rschema)s:'
                            '%(target)s&vid=search-associate"'
-                           'class="accordion-toggle '
-                           'btn btn-micro btn-link">'
+                           'class="btn btn-micro btn-link">'
                            '%(link_label)s'
                            '</a>'
-                           '</div>'
                             %
-                           {'relate_entity': relate_entity, 'role': role,
+                           {'role': role,
                            'rschema': rschema, 'eid': eid,
                             'link_label': lsearch, 'target': target})
 
-                add_new = (u'<div class="pull-right">'
-                           '<a href="/add/%(target)s?__linkto=%(linkto)s'
+                add_new = ('<a href="/add/%(target)s?__linkto=%(linkto)s'
                            '&__redirectpath=%(url)s&__redirectvid=edition "'
-                           'class="accordion-toggle '
-                           'btn btn-micro btn-link pull-right">'
+                           'class="btn btn-micro btn-link">'
                            '%(link_label)s'
                            '</a>'
-                           '</div>'
                             %
                            {'linkto': linkto, 'url': relative_url,
                             'link_label': link_label, 'target': target})
 
-                w(u'<div class="accordion-group">'
+                w(u'<div class="span4"><div class="accordion-group">'
                   u'<div class="accordion-heading container-fluid">'
-                  u'<div class="row" id="RDR_%(relation_name)s_%(role)s_%(target)s">'
-                  u'<a class="accordion-toggle" data-toggle="collapse" '
-                  u'data-parent="# accordion_%(eid)s" '
-                  u'href="#collapse_%(relation_name)s">'
-                  u'%(label)s'
-                  u'</a>'
-                  u'</div>'
-                  u'<div class="row" id="add-relation-combo">%(search)s %(add_new)s</div>'
-                  u'</div>'
+                  u'    <div id="RDR_%(relation_name)s_%(role)s_%(target)s">'
+                  u'        <a class="accordion-toggle" data-toggle="collapse" '
+                  u'            data-parent="# accordion_%(eid)s" '
+                  u'             href="#collapse_%(relation_name)s">'
+                  u'             %(label)s'
+                  u'        </a>'
+                  u'    </div>'             # </div> de id_RDR.. 
+                  u'    <div id="add-relation-combo">%(search)s %(add_new)s</div>'
+                  u'</div>'             # </div> de accordion-heading 
                    % {'eid': eid, 'relation_name': rschema, 'target': target,
                       'label': label, 'search': search_url,
-                      'add_new': add_new, 'role': role})
+                      'add_new': add_new, 'role': role,
+                      'relate-entity': relate_entity})
                 w(u'<div id="collapse_%(relation)s" class="accordion-body collapse in">'
                   u'    <div class="accordion-inner">'
-                  u'        <ul class="thumbnails">' % {'relation': rschema})
+                  u'        <ul class="thumbnails">%(relate-entity)s' %
+                      {'relation': rschema, 'relate-entity':relate_entity})
+        #----
+        # Reemplazar los widgets desordenados de la vid=edition por tablas tipo any_rset
+        #----
+                if role == "subject":
+                    subject_eid=eid
+                    target_eid='eid-objeto'
+                    rql = ('Any X,X WHERE X is %(target)s,Y is %(entity)s,'
+                           ' Y %(relate)s X, Y eid %(eid)s ' %
+                              {'relate':rschema,
+                               'target':target,
+                               'entity':etype,
+                               'eid':eid} )
+                else:
+                    subject_eid='eid-objeto'
+                    target_eid=eid
+                    rql = ('Any X,X WHERE X is %(target)s,Y is %(entity)s,'
+                           ' X %(relate)s Y, Y eid %(eid)s' %
+                              {'relate':rschema,
+                               'target':target,
+                               'entity':etype,
+                               'eid':eid} )
 
-                related = related_table(field, form, rschema, role, safe=True, target=target)
-                for viewparams in related:
-                    w(u'<li class=""><div class="btn btn-small">%s</div>'
-                      u'<div id="span%s" class="%s span3 pull-right">%s</div>'
-                      u'</li>' % (viewparams[1], viewparams[0],
-                                  viewparams[2], viewparams[3]))
-                if not form.force_display and form.maxrelitems < len(related):
-                    link = (u'<span>[<a href="javascript:window.location.href+='
-                            u'\'&amp;__force_display=1\'">%s</a>]'
-                            '</span>' % _('view all'))
-                    w(u'<li>%s</li>' % link)
-                w(u'        </ul>'
-                  u'    </div>'
-                  u'</div>'
-                  u'</div>')
-        w(u'    </div>'
+                rset = form._cw.execute(rql)
+        #----
+        #    Incluir el activador ([x]) de borrado de relaciones en la tabla preentada. 
+        #        + cellvid redf-del-rel para el activador de borrado
+        #        + cellvid pending_del para que las relaciones seleccionadas se marquen  visualmente 
+        #----
+                pending_deletes = get_pending_deletes(form._cw, eid)
+                ea_relation = rschema.type
+                param_but = '%s|%s|%s|%s|%s'%('Y',eid,ea_relation,role,str(pending_deletes))
+
+                kwargs={'ea_rel_entity': target,
+                    'ea_relation': rschema,
+                    'role':role,
+                    'headers':(' ',''),
+                    'cellvids':{0:'rdef-del-rel','_0':param_but,1:'pending-del','_1':param_but},
+                    'limit':10,
+                    'rdefkwargs':{},
+                    'title':u'no-widget-title',
+                    }
+
+                w(form._cw.view('w-table', rset, 'null',**kwargs))
+        #----
+                w(u'    </div>'             # </div> de accordion-inner
+                  u'</div></div>'        # </div> de accordion-body-collapse  -- </div> accordion-group           
+                  u'</div>')         # </div> de span4  
+
+                if w_num_rel == 3:  # controlar el cambio de row de los widgets 
+                    w(u'</div>')
+                    w_num_rel = 0
+        if w_num_rel > 0:
+            w(u'</div>')
+        w(u'</div>'     
           u'</div>')
 
         # FIXME try to change this table with a fancy html code.
@@ -163,41 +201,6 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
 
 GenericRelationsField.widget = GenericRelationsWidgetOrbui
 GenericRelationsField.control_field = False
-
-
-def related_table(self, form, rschema, role, target=None, safe=True):
-    entity = form.edited_entity
-    pending_deletes = get_pending_deletes(form._cw, entity.eid)
-
-    related = []
-    if entity.has_eid():
-        rql = entity.cw_related_rql(rschema.type, role, limit=form.related_limit, targettypes=(target.type,))
-        try:
-            rset = form._cw.execute(rql, {'x': entity.eid})
-        except Unauthorized:
-            if not safe:
-                raise
-            rset = form._cw.empty_rset()
-        if role == 'subject':
-            haspermkwargs = {'fromeid': entity.eid}
-        else:
-            haspermkwargs = {'toeid': entity.eid}
-        if rschema.has_perm(form._cw, 'delete', **haspermkwargs):
-            toggleable_rel_link_func = toggleable_relation_link
-        else:
-            toggleable_rel_link_func = lambda x, y, z: u''
-        for row in xrange(rset.rowcount):
-            nodeid = relation_id(entity.eid, rschema, role,
-                                 rset[row][0])
-            if nodeid in pending_deletes:
-                status, label = u'pendingDelete', '+'
-            else:
-                status, label = u'', 'x'
-            dellink = toggleable_rel_link_func(entity.eid, nodeid, label)
-            eview = form._cw.view('oneline', rset, row=row)
-            related.append((nodeid, dellink, status, eview))
-    #yield (rschema, role, related)
-    return related
 
 
 class FormRendererOrbui(formrenderers.FormRenderer):
@@ -387,7 +390,6 @@ class AutomaticEntityFormOrbui(AutomaticEntityForm):
     """overwrites the original Automatic Entity Form class
     """
     cssclass = 'form-horizontal'
-
 
 # replace FormRenderer
 def registration_callback(vreg):
