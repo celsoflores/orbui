@@ -130,12 +130,7 @@ def do_paginate(view, rset=None, w=None, show_all_option=True, page_size=None):
                 basepath = req.relative_path(includeparams=False)
                 params['__force_display'] = 1
                 params['__fromnavigation'] = 1
-
-                if basepath == 'ajax':
-                    url = nav.ajax_page_url(**params)
-                else:
-                    url = nav.page_url(basepath, params)
-
+                url = nav.page_url(basepath, params)
                 w(u'<div class="displayAllLink btn btn-small">'
                   u'<a href="%s">%s</a></div>\n'
                   % (xml_escape(url), req._('show %s results') % len(rset)))
