@@ -66,8 +66,8 @@ class SearchBoxOrbui(SearchBox):
                u'<form action="%(action)s"'
                u' class="navbar-search form-search pull-left">'
                u'<input id="norql" type="text" accesskey="q" tabindex="%(tabindex1)s"'
-               u'       title="search text" value="%(value)s" name="rql"'
-               u'       class="input-medium search-query span2" placeholder="Search"/>'
+               u'       title="%(search_text)s" value="%(value)s" name="rql"'
+               u'       class="input-medium search-query span2" placeholder="%(Search)s"/>'
                u'       <input type="hidden" name="__fromsearchbox" '
                u'              value="1" />'
                u'       <input type="hidden" name="subvid" '
@@ -90,7 +90,9 @@ class SearchBoxOrbui(SearchBox):
         w(self.formdef % {'action': self._cw.build_url('view'),
                           'tabindex1': self._cw.next_tabindex(),
                           'value': xml_escape(rql),
-                          'tabindex2': self._cw.next_tabindex()})
+                          'tabindex2': self._cw.next_tabindex(),
+                          'search_text': self._cw._("search text"),
+                          'Search': self._cw._("Search")})
 
 
 class AnonUserStatusLinkOrbui(AnonUserStatusLink):
