@@ -166,7 +166,7 @@ class AutocompleteEditionView(EntityView):
                u'%(name)s'
                u'<input id="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="text" '
-               u'class="input" placeholder="%(etype_searchT)s"/>'
+               u'class="input %(span12)s" placeholder="%(etype_searchT)s"/>'
                u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="hidden"/>'
                u'<button type="button" class="btn btn-micro btn-success" '
@@ -178,7 +178,7 @@ class AutocompleteEditionView(EntityView):
                       'relation': relation, 'url': url,
                       'subject': subject, 'etype_search': etype_search,'etype_searchT': self._cw._(etype_search),
                       'confirm': '<i class="icon-white icon-ok"></i>',  # changed label "Confirm" by icon
-                      'role': role, 'helpmsg': helpmsg})
+                      'role': role, 'helpmsg': helpmsg, 'span12': '' if showname == "E" else 'span12' })
 
 
 class AutocompleteEntityController(controller.Controller):
