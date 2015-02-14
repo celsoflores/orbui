@@ -34,7 +34,6 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
     """
 
     def render(self, form, field, renderer):
-        print 'ya entre a GenericRelationsWidgetOrbui'
         stream = []
         w = stream.append
         req = form._cw
@@ -56,7 +55,6 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
         #    Agregar ciclo sobre targets
         #----
             for target in targets:
-                print target
                 if req.vreg.schema.eschema(target).has_perm(req, 'read'):
                     if w_num_rel == 0:
                         w(u'<div class="row-fluid">')
@@ -129,9 +127,7 @@ class GenericRelationsWidgetOrbui(formwidgets.FieldWidget):
                                    'target':target,
                                    'entity':etype,
                                    'eid':eid} )
-                    print 'sigo bien'
                     rset = form._cw.execute(rql)
-                    print 'no trone'
             #----
             #    Incluir el activador ([x]) de borrado de relaciones en la tabla preentada.
             #        + cellvid redf-del-rel para el activador de borrado
