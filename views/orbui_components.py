@@ -35,8 +35,8 @@ from cubicweb.web.views.formrenderers import (FormRenderer,
 from cubicweb.web.views.formrenderers import field_label, checkbox
 from cubicweb.web.views.ibreadcrumbs import (BreadCrumbEntityVComponent,
                                              BreadCrumbAnyRSetVComponent,
-                                             BreadCrumbETypeVComponent,
-                                             ibreadcrumb_adapter)
+                                             BreadCrumbETypeVComponent)
+#                                             ibreadcrumb_adapter)
 from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
@@ -483,7 +483,9 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
             entity = self.cw_extra_kwargs['entity']
         except KeyError:
             entity = self.cw_rset.get_entity(0, 0)
-        adapter = ibreadcrumb_adapter(entity)
+    #### CHECAR
+        adapter = entity.cw_adapt_to('IBreadCrumbs')
+    ####
         view = self.cw_extra_kwargs.get('view')
         path = adapter.breadcrumbs(view)
         if path:
@@ -503,23 +505,6 @@ class BreadCrumbEntityVComponentOrbui(BreadCrumbEntityVComponent):
         for i, parent in enumerate(path):
             w(u'<li><span class="divider">%s</span></li>' % self.separator)
             self.wpath_part(w, parent, contextentity, i == len(path) - 1)
-
-
-class BreadCrumbAnyRSetVComponentOrbui(BreadCrumbAnyRSetVComponent,
-                                       BreadCrumbEntityVComponentOrbui):
-    """overwrites BreadCrumbAnyRSetVComponent component for orbui template
-    """
-    # XXX support kwargs for compat with other components which gets the view as
-    # argument
-    def render(self, w, **kwargs):
-        #XXX we do not need first sepator for this breadcrumb style
-        self.first_separator = False
-        w(u'<ul class="breadcrumb">')
-        if self.first_separator:
-            w(u'<li><span class="divider">%s</span></li>' % self.separator)
-        w(u'<li id="search">%s</li>' % self._cw._('search'))
-        w(u'</ul>')
-
 
 class BreadCrumbETypeVComponentOrbui(BreadCrumbETypeVComponent,
                                      BreadCrumbEntityVComponentOrbui):
@@ -627,7 +612,6 @@ def registration_callback(vreg):
                         (EntityCompositeFormRendererOrbui, EntityCompositeFormRenderer),
                         (ApplicationNameOrbui, ApplicationName),
                         (BreadCrumbEntityVComponentOrbui, BreadCrumbEntityVComponent),
-                        (BreadCrumbAnyRSetVComponentOrbui, BreadCrumbAnyRSetVComponent),
                         (BreadCrumbETypeVComponentOrbui, BreadCrumbETypeVComponent),
                         (ContextualBoxLayoutOrbui, ContextualBoxLayout),
                         (ContextFreeBoxLayoutOrbui, ContextFreeBoxLayout),
