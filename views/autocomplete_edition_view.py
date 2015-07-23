@@ -37,6 +37,7 @@ class AutoCompleteEntityRetriever(startup.IndexView):
     templatable = False
     content_type = 'text/html'
     cache_max_age = 0  # no cache
+
     __regid__ = 'autocomplete-entity-retriever'
 
     def call(self):
@@ -111,14 +112,17 @@ class AutocompleteEditionView(EntityView):
     """generic autocomplete view.
     """
     templatable = False
+    RDR = ''
     __regid__ = 'autocomplete-edition-view'
     __select__ = is_instance('Any')
 
-    def cell_call(self, row, col, relation='', role='subject', etype_search='', showname="Y"):
+    def cell_call(self, row, col, relation='', role='subject', etype_search='', showname="Y", RDR=None):
         """display the autocomplete widget
         """
         self._cw.add_js('jquery.autocomplete.js')
         self._cw.add_js('orbui.autocomplete.js')
+        if RDR:
+            self.RDR = RDR
         if role == 'subject':
             subject = True
         else:
@@ -149,20 +153,23 @@ class AutocompleteEditionView(EntityView):
                      'etype_search': etype_search,
                      'role': role})
         self._cw.add_onload(jscode)
-
+        vid = '?'
+        if 'vid' in self._cw.form:
+                vid += u'vid=' + self._cw.form.get('vid', '')
+        url = self._cw.url().replace(self._cw.base_url(), "").partition("?")[0] + vid + '|||' + self.RDR
         if showname == "Y":
             namee = (u'<div class="muted">'
                u'<small>%(name)s</small>'
                u'</div>' % {'name': self._cw._(etype_search)})
-            url = entity.rest_path() + '?vid=edition'
+            #url = entity.rest_path() + '?vid=edition'
         elif showname == "E":
             namee = ''
-            url = entity.rest_path() + '?vid=edition'
+            #url = entity.rest_path() + '?vid=edition'
         else:
             namee = ''
-            url = entity.rest_path()
+            #url = entity.rest_path()
 
-        self.w(u'<fieldset>'
+        l_auto = (u'<fieldset>'
                u'%(name)s'
                u'<input id="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityname_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="text" '
@@ -176,9 +183,11 @@ class AutocompleteEditionView(EntityView):
                u'</fieldset>%(helpmsg)s'
                u'' % {'name': namee, 'eid': eid,
                       'relation': relation, 'url': url,
-                      'subject': subject, 'etype_search': etype_search,'etype_searchT': self._cw._(etype_search),
+                      'subject': subject, 'etype_search': etype_search, 'etype_searchT': self._cw._(etype_search),
                       'confirm': '<i class="icon-white icon-ok"></i>',  # changed label "Confirm" by icon
-                      'role': role, 'helpmsg': helpmsg, 'span12': '' if showname == "E" else 'span12' })
+                      'role': role, 'helpmsg': helpmsg, 'span12': '' if showname == "E" else 'span12'})
+
+        self.w(l_auto)
 
 
 class AutocompleteEntityController(controller.Controller):
@@ -218,15 +227,22 @@ class AutocompleteEntityController(controller.Controller):
         """
         form = self._cw.form
         subject = form['subject']
+        sr_RDR = ''
 
-        sr_RDR = '#RDR_' + form['relation'] + \
-                   ('_subject_' if subject == 'True' else '_object_') + \
-                   form['etype_search']
+        tmp_RDR = form['__redirect'].split("|||")[1]
+
+        if tmp_RDR == '':
+            sr_RDR = 'RDR_' + form['relation'] + \
+                       ('_subject_' if subject == 'True' else '_object_') + \
+                       form['etype_search']
 
         if '__redirect' in form:
-            return self._cw.build_url(form['__redirect']) + sr_RDR
+            return self._cw.build_url(form['__redirect'].replace("|||", "#")) + sr_RDR
         else:
-            return entity.absolute_url() + '?vid=edition' + sr_RDR
+            if 'vid' in self._cw.form:
+                vid = self._cw.form.get('vid', '')
+        url = self._cw.url().replace(self._cw.base_url(), "").partition("?")[0]
+        self._cw.build_url(url, vid=vid) + sr_RDR
 
 
 
