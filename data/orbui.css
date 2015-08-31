@@ -222,11 +222,6 @@ form#entityForm legend{
     font-size:18px;
     color:#eee;
 }
-.form-relation .accordion-inner .btn a{
-    color:#888;
-    font-size:16px;
-    line-height:18px;
-}
 .pendingDelete a{ /*Bring color and line through*/
     color:rgb(221, 17, 68);
     text-decoration:line-through;

@@ -92,14 +92,7 @@ class ProcessInformationViewOrbui(debug.ProcessInformationView):
             if sessions:
                 w(u'<ul>')
                 for session in sessions:
-                    if not session.cnx:
-                        w(u'<li>%s (NO CNX)</li>' % session.sessionid)
-                        continue
-                    try:
-                        last_usage_time = session.cnx.check()
-                    except BadConnectionId:
-                        w(u'<li>%s (INVALID)</li>' % session.sessionid)
-                        continue
+                    last_usage_time = session.mtime
                     w(u'<li>%s (%s: %s)<br/>' % (
                         session.sessionid,
                         _('last usage'),
@@ -109,6 +102,7 @@ class ProcessInformationViewOrbui(debug.ProcessInformationView):
                 w(u'</ul>')
             else:
                 w(u'<p>%s</p>' % _('no web sessions found'))
+
 
 class RegistryViewOrbui(debug.RegistryView):
 
