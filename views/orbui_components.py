@@ -41,7 +41,7 @@ from cubicweb.web.views.facets import FilterBox
 from cubicweb.entity import Entity
 from cubicweb.utils import UStringIO, wrap_on_write
 from cubicweb.web import formwidgets as fw, component, htmlwidgets
-from cubicweb.selectors import non_final_entity, match_context
+from cubicweb.predicates import non_final_entity, match_context
 from cubicweb.uilib import toggle_action
 from cubicweb import tags, uilib
 

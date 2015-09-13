@@ -18,7 +18,7 @@
 from cubicweb.web.views import startup
 from cubicweb.web import controller, Redirect
 from cubicweb.view import EntityView
-from cubicweb.selectors import is_instance
+from cubicweb.predicates import is_instance
 
 
 class AutoCompleteEntityRetriever(startup.IndexView):
