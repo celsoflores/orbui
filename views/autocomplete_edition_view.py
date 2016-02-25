@@ -185,7 +185,7 @@ class AutocompleteEditionView(EntityView):
                       'relation': relation, 'url': url,
                       'subject': subject, 'etype_search': etype_search, 'etype_searchT': self._cw._(etype_search),
                       'confirm': '<i class="icon-white icon-ok"></i>',  # changed label "Confirm" by icon
-                      'role': role, 'helpmsg': helpmsg, 'span12': '' if showname == "E" else 'span12'})
+                      'role': role, 'helpmsg': helpmsg, 'span12': '' if showname == "E" else 'span11'})
 
         self.w(l_auto)
 
