@@ -176,7 +176,7 @@ class AutocompleteEditionView(EntityView):
                u'class="input %(span12)s" placeholder="%(etype_searchT)s"/>'
                u'<input id="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" '
                u'name="entityeid_%(relation)s_%(eid)s_%(role)s_%(etype_search)s" type="hidden"/>'
-               u'<button type="button" class="btn btn-micro btn-success" '
+               u'<button type="button" class="btn btn-micro btn-success" style="margin-bottom: 10px;" '
                u'id="btn-add-relation"'
                u'onclick="javascript:redirect_edit_controller(\'%(subject)s\','
                u'\'%(relation)s\',\'%(eid)s\',\'%(etype_search)s\',\'%(url)s\');">%(confirm)s</button>'
