@@ -721,7 +721,8 @@ ul.docsum ul.docsum ul.docsum{
 }
 .modal-links{
     position: absolute;
-    bottom: 31px;
+    bottom: 2px;
+    margin-left: 12px;
 }
 /*
 ----- UI content -----

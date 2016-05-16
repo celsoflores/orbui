@@ -168,10 +168,7 @@ class LogFormOrbui(LogForm):
     of buttons
     """
     needs_css = ()
-    form_buttons = [fw.ResetButton(label=_('cancel'),
-                                   attrs={'class': 'btn',
-                                          'data-dismiss': 'modal'}),
-                    fw.SubmitButton(label=_('log in'),
+    form_buttons = [fw.SubmitButton(label=_('log in'),
                                     attrs={'class': 'btn btn-primary'})]
 
 class BookmarksBoxOrbui(component.CtxComponent):
